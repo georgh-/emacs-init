@@ -32,6 +32,18 @@ Uses `copy-region-as-kill'."
 (global-set-key (kbd "M-k") 'my-kill-save-line)
 
 
+(require 'expand-region)
+(global-set-key (kbd "C-=") 'er/expand-region)
+
+(require 'multiple-cursors)
+(global-set-key (kbd "C-`") 'mc/edit-lines)
+
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
+
+
 ;; Kill buffer in other window, merge C-x o (change window) and C-x 4 0 (kill
 ;; current buffer and window)
 ;; Useful to get rid of help buffers when using two windows (emacs window term)
@@ -70,11 +82,48 @@ all the menu options rather than an empty menu."
 (add-hook 'after-make-frame-functions 'enable-or-disable-menu-bar-mode)
 (add-hook 'after-init-hook 'enable-or-disable-menu-bar-mode)
 
+;; Horizontal scrolling
+;; Note that it is the reverse of emacs default keys, which are rebound here to
+;; avoid mistakes.
+(defvar horizontal-scroll-columns 4)
+
+(defun scroll-left-columns ()
+  (interactive)
+  (scroll-left horizontal-scroll-columns))
+
+(defun scroll-right-columns ()
+  (interactive)
+  (scroll-right horizontal-scroll-columns))
+
+(global-set-key (kbd "C-M-,") 'scroll-left-columns)
+(global-set-key (kbd "C-M-.") 'scroll-right-columns)
+(global-set-key (kbd "C-x >") 'scroll-left)
+(global-set-key (kbd "C-x <") 'scroll-right)
+
+
+(defun fc-eval-and-replace ()
+  "Replace the preceding sexp with its value."
+  (interactive)
+  (backward-kill-sexp)
+  (condition-case nil
+      (prin1 (eval (read (current-kill 0)))
+             (current-buffer))
+    (error (message "Invalid expression")
+           (insert (current-kill 0)))))
+(global-set-key (kbd "C-c e") 'fc-eval-and-replace)
+
+
+;; ace-jump: press C-, then the letter to jump to, and it highlights the
+;; possible alternatives.
+(global-set-key (kbd "C-,") 'ace-jump-mode)
+(global-set-key (kbd "C-.") 'ace-jump-zap-up-to-char)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(bidi-paragraph-direction (quote left-to-right))
  '(blink-cursor-mode nil)
  '(blink-matching-paren nil)
  '(column-number-mode t)
@@ -82,6 +131,7 @@ all the menu options rather than an empty menu."
  '(custom-enabled-themes (quote (dichromacy)))
  '(delete-selection-mode t)
  '(fill-column 79)
+ '(hscroll-step 1)
  '(ido-everywhere t)
  '(ido-mode (quote both) nil (ido))
  '(inhibit-startup-screen t)
