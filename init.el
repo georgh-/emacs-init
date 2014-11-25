@@ -77,7 +77,11 @@ Uses `copy-region-as-kill'."
 		 (guide-key-mode 1)))
 
   (use-package js2-mode
-	       :mode ("\\.js\\'" . js2-mode)))
+	       :mode ("\\.js\\'" . js2-mode))
+
+  (use-package undo-tree
+	       :diminish undo-tree-mode
+	       :init (global-undo-tree-mode)))
 
 
 ;; Kill buffer in other window, merge C-x o (change window) and C-x 4 0 (kill
