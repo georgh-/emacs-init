@@ -71,6 +71,7 @@ Uses `copy-region-as-kill'."
 		 (add-hook 'json-mode-hook 'enable-paredit-mode)))
 
   (use-package guide-key
+	       :diminish guide-key-mode
 	       :init
 	       (progn
 		 (setq guide-key/guide-key-sequence '("C-x r" "C-x 4"))
