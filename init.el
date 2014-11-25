@@ -154,12 +154,14 @@ all the menu options rather than an empty menu."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
  '(bidi-paragraph-direction (quote left-to-right))
  '(blink-cursor-mode nil)
  '(blink-matching-paren nil)
  '(column-number-mode t)
  '(cua-enable-cua-keys nil)
- '(custom-enabled-themes (quote (dichromacy)))
+ '(custom-enabled-themes (quote (deeper-blue)))
  '(delete-selection-mode t)
  '(fill-column 79)
  '(hscroll-step 1)
