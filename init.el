@@ -31,17 +31,35 @@ Uses `copy-region-as-kill'."
 
 (global-set-key (kbd "M-k") 'my-kill-save-line)
 
+;; Packages' configuration. This setup achieves 2 goals:
+;;  1. Packages are configured upon loading, without requiring them during init.
+;;  2. Packages' configuration is done after processing the init file,
+;;     which guarantees packages will take configuration from customize.
+;;
+;; Many users put (requires 'package) directly in .emacs, but then they must
+;; not use customize, which I like to use.
+;;
+;; In this case, use-package must be required in the hook because it is a
+;; package installed using package; and package is only initialized after
+;; reading the init file. Otherwise it would cause an error.
+(add-hook 'after-init-hook 'my-packages-configuration)
+(defun my-packages-configuration ()
+  (require 'use-package)
 
-(require 'expand-region)
-(global-set-key (kbd "C-=") 'er/expand-region)
+  (use-package expand-region
+	       :bind ("C-=" . er/expand-region))
 
-(require 'multiple-cursors)
-(global-set-key (kbd "C-`") 'mc/edit-lines)
+  (use-package multiple-cursors
+	       :bind (( "C-`" . mc/edit-lines)
+		      ( "C->" . mc/mark-next-like-this)
+		      ( "C-<" . mc/mark-previous-like-this)
+		      ( "C-c C-<" . mc/mark-all-like-this)))
 
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-
+  (use-package ace-jump-mode
+	       ;; ace-jump: press C-, then the letter to jump to, and it
+	       ;; highlights the possible alternatives.
+	       :bind (("C-," . ace-jump-mode)
+		      ("C-." . ace-jump-zap-up-to-char))))
 
 
 ;; Kill buffer in other window, merge C-x o (change window) and C-x 4 0 (kill
@@ -113,11 +131,6 @@ all the menu options rather than an empty menu."
 (global-set-key (kbd "C-c e") 'fc-eval-and-replace)
 
 
-;; ace-jump: press C-, then the letter to jump to, and it highlights the
-;; possible alternatives.
-(global-set-key (kbd "C-,") 'ace-jump-mode)
-(global-set-key (kbd "C-.") 'ace-jump-zap-up-to-char)
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -132,13 +145,19 @@ all the menu options rather than an empty menu."
  '(delete-selection-mode t)
  '(fill-column 79)
  '(hscroll-step 1)
+ '(ido-auto-merge-work-directories-length -1)
+ '(ido-enable-flex-matching t)
  '(ido-everywhere t)
  '(ido-mode (quote both) nil (ido))
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
  '(mouse-wheel-scroll-amount (quote (1 ((shift) . 1) ((control)))))
  '(mouse-yank-at-point t)
- '(package-archives (quote (("gnu" . "http://elpa.gnu.org/packages/") ("marmalade" . "http://marmalade-repo.org/packages/") ("melpa" . "http://melpa.milkbox.net/packages/"))))
+ '(package-archives
+   (quote
+    (("gnu" . "http://elpa.gnu.org/packages/")
+     ("marmalade" . "http://marmalade-repo.org/packages/")
+     ("melpa" . "http://melpa.milkbox.net/packages/"))))
  '(savehist-mode t)
  '(scroll-conservatively 101)
  '(scroll-margin 2)
