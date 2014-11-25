@@ -169,6 +169,7 @@ all the menu options rather than an empty menu."
  '(custom-enabled-themes (quote (deeper-blue)))
  '(delete-selection-mode t)
  '(fill-column 79)
+ '(global-visual-line-mode t)
  '(hscroll-step 1)
  '(ido-auto-merge-work-directories-length -1)
  '(ido-enable-flex-matching t)
@@ -191,7 +192,8 @@ all the menu options rather than an empty menu."
  '(show-paren-mode t)
  '(tool-bar-mode nil)
  '(tooltip-mode nil)
- '(uniquify-buffer-name-style (quote post-forward) nil (uniquify)))
+ '(uniquify-buffer-name-style (quote post-forward) nil (uniquify))
+ '(visual-line-fringe-indicators (quote (left-curly-arrow right-curly-arrow))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
