@@ -31,17 +31,11 @@ Uses `copy-region-as-kill'."
 
 (global-set-key (kbd "M-k") 'my-kill-save-line)
 
-;; Packages' configuration. This setup achieves 2 goals:
-;;  1. Packages are configured upon loading, without requiring them during init.
-;;  2. Packages' configuration is done after processing the init file,
-;;     which guarantees packages will take configuration from customize.
+;; Packages' configuration.
 ;;
-;; Many users put (requires 'package) directly in .emacs, but then they must
-;; not use customize, which I like to use.
-;;
-;; In this case, use-package must be required in the hook because it is a
-;; package installed using package; and package is only initialized after
-;; reading the init file. Otherwise it would cause an error.
+;; This setup assures packages are loaded after the init file is processed.  It
+;; could be done before, but this way packages may be configured using
+;; customize.
 (add-hook 'after-init-hook 'my-packages-configuration)
 (defun my-packages-configuration ()
   (require 'use-package)
@@ -58,8 +52,32 @@ Uses `copy-region-as-kill'."
   (use-package ace-jump-mode
 	       ;; ace-jump: press C-, then the letter to jump to, and it
 	       ;; highlights the possible alternatives.
-	       :bind (("C-," . ace-jump-mode)
-		      ("C-." . ace-jump-zap-up-to-char))))
+	       :bind ("C-," . ace-jump-mode))
+
+  (use-package ace-jump-zap
+	       ;; same as ace-jump but deletes any text inbetween
+	       :bind ("C-." . ace-jump-zap-up-to-char))
+
+  (use-package paredit
+	       :diminish paredit-mode
+	       :config
+	       (progn
+		 (add-hook 'clojure-mode-hook 'enable-paredit-mode)
+		 (add-hook 'cider-repl-mode-hook 'enable-paredit-mode)
+		 (add-hook 'lisp-mode-hook 'enable-paredit-mode)
+		 (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
+		 (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
+		 (add-hook 'ielm-mode-hook 'enable-paredit-mode)
+		 (add-hook 'json-mode-hook 'enable-paredit-mode)))
+
+  (use-package guide-key
+	       :init
+	       (progn
+		 (setq guide-key/guide-key-sequence '("C-x r" "C-x 4"))
+		 (guide-key-mode 1)))
+
+  (use-package js2-mode
+	       :mode ("\\.js\\'" . js2-mode)))
 
 
 ;; Kill buffer in other window, merge C-x o (change window) and C-x 4 0 (kill
@@ -77,8 +95,8 @@ Uses `copy-region-as-kill'."
 (global-set-key (kbd "C-x 4 o 0") 'kill-other-buffer-and-window)
 
 (cond ((string-equal system-type "darwin")
-       (setq ns-command-modifier (quote control))
-       (setq ns-control-modifier (quote alt))
+       (setq ns-command-modifier 'control)
+       (setq ns-control-modifier 'alt)
        (setq ns-pop-up-frames nil)))
 
 (defun enable-or-disable-menu-bar-mode (&optional frame)
@@ -149,6 +167,7 @@ all the menu options rather than an empty menu."
  '(ido-enable-flex-matching t)
  '(ido-everywhere t)
  '(ido-mode (quote both) nil (ido))
+ '(indicate-empty-lines t)
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
  '(mouse-wheel-scroll-amount (quote (1 ((shift) . 1) ((control)))))
