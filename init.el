@@ -199,6 +199,7 @@ all the menu options rather than an empty menu."
      ("marmalade" . "http://marmalade-repo.org/packages/")
      ("melpa" . "http://melpa.milkbox.net/packages/"))))
  '(savehist-mode t)
+ '(scroll-bar-mode nil)
  '(scroll-conservatively 101)
  '(scroll-margin 2)
  '(show-paren-delay 0.01)
