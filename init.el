@@ -79,8 +79,11 @@ Uses `copy-region-as-kill'."
 
   (use-package undo-tree
     :diminish undo-tree-mode
-    :init (global-undo-tree-mode)))
+    :init (global-undo-tree-mode))
 
+  (use-package diminish
+    :init
+    (eval-after-load "view" '(diminish 'view-mode))))
 
 ;; Kill buffer in other window, merge C-x o (change window) and C-x 4 0 (kill
 ;; current buffer and window)
@@ -196,6 +199,7 @@ all the menu options rather than an empty menu."
  '(tool-bar-mode nil)
  '(tooltip-mode nil)
  '(uniquify-buffer-name-style (quote post-forward) nil (uniquify))
+ '(view-read-only t)
  '(visual-line-fringe-indicators (quote (left-curly-arrow right-curly-arrow))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
