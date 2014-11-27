@@ -34,7 +34,7 @@ Uses `copy-region-as-kill'."
 ;; Packages' configuration.
 ;;
 ;; This setup assures packages are loaded after the init file is processed.  It
-;; could be done before, but this way packages may be configured using
+;; could be done before, but this way packages can also be configured using
 ;; customize.
 (add-hook 'after-init-hook 'my-packages-configuration)
 (defun my-packages-configuration ()
@@ -167,6 +167,12 @@ all the menu options rather than an empty menu."
  '(delete-selection-mode t)
  '(fill-column 79)
  '(global-visual-line-mode t)
+ '(guide-key-mode t)
+ '(guide-key/guide-key-sequence
+   (quote
+    ("C-x r" "C-x 4" "C-x 5" "C-x 6" "C-x 8" "C-x a" "C-x n" "C-x v" "C-x RET" "C-x C-k" "C-c" "M-s" "M-g")))
+ '(guide-key/popup-window-position (quote bottom))
+ '(guide-key/recursive-key-sequence-flag t)
  '(hscroll-step 1)
  '(ido-auto-merge-work-directories-length -1)
  '(ido-enable-flex-matching t)
