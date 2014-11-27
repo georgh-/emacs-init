@@ -92,16 +92,14 @@ Uses `copy-region-as-kill'."
 ;; Kill other buffer and window, merge C-x o (change window) and C-x 4 0 (kill
 ;; current buffer and window)
 ;; Useful to get rid of help buffers when using two windows (emacs window term)
-;;
-;; Possible improvement: advice function kill-buffer-and-window and, if called
-;; with a parameter switch to another window before kill-buffer-and-window.
 (defun kill-other-buffer-and-window ()
   "Kills other buffer and its window."
   (interactive)
   (other-window 1)
   (kill-buffer-and-window))
 
-(global-set-key (kbd "C-x 4 o 0") 'kill-other-buffer-and-window)
+(global-set-key (kbd "C-x 4 o") 'kill-other-buffer-and-window)
+
 
 (cond ((string-equal system-type "darwin")
        (setq ns-command-modifier 'control)
@@ -180,6 +178,7 @@ all the menu options rather than an empty menu."
     ("C-x r" "C-x 4" "C-x 5" "C-x 6" "C-x 8" "C-x a" "C-x n" "C-x v" "C-x RET" "C-x C-k" "C-c" "M-s" "M-g")))
  '(guide-key/popup-window-position (quote bottom))
  '(guide-key/recursive-key-sequence-flag t)
+ '(help-window-select t)
  '(hscroll-step 1)
  '(ido-auto-merge-work-directories-length -1)
  '(ido-enable-flex-matching t)
@@ -200,6 +199,7 @@ all the menu options rather than an empty menu."
  '(scroll-margin 2)
  '(show-paren-delay 0.01)
  '(show-paren-mode t)
+ '(temp-buffer-resize-mode t)
  '(tool-bar-mode nil)
  '(tooltip-mode nil)
  '(uniquify-buffer-name-style (quote post-forward) nil (uniquify))
