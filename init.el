@@ -85,7 +85,11 @@ Uses `copy-region-as-kill'."
     :init
     (eval-after-load "view" '(diminish 'view-mode))))
 
-;; Kill buffer in other window, merge C-x o (change window) and C-x 4 0 (kill
+(defun custom-dired-keys ()
+  (define-key dired-mode-map (kbd "RET") 'dired-view-file))
+(add-hook 'dired-mode-hook 'custom-dired-keys)
+
+;; Kill other buffer and window, merge C-x o (change window) and C-x 4 0 (kill
 ;; current buffer and window)
 ;; Useful to get rid of help buffers when using two windows (emacs window term)
 ;;
