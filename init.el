@@ -41,48 +41,45 @@ Uses `copy-region-as-kill'."
   (require 'use-package)
 
   (use-package expand-region
-	       :bind ("C-=" . er/expand-region))
+    :bind ("C-=" . er/expand-region))
 
   (use-package multiple-cursors
-	       :bind (( "C-`" . mc/edit-lines)
-		      ( "C->" . mc/mark-next-like-this)
-		      ( "C-<" . mc/mark-previous-like-this)
-		      ( "C-c C-<" . mc/mark-all-like-this)))
+    :bind (( "C-`" . mc/edit-lines)
+	   ( "C->" . mc/mark-next-like-this)
+	   ( "C-<" . mc/mark-previous-like-this)
+	   ( "C-c C-<" . mc/mark-all-like-this)))
 
   (use-package ace-jump-mode
-	       ;; ace-jump: press C-, then the letter to jump to, and it
-	       ;; highlights the possible alternatives.
-	       :bind ("C-," . ace-jump-mode))
+    ;; ace-jump: press C-, then the letter to jump to, and it
+    ;; highlights the possible alternatives.
+    :bind ("C-," . ace-jump-mode))
 
   (use-package ace-jump-zap
-	       ;; same as ace-jump but deletes any text inbetween
-	       :bind ("C-." . ace-jump-zap-up-to-char))
+    ;; same as ace-jump but deletes any text inbetween
+    :bind ("C-." . ace-jump-zap-up-to-char))
 
   (use-package paredit
-	       :diminish paredit-mode
-	       :config
-	       (progn
-		 (add-hook 'clojure-mode-hook 'enable-paredit-mode)
-		 (add-hook 'cider-repl-mode-hook 'enable-paredit-mode)
-		 (add-hook 'lisp-mode-hook 'enable-paredit-mode)
-		 (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
-		 (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
-		 (add-hook 'ielm-mode-hook 'enable-paredit-mode)
-		 (add-hook 'json-mode-hook 'enable-paredit-mode)))
+    :diminish paredit-mode
+    :config
+    (progn
+      (add-hook 'clojure-mode-hook 'enable-paredit-mode)
+      (add-hook 'cider-repl-mode-hook 'enable-paredit-mode)
+      (add-hook 'lisp-mode-hook 'enable-paredit-mode)
+      (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
+      (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
+      (add-hook 'ielm-mode-hook 'enable-paredit-mode)
+      (add-hook 'json-mode-hook 'enable-paredit-mode)))
 
   (use-package guide-key
-	       :diminish guide-key-mode
-	       :init
-	       (progn
-		 (setq guide-key/guide-key-sequence '("C-x r" "C-x 4"))
-		 (guide-key-mode 1)))
+    :diminish guide-key-mode
+    :init (guide-key-mode 1))
 
   (use-package js2-mode
-	       :mode ("\\.js\\'" . js2-mode))
+    :mode ("\\.js\\'" . js2-mode))
 
   (use-package undo-tree
-	       :diminish undo-tree-mode
-	       :init (global-undo-tree-mode)))
+    :diminish undo-tree-mode
+    :init (global-undo-tree-mode)))
 
 
 ;; Kill buffer in other window, merge C-x o (change window) and C-x 4 0 (kill
