@@ -197,7 +197,7 @@ all the menu options rather than an empty menu."
    (quote
     (("gnu" . "http://elpa.gnu.org/packages/")
      ("marmalade" . "http://marmalade-repo.org/packages/")
-     ("melpa" . "http://melpa.milkbox.net/packages/"))))
+     ("melpa" . "http://melpa.org/packages/"))))
  '(savehist-mode t)
  '(scroll-bar-mode nil)
  '(scroll-conservatively 101)
