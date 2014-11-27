@@ -100,6 +100,12 @@ Uses `copy-region-as-kill'."
 
 (global-set-key (kbd "C-x 4 o") 'kill-other-buffer-and-window)
 
+(defun kill-current-buffer ()
+  "Kills current buffer, does not ask which buffer to kill."
+  (interactive)
+  (kill-buffer (buffer-name)))
+(global-set-key (kbd "C-x k") 'kill-current-buffer)
+
 
 (cond ((string-equal system-type "darwin")
        (setq ns-command-modifier 'control)
