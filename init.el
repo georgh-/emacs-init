@@ -177,7 +177,6 @@ all the menu options rather than an empty menu."
  '(custom-enabled-themes (quote (deeper-blue)))
  '(delete-selection-mode t)
  '(fill-column 79)
- '(global-visual-line-mode t)
  '(guide-key-mode t)
  '(guide-key/guide-key-sequence
    (quote
