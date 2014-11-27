@@ -1,3 +1,5 @@
+;;; This file is public domain
+
 (require 'uniquify)
 
 (setq ring-bell-function 'ignore)
