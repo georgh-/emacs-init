@@ -134,6 +134,21 @@ all the menu options rather than an empty menu."
 (add-hook 'after-make-frame-functions 'enable-or-disable-menu-bar-mode)
 (add-hook 'after-init-hook 'enable-or-disable-menu-bar-mode)
 
+
+;; Default face
+;; Use the first font available and ignore all the rest.
+;; If any of these are not available, do not change anything.
+(defun add-default-font (font-name)
+  (when (and (member font-name (font-family-list))
+	     (not (assoc 'font initial-frame-alist)))
+    (add-to-list 'initial-frame-alist `(font . ,font-name))
+    (add-to-list 'default-frame-alist `(font . ,font-name))))
+
+(add-default-font "DejaVu Sans Mono")
+(add-default-font "Menlo")
+(add-default-font "Consolas")
+
+
 ;; Horizontal scrolling
 ;; Note that it is the reverse of emacs default keys, which are rebound here to
 ;; avoid mistakes.
@@ -218,7 +233,6 @@ all the menu options rather than an empty menu."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "dejavu sans mono"))))
  '(show-paren-match ((t (:foreground "blue" :weight bold))))
  '(show-paren-mismatch ((t (:foreground "red" :weight bold)))))
 (put 'narrow-to-region 'disabled nil)
