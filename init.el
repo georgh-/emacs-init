@@ -115,17 +115,13 @@ Uses `copy-region-as-kill'."
        (setq ns-control-modifier 'alt)
        (setq ns-pop-up-frames nil)))
 
+;; Disable menu-bar-mode everywhere, but allow it on OSX graphic interface.
+;; Mac OS X always shows a menu bar. When Emacs menubar mode is disabled
+;; in OS X, it is still shown but empty. That's why it is better to show 
+;; all the menu options rather than an empty menu.
+;;
+;; The optional parameter is needed on after-make-frame-hook
 (defun enable-or-disable-menu-bar-mode (&optional frame)
-  "Disable menu-bar-mode everywhere, but allow it on OSX graphic interface.
-Mac OS X always shows a menu bar. When Emacs menubar mode is disabled
-in OS X, it is still shown but empty. That's why it is better to show 
-all the menu options rather than an empty menu."
-
-  ;; The optional parameter is needed in some invocations of new-frame as part
-  ;; of after-make-frame-functions hook
-
-  (interactive)
-
   (if (and (display-graphic-p) 
 	   (string-equal system-type "darwin"))
       (menu-bar-mode 1)
