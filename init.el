@@ -80,6 +80,7 @@ Uses `copy-region-as-kill'."
     :mode ("\\.js\\'" . js2-mode))
 
   (use-package undo-tree
+    :disable
     :diminish undo-tree-mode
     :init (global-undo-tree-mode))
 
