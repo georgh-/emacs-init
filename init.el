@@ -115,6 +115,8 @@ Uses `copy-region-as-kill'."
   (kill-buffer (buffer-name)))
 (global-set-key (kbd "C-x k") 'kill-current-buffer)
 
+(unless (display-graphic-p)
+  (xterm-mouse-mode 1))
 
 (when (string-equal system-type "darwin")
   (setq ns-command-modifier 'control)
