@@ -28,7 +28,7 @@ Uses `copy-region-as-kill'."
 (defun my-kill-save-line (lines)
   (interactive "p")
   (kill-ring-save (line-beginning-position)
-                  (+ 1 (line-end-position lines)))
+                  (1+ (line-end-position lines)))
   (message "Saved line to kill-ring"))
 
 (global-set-key (kbd "M-k") 'my-kill-save-line)
@@ -113,10 +113,10 @@ Uses `copy-region-as-kill'."
 (global-set-key (kbd "C-x k") 'kill-current-buffer)
 
 
-(cond ((string-equal system-type "darwin")
-       (setq ns-command-modifier 'control)
-       (setq ns-control-modifier 'alt)
-       (setq ns-pop-up-frames nil)))
+(when (string-equal system-type "darwin")
+  (setq ns-command-modifier 'control)
+  (setq ns-control-modifier 'alt)
+  (setq ns-pop-up-frames nil))
 
 ;; Disable menu-bar-mode everywhere, but allow it on OSX graphic interface.
 ;; Mac OS X always shows a menu bar. When Emacs menubar mode is disabled
