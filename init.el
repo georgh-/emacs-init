@@ -84,6 +84,9 @@ Uses `copy-region-as-kill'."
     :diminish undo-tree-mode
     :init (global-undo-tree-mode))
 
+  (use-package browse-kill-ring
+    :config (browse-kill-ring-default-keybindings))
+
   (use-package diminish
     :init
     (eval-after-load "view" '(diminish 'view-mode))))
@@ -184,6 +187,11 @@ Uses `copy-region-as-kill'."
  '(bidi-paragraph-direction (quote left-to-right))
  '(blink-cursor-mode nil)
  '(blink-matching-paren nil)
+ '(browse-kill-ring-display-duplicates nil)
+ '(browse-kill-ring-highlight-inserted-item (quote solid))
+ '(browse-kill-ring-resize-window nil)
+ '(browse-kill-ring-separator "───")
+ '(browse-kill-ring-separator-face (quote message-header-xheader))
  '(column-number-mode t)
  '(cua-enable-cua-keys nil)
  '(custom-enabled-themes (quote (deeper-blue)))
