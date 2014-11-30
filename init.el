@@ -84,6 +84,9 @@ Uses `copy-region-as-kill'."
     :diminish undo-tree-mode
     :init (global-undo-tree-mode))
 
+  (use-package magit
+    :diminish magit-auto-revert-mode)
+
   (use-package browse-kill-ring
     :config (browse-kill-ring-default-keybindings))
 
