@@ -181,7 +181,7 @@ Uses `copy-region-as-kill'."
              (current-buffer))
     (error (message "Invalid expression")
            (insert (current-kill 0)))))
-(global-set-key (kbd "C-c e") 'eval-last-sexp-and-replace)
+(global-set-key (kbd "C-c C-e") 'eval-last-sexp-and-replace)
 
 
 (custom-set-variables
