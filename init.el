@@ -167,7 +167,7 @@ Uses `copy-region-as-kill'."
 (global-set-key (kbd "C-x <") 'scroll-right)
 
 
-(defun fc-eval-and-replace ()
+(defun eval-last-sexp-and-replace ()
   "Replace the preceding sexp with its value."
   (interactive)
   (backward-kill-sexp)
@@ -176,7 +176,7 @@ Uses `copy-region-as-kill'."
              (current-buffer))
     (error (message "Invalid expression")
            (insert (current-kill 0)))))
-(global-set-key (kbd "C-c e") 'fc-eval-and-replace)
+(global-set-key (kbd "C-c e") 'eval-last-sexp-and-replace)
 
 
 (custom-set-variables
