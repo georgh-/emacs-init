@@ -27,7 +27,7 @@
   "Save the buffer as if killed, but don't kill it.
 Uses `copy-region-as-kill'."
   (interactive)
-  (kill-ring-save (point-min) (point-max))
+  (copy-region-as-kill (point-min) (point-max))
   (message "Buffer content saved to kill ring."))
 
 (global-set-key (kbd "C-x w") 'copy-buffer-as-kill)
