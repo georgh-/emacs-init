@@ -74,14 +74,15 @@ Uses `copy-region-as-kill'."
   (use-package paredit
     :diminish paredit-mode
     :config
-    (progn
-      (add-hook 'clojure-mode-hook 'enable-paredit-mode)
-      (add-hook 'cider-repl-mode-hook 'enable-paredit-mode)
-      (add-hook 'lisp-mode-hook 'enable-paredit-mode)
-      (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
-      (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
-      (add-hook 'ielm-mode-hook 'enable-paredit-mode)
-      (add-hook 'json-mode-hook 'enable-paredit-mode)))
+    ;; Add paredit to lisp modes
+    (mapc (lambda (hook) (add-hook hook 'enable-paredit-mode))
+	  '(clojure-mode-hook
+	    cider-repl-mode-hook
+	    lisp-mode-hook
+	    emacs-lisp-mode-hook
+	    lisp-interaction-mode-hook
+	    ielm-mode-hook
+	    json-mode-hook)))
 
   (use-package guide-key
     :diminish guide-key-mode
