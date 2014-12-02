@@ -1,7 +1,5 @@
 ;;; This file is public domain
 
-(require 'uniquify)
-
 (setq ring-bell-function 'ignore)
 (defalias 'yes-or-no-p 'y-or-n-p)
 
