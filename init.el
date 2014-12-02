@@ -12,6 +12,19 @@
 (setq auto-save-file-name-transforms `((".*" ,emacs-tmp-dir t)))
 (setq auto-save-list-file-prefix emacs-tmp-dir)
 
+;; Add a path to the PATH environment variable and to exec-path emacs variable
+(defun prepend-directory-to-path (dir)
+  (setenv "PATH"
+	  (concat dir
+		  path-separator
+		  (getenv "PATH")))
+  (add-to-list 'exec-path dir))
+
+;; Set path to UNIX utilities in Windows
+(when (string-equal system-type "windows-nt")
+  (prepend-directory-to-path "c:/path/to/unix/utilities"))
+
+
 (defun copy-buffer-as-kill ()
   "Save the buffer as if killed, but don't kill it.
 Uses `copy-region-as-kill'."
