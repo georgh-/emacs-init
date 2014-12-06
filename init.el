@@ -66,9 +66,11 @@ Uses `copy-region-as-kill'."
   (require 'use-package)
 
   (use-package expand-region
+    :ensure
     :bind ("C-=" . er/expand-region))
 
   (use-package multiple-cursors
+    :ensure
     :bind (( "C-`" . mc/edit-lines)
 	   ( "C->" . mc/mark-next-like-this)
 	   ( "C-<" . mc/mark-previous-like-this)
@@ -77,13 +79,16 @@ Uses `copy-region-as-kill'."
   (use-package ace-jump-mode
     ;; ace-jump: press C-, then the letter to jump to, and it
     ;; highlights the possible alternatives.
+    :ensure
     :bind ("C-," . ace-jump-mode))
 
   (use-package ace-jump-zap
     ;; same as ace-jump but deletes any text inbetween
+    :ensure
     :bind ("C-." . ace-jump-zap-up-to-char))
 
   (use-package paredit
+    :ensure
     :diminish paredit-mode
     :config
     ;; Add paredit to lisp modes
@@ -96,11 +101,16 @@ Uses `copy-region-as-kill'."
 	    ielm-mode-hook
 	    json-mode-hook)))
 
+  (use-package powershell-mode :ensure :defer)
+  (use-package php-mode :ensure :defer)
+
   (use-package guide-key
+    :ensure
     :diminish guide-key-mode
     :init (guide-key-mode 1))
 
   (use-package js2-mode
+    :ensure
     :mode ("\\.js\\'" . js2-mode))
 
   (use-package undo-tree
@@ -109,12 +119,16 @@ Uses `copy-region-as-kill'."
     :init (global-undo-tree-mode))
 
   (use-package magit
+    :ensure
+    :defer
     :diminish magit-auto-revert-mode)
 
   (use-package browse-kill-ring
+    :ensure
     :config (browse-kill-ring-default-keybindings))
 
   (use-package diminish
+    :ensure
     :init
     (eval-after-load "view" '(diminish 'view-mode))))
 
