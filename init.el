@@ -51,6 +51,18 @@ Uses `copy-region-as-kill'."
 ;; customize.
 (add-hook 'after-init-hook 'my-packages-configuration)
 (defun my-packages-configuration ()
+  (unless (boundp 'package--initialized)
+    (message "There are no packages in the system. Initializing package...")
+    (package-initialize))
+
+  (unless package-archive-contents
+    (message "Initializing and refreshing ELPA package archives...")
+    (package-refresh-contents))
+
+  (unless (package-installed-p 'use-package)
+    (message "Installing `use-package'...")
+    (package-install 'use-package))
+
   (require 'use-package)
 
   (use-package expand-region
