@@ -12,15 +12,18 @@
 
 ;; Add a path to the PATH environment variable and to exec-path emacs variable
 (defun prepend-directory-to-path (dir)
-  (setenv "PATH"
-	  (concat dir
-		  path-separator
-		  (getenv "PATH")))
+  (setenv "PATH" (concat dir path-separator (getenv "PATH")))
   (add-to-list 'exec-path dir))
 
 ;; Set path to UNIX utilities in Windows
 (when (string-equal system-type "windows-nt")
-  (prepend-directory-to-path "c:/path/to/unix/utilities"))
+  (let ((home (file-name-as-directory
+	       (concat (getenv "HOMEDRIVE")
+		       (getenv "HOMEPATH")))))
+
+    (prepend-directory-to-path (concat home "Software/pt/"))
+    (prepend-directory-to-path (concat home "Software/cygwin/bin/"))
+    (prepend-directory-to-path (concat home "Software/Git/bin/"))))
 
 
 (defun copy-buffer-as-kill ()
