@@ -79,6 +79,10 @@ Uses `copy-region-as-kill'."
 	   ( "C-<" . mc/mark-previous-like-this)
 	   ( "C-c C-<" . mc/mark-all-like-this)))
 
+  (use-package adaptive-wrap
+    :ensure
+    :config (add-hook 'visual-line-mode-hook 'adaptive-wrap-prefix-mode))
+
   (use-package ace-jump-mode
     ;; ace-jump: press C-, then the letter to jump to, and it
     ;; highlights the possible alternatives.
