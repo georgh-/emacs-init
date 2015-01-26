@@ -112,7 +112,7 @@ Uses `copy-region-as-kill'."
 	    ielm-mode-hook
 	    json-mode-hook)))
 
-  (use-package powershell-mode :ensure :defer)
+  (use-package powershell :ensure :defer)
   (use-package php-mode :ensure :defer)
 
   (use-package guide-key
