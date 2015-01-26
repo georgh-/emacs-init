@@ -138,6 +138,11 @@ Uses `copy-region-as-kill'."
     :ensure
     :config (browse-kill-ring-default-keybindings))
 
+  (use-package page-break-lines
+    :ensure
+    :diminish page-break-lines-mode
+    :init (global-page-break-lines-mode))
+
   (use-package diminish
     :ensure
     :config
