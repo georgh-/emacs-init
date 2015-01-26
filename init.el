@@ -298,6 +298,7 @@ Uses `copy-region-as-kill'."
  '(scroll-bar-mode nil)
  '(scroll-conservatively 101)
  '(scroll-margin 2)
+ '(scroll-preserve-screen-position 1)
  '(show-paren-delay 0.01)
  '(show-paren-mode t)
  '(temp-buffer-resize-mode t)
