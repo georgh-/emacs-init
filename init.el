@@ -10,13 +10,17 @@
 (setq auto-save-file-name-transforms `((".*" ,emacs-tmp-dir t)))
 (setq auto-save-list-file-prefix emacs-tmp-dir)
 
+(defun system-windows-p () (string-equal system-type "windows-nt"))
+(defun system-mac-p () (string-equal system-type "darwin"))
+(defun system-unix-p () (not (or (system-mac-p) (system-windows-p))))
+
 ;; Add a path to the PATH environment variable and to exec-path emacs variable
 (defun prepend-directory-to-path (dir)
   (setenv "PATH" (concat dir path-separator (getenv "PATH")))
   (add-to-list 'exec-path dir))
 
 ;; Set path to UNIX utilities in Windows
-(when (string-equal system-type "windows-nt")
+(when (system-windows-p)
   (let ((home (file-name-as-directory
 	       (concat (getenv "HOMEDRIVE")
 		       (getenv "HOMEPATH")))))
@@ -163,7 +167,7 @@ Uses `copy-region-as-kill'."
 (unless (display-graphic-p)
   (xterm-mouse-mode 1))
 
-(when (string-equal system-type "darwin")
+(when (system-mac-p)
   (setq ns-command-modifier 'control)
   (setq ns-control-modifier 'alt)
   (setq ns-pop-up-frames nil))
@@ -176,7 +180,7 @@ Uses `copy-region-as-kill'."
 ;; The optional parameter is needed on after-make-frame-hook
 (defun enable-or-disable-menu-bar-mode (&optional frame)
   (if (and (display-graphic-p) 
-	   (string-equal system-type "darwin"))
+	   (system-mac-p))
       (menu-bar-mode 1)
     (menu-bar-mode -1)))
 
