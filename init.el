@@ -195,18 +195,31 @@ Uses `copy-region-as-kill'."
 (add-hook 'after-init-hook 'enable-or-disable-menu-bar-mode)
 
 
-;; Default face
-;; Use the first font available and ignore all the rest.
+;; Configure default face
+;; Given a font-size (like "10") and a list of fonts,
+;; set the frame default font to the first font in the list that exists in the
+;; system.
 ;; If any of these are not available, do not change anything.
-(defun add-default-font (font-name)
-  (when (and (member font-name (font-family-list))
-	     (not (assoc 'font initial-frame-alist)))
-    (add-to-list 'initial-frame-alist `(font . ,font-name))
-    (add-to-list 'default-frame-alist `(font . ,font-name))))
+;;
+;; This slightly convoluted because I need a differnt font size depending on
+;; the system but I would like to chose a font depending on what's available.
+;; For example, if the system has DejaVu sans use it, otherwise something else.
+(defun add-default-font-list (font-size font-name-list)
+  (let ((add-default-font
+	 (lambda (font-name)
+	   (when (and (member font-name (font-family-list))
+		      (not (assoc 'font initial-frame-alist)))
+	     
+	     (let ((font-with-size (concat font-name "-" font-size)))
+	       (add-to-list 'initial-frame-alist `(font . ,font-with-size))
+	       (add-to-list 'default-frame-alist `(font . ,font-with-size)))))))
+    
+    (mapc add-default-font font-name-list)))
 
-(add-default-font "DejaVu Sans Mono")
-(add-default-font "Menlo")
-(add-default-font "Consolas")
+(add-default-font-list (if (system-mac-p) "11" "10")
+		       '("DejaVu Sans Mono"
+			 "Menlo"
+			 "Consolas"))
 
 
 ;; Horizontal scrolling
