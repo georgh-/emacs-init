@@ -78,10 +78,10 @@ Uses `copy-region-as-kill'."
 
   (use-package multiple-cursors
     :ensure
-    :bind (( "C-`" . mc/edit-lines)
-	   ( "C->" . mc/mark-next-like-this)
-	   ( "C-<" . mc/mark-previous-like-this)
-	   ( "C-c C-<" . mc/mark-all-like-this)))
+    :bind (("C-`" . mc/edit-lines)
+	   ("C->" . mc/mark-next-like-this)
+	   ("C-<" . mc/mark-previous-like-this)
+	   ("C-c C-<" . mc/mark-all-like-this)))
 
   (use-package adaptive-wrap
     :ensure
