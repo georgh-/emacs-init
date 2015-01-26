@@ -127,7 +127,7 @@ Uses `copy-region-as-kill'."
   (use-package undo-tree
     :disabled t
     :diminish undo-tree-mode
-    :init (global-undo-tree-mode))
+    :config (global-undo-tree-mode))
 
   (use-package magit
     :ensure
@@ -140,7 +140,7 @@ Uses `copy-region-as-kill'."
 
   (use-package diminish
     :ensure
-    :init
+    :config
     (eval-after-load "view" '(diminish 'view-mode))))
 
 (defun custom-dired-keys ()
