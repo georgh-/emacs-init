@@ -201,9 +201,9 @@ Uses `copy-region-as-kill'."
 ;; system.
 ;; If any of these are not available, do not change anything.
 ;;
-;; This slightly convoluted because I need a differnt font size depending on
+;; It's slightly convoluted because I need a different font size depending on
 ;; the system but I would like to chose a font depending on what's available.
-;; For example, if the system has DejaVu sans use it, otherwise something else.
+;; For example, if the system has DejaVu sans, use it; otherwise something else.
 (defun add-default-font-list (font-size font-name-list)
   (cl-flet
       ((add-default-font
