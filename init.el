@@ -1,7 +1,7 @@
 ;;; This file is public domain
 
-(setq ring-bell-function 'ignore)
-(defalias 'yes-or-no-p 'y-or-n-p)
+(setq ring-bell-function #'ignore)
+(defalias 'yes-or-no-p #'y-or-n-p)
 
 ;; Save all tempfiles in $TMPDIR/emacs$UID/
 (defconst emacs-tmp-dir
@@ -37,7 +37,7 @@ Uses `copy-region-as-kill'."
   (copy-region-as-kill (point-min) (point-max))
   (message "Buffer content saved to kill ring."))
 
-(global-set-key (kbd "C-x w") 'copy-buffer-as-kill)
+(global-set-key (kbd "C-x w") #'copy-buffer-as-kill)
 
 ;; Use meta and arrows to move between windows. ← → ↑ ↓
 (windmove-default-keybindings 'meta)
@@ -49,14 +49,14 @@ Uses `copy-region-as-kill'."
                   (1+ (line-end-position lines)))
   (message "Saved line to kill-ring"))
 
-(global-set-key (kbd "M-k") 'my-kill-save-line)
+(global-set-key (kbd "M-k") #'my-kill-save-line)
 
 ;; Packages' configuration.
 ;;
 ;; This setup assures packages are loaded after the init file is processed.  It
 ;; could be done before, but this way packages can also be configured using
 ;; customize.
-(add-hook 'after-init-hook 'my-packages-configuration)
+(add-hook 'after-init-hook #'my-packages-configuration)
 (defun my-packages-configuration ()
   (unless (boundp 'package--initialized)
     (message "There are no packages in the system. Initializing package...")
@@ -85,7 +85,7 @@ Uses `copy-region-as-kill'."
 
   (use-package adaptive-wrap
     :ensure
-    :config (add-hook 'visual-line-mode-hook 'adaptive-wrap-prefix-mode))
+    :config (add-hook 'visual-line-mode-hook #'adaptive-wrap-prefix-mode))
 
   (use-package ace-jump-mode
     ;; ace-jump: press C-, then the letter to jump to, and it
@@ -103,7 +103,7 @@ Uses `copy-region-as-kill'."
     :diminish paredit-mode
     :config
     ;; Add paredit to lisp modes
-    (mapc (lambda (hook) (add-hook hook 'enable-paredit-mode))
+    (mapc (lambda (hook) (add-hook hook #'enable-paredit-mode))
 	  '(clojure-mode-hook
 	    cider-repl-mode-hook
 	    lisp-mode-hook
@@ -149,8 +149,8 @@ Uses `copy-region-as-kill'."
     (eval-after-load "view" '(diminish 'view-mode))))
 
 (defun custom-dired-keys ()
-  (define-key dired-mode-map (kbd "RET") 'dired-view-file))
-(add-hook 'dired-mode-hook 'custom-dired-keys)
+  (define-key dired-mode-map (kbd "RET") #'dired-view-file))
+(add-hook 'dired-mode-hook #'custom-dired-keys)
 
 ;; Kill other buffer and window, merge C-x o (change window) and C-x 4 0 (kill
 ;; current buffer and window)
@@ -161,15 +161,15 @@ Uses `copy-region-as-kill'."
   (other-window 1)
   (kill-buffer-and-window))
 
-(global-set-key (kbd "C-x 4 o") 'kill-other-buffer-and-window)
+(global-set-key (kbd "C-x 4 o") #'kill-other-buffer-and-window)
 
 (defun kill-current-buffer ()
   "Kills current buffer, does not ask which buffer to kill."
   (interactive)
   (kill-buffer (buffer-name)))
-(global-set-key (kbd "C-x k") 'kill-current-buffer)
+(global-set-key (kbd "C-x k") #'kill-current-buffer)
 
-(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-x C-b") #'ibuffer)
 
 (unless (display-graphic-p)
   (xterm-mouse-mode 1))
@@ -216,7 +216,8 @@ Uses `copy-region-as-kill'."
     
     (mapc add-default-font font-name-list)))
 
-(add-default-font-list (if (system-mac-p) "11" "10")
+(add-default-font-list (cond ((system-mac-p) "11")
+			     (t "9"))
 		       '("DejaVu Sans Mono"
 			 "Menlo"
 			 "Consolas"))
@@ -235,10 +236,10 @@ Uses `copy-region-as-kill'."
   (interactive)
   (scroll-right horizontal-scroll-columns))
 
-(global-set-key (kbd "C-M-,") 'scroll-left-columns)
-(global-set-key (kbd "C-M-.") 'scroll-right-columns)
-(global-set-key (kbd "C-x >") 'scroll-left)
-(global-set-key (kbd "C-x <") 'scroll-right)
+(global-set-key (kbd "C-M-,") #'scroll-left-columns)
+(global-set-key (kbd "C-M-.") #'scroll-right-columns)
+(global-set-key (kbd "C-x >") #'scroll-left)
+(global-set-key (kbd "C-x <") #'scroll-right)
 
 
 (defun eval-last-sexp-and-replace ()
@@ -250,7 +251,7 @@ Uses `copy-region-as-kill'."
              (current-buffer))
     (error (message "Invalid expression")
            (insert (current-kill 0)))))
-(global-set-key (kbd "C-c C-e") 'eval-last-sexp-and-replace)
+(global-set-key (kbd "C-c C-e") #'eval-last-sexp-and-replace)
 
 
 (custom-set-variables
