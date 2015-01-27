@@ -205,16 +205,17 @@ Uses `copy-region-as-kill'."
 ;; the system but I would like to chose a font depending on what's available.
 ;; For example, if the system has DejaVu sans use it, otherwise something else.
 (defun add-default-font-list (font-size font-name-list)
-  (let ((add-default-font
-	 (lambda (font-name)
-	   (when (and (member font-name (font-family-list))
-		      (not (assoc 'font initial-frame-alist)))
-	     
-	     (let ((font-with-size (concat font-name "-" font-size)))
-	       (add-to-list 'initial-frame-alist `(font . ,font-with-size))
-	       (add-to-list 'default-frame-alist `(font . ,font-with-size)))))))
+  (cl-flet
+      ((add-default-font
+	(font-name)
+	(when (and (member font-name (font-family-list))
+		   (not (assoc 'font initial-frame-alist)))
+	  
+	  (let ((font-with-size (concat font-name "-" font-size)))
+	    (add-to-list 'initial-frame-alist `(font . ,font-with-size))
+	    (add-to-list 'default-frame-alist `(font . ,font-with-size))))))
     
-    (mapc add-default-font font-name-list)))
+    (mapc #'add-default-font font-name-list)))
 
 (add-default-font-list (cond ((system-mac-p) "11")
 			     (t "9"))
