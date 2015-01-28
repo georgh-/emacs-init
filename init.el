@@ -255,6 +255,11 @@ Uses `copy-region-as-kill'."
            (insert (current-kill 0)))))
 (global-set-key (kbd "C-c C-e") #'eval-last-sexp-and-replace)
 
+(defun indent-buffer ()
+  "Indent all buffer using indent-region."
+  (interactive)
+  (indent-region (point-min) (point-max)))
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
