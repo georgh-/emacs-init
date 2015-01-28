@@ -302,7 +302,7 @@ Uses `copy-region-as-kill'."
      ("melpa" . "http://melpa.org/packages/"))))
  '(savehist-mode t)
  '(scroll-bar-mode nil)
- '(scroll-conservatively 101)
+ '(scroll-conservatively 2)
  '(scroll-margin 2)
  '(scroll-preserve-screen-position 1)
  '(show-paren-delay 0.01)
