@@ -42,14 +42,15 @@ Uses `copy-region-as-kill'."
 ;; Use meta and arrows to move between windows. ← → ↑ ↓
 (windmove-default-keybindings 'meta)
 
-;; To copy a line without killing it, including newline char (+1)
-(defun my-kill-save-line (lines)
+(defun kill-save-line (nlines)
+  "Kills a line without deleting it. Includes newline character."
   (interactive "p")
   (kill-ring-save (line-beginning-position)
-                  (1+ (line-end-position lines)))
+                  (line-end-position nlines))
+  (kill-append "\n" nil)
   (message "Saved line to kill-ring"))
 
-(global-set-key (kbd "M-k") #'my-kill-save-line)
+(global-set-key (kbd "M-k") #'kill-save-line)
 
 ;; Packages' configuration.
 ;;
