@@ -321,7 +321,6 @@ by using nxml's indentation rules."
  '(browse-kill-ring-separator-face (quote message-header-xheader))
  '(column-number-mode t)
  '(cua-enable-cua-keys nil)
- '(custom-enabled-themes (quote (deeper-blue)))
  '(delete-selection-mode t)
  '(fill-column 79)
  '(fringe-mode (quote (4 . 4)) nil (fringe))
