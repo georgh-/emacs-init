@@ -172,8 +172,6 @@ Uses `copy-region-as-kill'."
 
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 
-(unless (display-graphic-p)
-  (xterm-mouse-mode 1))
 
 (when (system-mac-p)
   (setq ns-command-modifier 'control)
@@ -314,7 +312,8 @@ Uses `copy-region-as-kill'."
  '(tooltip-mode nil)
  '(uniquify-buffer-name-style (quote post-forward) nil (uniquify))
  '(view-read-only t)
- '(visual-line-fringe-indicators (quote (left-curly-arrow right-curly-arrow))))
+ '(visual-line-fringe-indicators (quote (left-curly-arrow right-curly-arrow)))
+ '(xterm-mouse-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
