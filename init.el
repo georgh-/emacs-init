@@ -170,8 +170,34 @@ Uses `copy-region-as-kill'."
   (kill-buffer (buffer-name)))
 (global-set-key (kbd "C-x k") #'kill-current-buffer)
 
-(global-set-key (kbd "C-x C-b") #'ibuffer)
+;; When prefixing C-k with a number, kill the whole line. The standard behavior
+;; is to kill from the point position.
+;; 
+;; Macro and bindings taken from
+;; http://endlessparentheses.com/kill-entire-line-with-prefix-argument.html
+(defmacro bol-with-prefix (function)
+  "Define a new function which calls FUNCTION.
+Except it moves to beginning of line before calling FUNCTION when
+called with a prefix argument. The FUNCTION still receives the
+prefix argument."
+  (let ((name (intern (format "%s-BOL" function))))
+    `(progn
+       (defun ,name (p)
+         ,(format 
+           "Call `%s', but move to BOL when called with a prefix argument."
+           function)
+         (interactive "P")
+         (when p
+           (forward-line 0))
+         (call-interactively ',function))
+       ',name)))
 
+(global-set-key [remap paredit-kill] (bol-with-prefix paredit-kill))
+(global-set-key [remap org-kill-line] (bol-with-prefix org-kill-line))
+(global-set-key [remap kill-line] (bol-with-prefix kill-line))
+
+
+(global-set-key (kbd "C-x C-b") #'ibuffer)
 
 (when (system-mac-p)
   (setq ns-command-modifier 'control)
