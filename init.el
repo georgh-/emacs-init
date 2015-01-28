@@ -259,6 +259,9 @@ Uses `copy-region-as-kill'."
   (indent-region (point-min) (point-max)))
 
 
+(unless (system-windows-p)
+  (load-theme 'deeper-blue t))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
