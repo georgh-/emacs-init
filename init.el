@@ -37,7 +37,7 @@ Uses `copy-region-as-kill'."
   (copy-region-as-kill (point-min) (point-max))
   (message "Buffer content saved to kill ring."))
 
-(global-set-key (kbd "C-x w") #'copy-buffer-as-kill)
+(global-set-key (kbd "C-c w") #'copy-buffer-as-kill)
 
 ;; Use meta and arrows to move between windows. ← → ↑ ↓
 (windmove-default-keybindings 'meta)
