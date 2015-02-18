@@ -154,6 +154,9 @@ Uses `copy-region-as-kill'."
 ;; do not always select the correct window.
 (add-hook 'occur-hook (lambda () (pop-to-buffer "*Occur*")))
 
+;; When browsing using dired, I mostly look at the files and do not edit
+;; them. For that purpose is much better to use view-mode by default when
+;; opening files from dired.
 (defun custom-dired-keys ()
   (define-key dired-mode-map (kbd "RET") #'dired-view-file))
 (add-hook 'dired-mode-hook #'custom-dired-keys)
@@ -200,6 +203,7 @@ prefix argument."
 (global-set-key [remap kill-line] (bol-with-prefix kill-line))
 
 
+;; Use ido buffer instead of default
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 
 (when (system-mac-p)
