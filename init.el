@@ -324,6 +324,7 @@ by using nxml's indentation rules."
  '(delete-selection-mode t)
  '(fill-column 79)
  '(fringe-mode (quote (4 . 4)) nil (fringe))
+ '(grep-highlight-matches t)
  '(guide-key-mode t)
  '(guide-key/guide-key-sequence
    (quote
