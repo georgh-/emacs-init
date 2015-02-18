@@ -162,8 +162,6 @@ Uses `copy-region-as-kill'."
   (other-window 1)
   (kill-buffer-and-window))
 
-(global-set-key (kbd "C-x 4 o") #'kill-other-buffer-and-window)
-
 (defun kill-current-buffer ()
   "Kills current buffer, does not ask which buffer to kill."
   (interactive)
