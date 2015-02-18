@@ -149,6 +149,11 @@ Uses `copy-region-as-kill'."
     :config
     (eval-after-load "view" '(diminish 'view-mode))))
 
+;; Select Occur window if there are results.  By default the Occur window is
+;; not selected. Other proposed solutions in the internet like (move-window 1),
+;; do not always select the correct window.
+(add-hook 'occur-hook (lambda () (pop-to-buffer "*Occur*")))
+
 (defun custom-dired-keys ()
   (define-key dired-mode-map (kbd "RET") #'dired-view-file))
 (add-hook 'dired-mode-hook #'custom-dired-keys)
