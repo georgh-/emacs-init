@@ -29,6 +29,18 @@
     (prepend-directory-to-path (concat home "Software/cygwin/bin/"))
     (prepend-directory-to-path (concat home "Software/Git/bin/"))))
 
+;; From http://emacs-fu.blogspot.com.br/2013/03/editing-with-root-privileges-once-more.html
+(defun find-file-as-root ()
+  "Like `ido-find-file', but automatically edit the file with
+root-privileges (using tramp/sudo), if the file is not writable by
+user."
+  (interactive)
+  (let ((file (ido-read-file-name "Edit as root: ")))
+    (unless (file-writable-p file)
+      (setq file (concat "/sudo:root@localhost:" file)))
+    (find-file file)))
+;; or some other keybinding...
+(global-set-key (kbd "C-x F") #'find-file-as-root)
 
 (defun copy-buffer-as-kill ()
   "Save the buffer as if killed, but don't kill it.
