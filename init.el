@@ -335,7 +335,7 @@ by using nxml's indentation rules."
  '(guide-key-mode t)
  '(guide-key/guide-key-sequence
    (quote
-    ("C-x r" "C-x 4" "C-x 5" "C-x 6" "C-x 8" "C-x a" "C-x n" "C-x v" "C-x RET" "C-x C-k" "C-c" "M-s" "M-g")))
+    ("C-c" "C-x 4" "C-x 5" "C-x 6" "C-x 8" "C-x C-k" "C-x ESC" "C-x RET" "C-x a" "C-x n" "C-x r" "C-x v" "C-x w" "ESC" "M-g" "M-o" "M-s")))
  '(guide-key/popup-window-position (quote bottom))
  '(guide-key/recursive-key-sequence-flag t)
  '(help-window-select t)
