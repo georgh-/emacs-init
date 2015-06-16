@@ -340,6 +340,7 @@ by using nxml's indentation rules."
  '(column-number-mode t)
  '(cua-enable-cua-keys nil)
  '(delete-selection-mode t)
+ '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(fill-column 79)
  '(fringe-mode (quote (4 . 4)) nil (fringe))
  '(grep-highlight-matches t)
