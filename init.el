@@ -99,17 +99,6 @@ Uses `copy-region-as-kill'."
     :ensure
     :config (add-hook 'visual-line-mode-hook #'adaptive-wrap-prefix-mode))
 
-  (use-package ace-jump-mode
-    ;; ace-jump: press C-, then the letter to jump to, and it
-    ;; highlights the possible alternatives.
-    :ensure
-    :bind ("C-," . ace-jump-mode))
-
-  (use-package ace-jump-zap
-    ;; same as ace-jump but deletes any text inbetween
-    :ensure
-    :bind ("C-." . ace-jump-zap-up-to-char))
-
   (use-package paredit
     :ensure
     :diminish paredit-mode
@@ -135,11 +124,6 @@ Uses `copy-region-as-kill'."
   (use-package js2-mode
     :ensure
     :mode ("\\.js\\'" . js2-mode))
-
-  (use-package undo-tree
-    :disabled t
-    :diminish undo-tree-mode
-    :config (global-undo-tree-mode))
 
   (use-package magit
     :ensure
