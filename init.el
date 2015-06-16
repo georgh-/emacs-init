@@ -37,7 +37,7 @@ user."
   (interactive)
   (let ((file (ido-read-file-name "Edit as root: ")))
     (unless (file-writable-p file)
-      (setq file (concat "/sudo:root@localhost:" file)))
+      (setq file (concat "/su:root@localhost:" file)))
     (find-file file)))
 ;; or some other keybinding...
 (global-set-key (kbd "C-x F") #'find-file-as-root)
