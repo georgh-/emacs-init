@@ -217,9 +217,9 @@ prefix argument."
 ;; Use ido buffer instead of default
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 
+;; Command key in Mac keyboard is used as control key in Emacs
 (when (system-mac-p)
   (setq ns-command-modifier 'control)
-  (setq ns-control-modifier 'alt)
   (setq ns-pop-up-frames nil))
 
 ;; Disable menu-bar-mode everywhere, but allow it on OSX graphic interface.
