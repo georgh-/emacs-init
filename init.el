@@ -172,6 +172,11 @@ Uses `copy-region-as-kill'."
   (define-key dired-mode-map (kbd "RET") #'dired-view-file))
 (add-hook 'dired-mode-hook #'custom-dired-keys)
 
+;; When killing a buffer, I always choose the current one. If I want to kill
+;; other buffers, there are other mechanisms:
+;;  * Switch to the buffer (C-x b) and kill it
+;;  * M-x kill-some-buffers
+;;  * C-x C-b (ido buffer in my configuration)
 (defun kill-current-buffer ()
   "Kills current buffer, does not ask which buffer to kill."
   (interactive)
