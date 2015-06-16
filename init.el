@@ -361,6 +361,7 @@ by using nxml's indentation rules."
  '(mouse-wheel-scroll-amount (quote (1 ((shift) . 1) ((control)))))
  '(mouse-yank-at-point t)
  '(nxml-slash-auto-complete-flag t)
+ '(org-use-speed-commands t)
  '(package-archives
    (quote
     (("gnu" . "http://elpa.gnu.org/packages/")
