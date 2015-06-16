@@ -360,6 +360,7 @@ by using nxml's indentation rules."
  '(initial-scratch-message nil)
  '(mouse-wheel-scroll-amount (quote (1 ((shift) . 1) ((control)))))
  '(mouse-yank-at-point t)
+ '(nxml-slash-auto-complete-flag t)
  '(package-archives
    (quote
     (("gnu" . "http://elpa.gnu.org/packages/")
