@@ -55,6 +55,26 @@ Uses `copy-region-as-kill'."
 
 (global-set-key (kbd "C-c w") #'copy-buffer-as-kill)
 
+(defun remove-system-clipboard-format ()
+  "Remove format from system clipboard.
+Pastes the contents of the system clipboard to Emacs and copies
+it again to the clipboard to ensure that system clipboard
+contains unformatted text.  Useful when copying/pasting between
+Browsers/Word/Email/etc.
+
+Emacs' kill ring is unmodified after running this function."
+  (interactive)
+  (with-temp-buffer
+    (clipboard-yank)
+    (pop kill-ring)
+
+    (clipboard-kill-region (point-min) (point-max))
+    (pop kill-ring)
+    
+    (message "Format has been removed from system clipboard text.")))
+
+(global-set-key (kbd "C-c r") #'remove-system-clipboard-format)
+
 ;; Use meta and arrows to move between windows. ← → ↑ ↓
 (windmove-default-keybindings 'meta)
 
