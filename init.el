@@ -29,6 +29,10 @@
     (prepend-directory-to-path (concat home "Software/cygwin/bin/"))
     (prepend-directory-to-path (concat home "Software/Git/bin/"))))
 
+;; Enable Finding Files at Point
+;; Replaces find files and dirs commands to use the value at point
+(ffap-bindings)
+
 ;; From http://emacs-fu.blogspot.com.br/2013/03/editing-with-root-privileges-once-more.html
 (defun find-file-as-root ()
   "Like `ido-find-file', but automatically edit the file with
