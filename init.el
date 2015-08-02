@@ -8,7 +8,8 @@
   (concat temporary-file-directory "emacs"))
 (setq backup-directory-alist `((".*" . ,emacs-tmp-dir)))
 (setq auto-save-file-name-transforms `((".*" ,emacs-tmp-dir t)))
-(setq auto-save-list-file-prefix emacs-tmp-dir)
+(setq auto-save-list-file-prefix (concat emacs-tmp-dir
+					 "/auto-save-list/saves-"))
 
 (defun system-windows-p () (string-equal system-type "windows-nt"))
 (defun system-mac-p () (string-equal system-type "darwin"))
