@@ -30,18 +30,28 @@
     (prepend-directory-to-path (concat home "Software/cygwin/bin/"))
     (prepend-directory-to-path (concat home "Software/Git/bin/"))))
 
-;; From http://emacs-fu.blogspot.com.br/2013/03/editing-with-root-privileges-once-more.html
+;; Open as root using Tramp. Idea based on
+;; http://emacs-fu.blogspot.com.br/2013/03/editing-with-root-privileges-once-more.html
 (defun find-file-as-root ()
   "Like `ido-find-file', but automatically edit the file with
-root-privileges (using tramp/sudo), if the file is not writable by
+root-privileges (using tramp/su), if the file is not writable by
 user."
   (interactive)
   (let ((file (ido-read-file-name "Edit as root: ")))
     (unless (file-writable-p file)
       (setq file (concat "/su:root@localhost:" file)))
     (find-file file)))
-;; or some other keybinding...
+
+(defun dired-as-root ()
+  "Like `ido-dired', but automatically edit the directory with
+root-privileges (using tramp/su)."
+  (interactive)
+  (let ((directory (ido-read-directory-name "Dired as root: ")))
+    (setq directory (concat "/su:root@localhost:" directory))
+    (dired directory)))
+
 (global-set-key (kbd "C-x F") #'find-file-as-root)
+(global-set-key (kbd "C-x D") #'dired-as-root)
 
 (defun copy-buffer-as-kill ()
   "Save the buffer as if killed, but don't kill it.
@@ -343,7 +353,6 @@ by using nxml's indentation rules."
  '(delete-selection-mode t)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(fill-column 79)
- '(fringe-mode (quote (4 . 4)) nil (fringe))
  '(grep-highlight-matches t)
  '(guide-key-mode t)
  '(guide-key/guide-key-sequence
