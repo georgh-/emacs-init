@@ -393,6 +393,7 @@ by using nxml's indentation rules."
  '(uniquify-buffer-name-style (quote post-forward) nil (uniquify))
  '(view-read-only t)
  '(visual-line-fringe-indicators (quote (left-curly-arrow right-curly-arrow)))
+ '(wdired-use-dired-vertical-movement (quote sometimes))
  '(xterm-mouse-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
