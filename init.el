@@ -81,8 +81,12 @@ Emacs' kill ring is unmodified after running this function."
 
 (global-set-key (kbd "C-c r") #'remove-system-clipboard-format)
 
+;; Use M-o to switch between windows instead of C-x o. M-o is normally a prefix
+;; command that I never use.
+(global-set-key (kbd "M-o") #'other-window)
+
 ;; Use meta and arrows to move between windows. ← → ↑ ↓
-(windmove-default-keybindings 'meta)
+;;(windmove-default-keybindings 'meta)
 
 (defun kill-save-line (nlines)
   "Kills a line without deleting it. Includes newline character."
