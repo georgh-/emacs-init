@@ -348,6 +348,38 @@ by using nxml's indentation rules."
   (interactive)
   (pretty-print-xml-region (point-min) (point-max)))
 
+(defun prepare-clipboard-list-ids-for-hpqc ()
+  "Given a list of ids (all numbers), join them in one line with
+\" or \" between them.
+The list is always pasted from the clipboard.
+Input: 123765\n125816 126953
+Output: 123765 or 125816 or 126953"
+  (interactive)
+  (with-temp-buffer
+
+    ;; Paste system clipboard and leave the kill ring as it was before
+    (clipboard-yank)
+    (pop kill-ring)
+
+    ;; Replace whitespace by " or "
+    (beginning-of-buffer)
+    (while (re-search-forward "[ \\t
+]+" nil t)
+      (replace-match " or " nil nil))
+
+    ;; Replace any " or " left at the end of the line
+    (beginning-of-buffer)
+    (while (re-search-forward " or $" nil t)
+      (replace-match "" nil nil))
+
+    ;; Copy the text to the system clipboard
+    (clipboard-kill-region (point-min) (point-max))
+    (pop kill-ring)
+
+    (message "Clipboard IDs have been formatted for HPQC.")))
+
+(global-set-key (kbd "C-c q") #'prepare-clipboard-list-ids-for-hpqc)
+
 (unless (system-windows-p)
   (load-theme 'adwaita t))
 
