@@ -186,12 +186,6 @@ Emacs' kill ring is unmodified after running this function."
     :ensure
     :config (eval-after-load "view" '(diminish 'view-mode))))
 
-;; When browsing using dired, I mostly look at the files and do not edit
-;; them. For that purpose is much better to use view-mode by default when
-;; opening files from dired.
-(defun custom-dired-keys ()
-  (define-key dired-mode-map (kbd "RET") #'dired-view-file))
-(add-hook 'dired-mode-hook #'custom-dired-keys)
 
 ;; When killing a buffer, I always choose the current one. If I want to kill
 ;; other buffers, there are other mechanisms:
