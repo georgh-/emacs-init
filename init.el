@@ -9,7 +9,7 @@
 (setq backup-directory-alist `((".*" . ,emacs-tmp-dir)))
 (setq auto-save-file-name-transforms `((".*" ,emacs-tmp-dir t)))
 (setq auto-save-list-file-prefix (concat emacs-tmp-dir
-					 "/auto-save-list/saves-"))
+										 "/auto-save-list/saves-"))
 
 (defun system-windows-p () (string-equal system-type "windows-nt"))
 (defun system-mac-p () (string-equal system-type "darwin"))
@@ -23,8 +23,8 @@
 ;; Set path to UNIX utilities in Windows
 (when (system-windows-p)
   (let ((home (file-name-as-directory
-	       (concat (getenv "HOMEDRIVE")
-		       (getenv "HOMEPATH")))))
+			   (concat (getenv "HOMEDRIVE")
+					   (getenv "HOMEPATH")))))
 
     (prepend-directory-to-path (concat home "Software/pt/"))
     (prepend-directory-to-path (concat home "Software/cygwin/bin/"))
@@ -77,7 +77,7 @@ Emacs' kill ring is unmodified after running this function."
 
     (clipboard-kill-region (point-min) (point-max))
     (pop kill-ring)
-    
+
     (message "Format has been removed from system clipboard text.")))
 
 (global-set-key (kbd "C-c r") #'remove-system-clipboard-format)
@@ -123,12 +123,17 @@ Emacs' kill ring is unmodified after running this function."
   (use-package multiple-cursors
     :ensure
     :bind (("C->" . mc/mark-next-like-this)
-	   ("C-<" . mc/mark-previous-like-this)
-	   ("C-c C->" . mc/mark-all-like-this)))
+		   ("C-<" . mc/mark-previous-like-this)
+		   ("C-c C->" . mc/mark-all-like-this)))
 
   (use-package adaptive-wrap
     :ensure
     :config (add-hook 'visual-line-mode-hook #'adaptive-wrap-prefix-mode))
+
+  (use-package goto-chg
+    :ensure
+    :bind (("C-," . goto-last-change)
+		   ("C-." . goto-last-change-reverse)))
 
   (use-package paredit
     :ensure
@@ -136,13 +141,13 @@ Emacs' kill ring is unmodified after running this function."
     :config
     ;; Add paredit to lisp modes
     (mapc (lambda (hook) (add-hook hook #'enable-paredit-mode))
-	  '(clojure-mode-hook
-	    cider-repl-mode-hook
-	    lisp-mode-hook
-	    emacs-lisp-mode-hook
-	    lisp-interaction-mode-hook
-	    ielm-mode-hook
-	    json-mode-hook)))
+		  '(clojure-mode-hook
+			cider-repl-mode-hook
+			lisp-mode-hook
+			emacs-lisp-mode-hook
+			lisp-interaction-mode-hook
+			ielm-mode-hook
+			json-mode-hook)))
 
   (use-package powershell :ensure :defer)
   (use-package php-mode :ensure :defer)
@@ -200,7 +205,7 @@ Emacs' kill ring is unmodified after running this function."
 
 ;; When prefixing C-k with a number, kill the whole line. The standard behavior
 ;; is to kill from the point position.
-;; 
+;;
 ;; Macro and bindings taken from
 ;; http://endlessparentheses.com/kill-entire-line-with-prefix-argument.html
 (defmacro bol-with-prefix (function)
@@ -211,7 +216,7 @@ prefix argument."
   (let ((name (intern (format "%s-BOL" function))))
     `(progn
        (defun ,name (p)
-         ,(format 
+         ,(format
            "Call `%s', but move to BOL when called with a prefix argument."
            function)
          (interactive "P")
@@ -235,13 +240,13 @@ prefix argument."
 
 ;; Disable menu-bar-mode everywhere, but allow it on OSX graphic interface.
 ;; Mac OS X always shows a menu bar. When Emacs menubar mode is disabled
-;; in OS X, it is still shown but empty. That's why it is better to show 
+;; in OS X, it is still shown but empty. That's why it is better to show
 ;; all the menu options rather than an empty menu.
 ;;
 ;; The optional parameter is needed on after-make-frame-hook
 (defun enable-or-disable-menu-bar-mode (&optional frame)
-  (if (and (display-graphic-p) 
-	   (system-mac-p))
+  (if (and (display-graphic-p)
+		   (system-mac-p))
       (menu-bar-mode 1)
     (menu-bar-mode -1)))
 
@@ -261,22 +266,21 @@ prefix argument."
 (defun add-default-font-list (font-size font-name-list)
   (cl-flet
       ((add-default-font
-	(font-name)
-	(when (and (member font-name (font-family-list))
-		   (not (assoc 'font initial-frame-alist)))
-	  
-	  (let ((font-with-size (concat font-name "-" font-size)))
-	    (add-to-list 'initial-frame-alist `(font . ,font-with-size))
-	    (add-to-list 'default-frame-alist `(font . ,font-with-size))))))
-    
+		(font-name)
+		(when (and (member font-name (font-family-list))
+				   (not (assoc 'font initial-frame-alist)))
+
+		  (let ((font-with-size (concat font-name "-" font-size)))
+			(add-to-list 'initial-frame-alist `(font . ,font-with-size))
+			(add-to-list 'default-frame-alist `(font . ,font-with-size))))))
+
     (mapc #'add-default-font font-name-list)))
 
 (add-default-font-list (cond ((system-mac-p) "11")
-			     (t "9"))
-		       '("DejaVu Sans Mono"
-			 "Menlo"
-			 "Consolas"))
-
+							 (t "9"))
+					   '("DejaVu Sans Mono"
+						 "Menlo"
+						 "Consolas"))
 
 ;; Horizontal scrolling
 ;; Note that it is the reverse of emacs default keys, which are rebound here to
@@ -323,7 +327,7 @@ by using nxml's indentation rules."
   (interactive "r")
   (save-excursion
     (goto-char begin)
-    (while (search-forward-regexp "\>[ \\t]*\<" nil t) 
+    (while (search-forward-regexp "\>[ \\t]*\<" nil t)
       (backward-char) (insert "\n") (setq end (1+ end)))
     (indent-region begin end))
   (message "Indented XML."))
@@ -353,11 +357,12 @@ by using nxml's indentation rules."
  '(delete-selection-mode t)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(fill-column 79)
+ '(global-visual-line-mode t)
  '(grep-highlight-matches t)
  '(guide-key-mode t)
  '(guide-key/guide-key-sequence
    (quote
-    ("C-c" "C-x 4" "C-x 5" "C-x 6" "C-x 8" "C-x C-k" "C-x ESC" "C-x RET" "C-x a" "C-x n" "C-x r" "C-x v" "C-x w" "ESC" "M-g" "M-o" "M-s")))
+	("C-c" "C-x 4" "C-x 5" "C-x 6" "C-x 8" "C-x C-k" "C-x ESC" "C-x RET" "C-x a" "C-x n" "C-x r" "C-x v" "C-x w" "ESC" "M-g" "M-o" "M-s")))
  '(guide-key/popup-window-position (quote bottom))
  '(guide-key/recursive-key-sequence-flag t)
  '(help-window-select t)
