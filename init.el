@@ -120,6 +120,9 @@ Emacs' kill ring is unmodified after running this function."
 	:ensure
 	:config (global-smartscan-mode 1))
 
+  (use-package discover
+	:ensure)
+
   (use-package expand-region
     :ensure
     :bind ("C-=" . er/expand-region))
