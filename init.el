@@ -180,11 +180,6 @@ Emacs' kill ring is unmodified after running this function."
     :config
     (eval-after-load "view" '(diminish 'view-mode))))
 
-;; Select Occur window if there are results.  By default the Occur window is
-;; not selected. Other proposed solutions in the internet like (move-window 1),
-;; do not always select the correct window.
-(add-hook 'occur-hook (lambda () (pop-to-buffer "*Occur*")))
-
 ;; When browsing using dired, I mostly look at the files and do not edit
 ;; them. For that purpose is much better to use view-mode by default when
 ;; opening files from dired.
