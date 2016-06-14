@@ -174,7 +174,8 @@ Emacs' kill ring is unmodified after running this function."
   (use-package magit
     :ensure
     :defer
-    :diminish magit-auto-revert-mode)
+    :diminish magit-auto-revert-mode
+	:bind ("<f10>" . magit-status))
 
   (use-package browse-kill-ring
     :ensure
