@@ -162,7 +162,7 @@ Emacs' kill ring is unmodified after running this function."
   (use-package guide-key
     :ensure
     :diminish guide-key-mode
-    :init (guide-key-mode 1))
+    :config (guide-key-mode 1))
 
   (use-package js2-mode
     :ensure
@@ -180,12 +180,11 @@ Emacs' kill ring is unmodified after running this function."
   (use-package page-break-lines
     :ensure
     :diminish page-break-lines-mode
-    :init (global-page-break-lines-mode))
+    :config (global-page-break-lines-mode))
 
   (use-package diminish
     :ensure
-    :config
-    (eval-after-load "view" '(diminish 'view-mode))))
+    :config (eval-after-load "view" '(diminish 'view-mode))))
 
 ;; When browsing using dired, I mostly look at the files and do not edit
 ;; them. For that purpose is much better to use view-mode by default when
