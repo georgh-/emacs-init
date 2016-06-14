@@ -365,6 +365,7 @@ by using nxml's indentation rules."
  '(delete-selection-mode t)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(fill-column 79)
+ '(global-discover-mode t)
  '(global-visual-line-mode t)
  '(grep-highlight-matches t)
  '(guide-key-mode t)
