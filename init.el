@@ -332,7 +332,7 @@ by using nxml's indentation rules."
   (pretty-print-xml-region (point-min) (point-max)))
 
 (unless (system-windows-p)
-  (load-theme 'deeper-blue t))
+  (load-theme 'adwaita t))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
