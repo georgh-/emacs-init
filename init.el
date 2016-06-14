@@ -26,9 +26,8 @@
 			   (concat (getenv "HOMEDRIVE")
 					   (getenv "HOMEPATH")))))
 
-    (prepend-directory-to-path (concat home "Software/pt/"))
-    (prepend-directory-to-path (concat home "Software/cygwin/bin/"))
-    (prepend-directory-to-path (concat home "Software/Git/bin/"))))
+    (prepend-directory-to-path (concat home "Software/Git/bin/"))
+	(prepend-directory-to-path (concat home "Software/Git/mingw64/bin/"))))
 
 ;; Open as root using Tramp. Idea based on
 ;; http://emacs-fu.blogspot.com.br/2013/03/editing-with-root-privileges-once-more.html
