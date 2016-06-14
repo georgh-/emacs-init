@@ -386,6 +386,7 @@ by using nxml's indentation rules."
  '(scroll-preserve-screen-position 1)
  '(show-paren-delay 0.01)
  '(show-paren-mode t)
+ '(tab-width 4)
  '(temp-buffer-resize-mode t)
  '(tool-bar-mode nil)
  '(tooltip-mode nil)
