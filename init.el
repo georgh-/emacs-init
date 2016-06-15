@@ -450,6 +450,7 @@ Output: 123765 or 125816 or 126953"
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(fringe ((t (:foreground "grey75"))))
  '(show-paren-match ((t (:foreground "blue" :weight bold))))
  '(show-paren-mismatch ((t (:foreground "red" :weight bold)))))
 (put 'narrow-to-region 'disabled nil)
