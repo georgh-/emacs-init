@@ -265,34 +265,10 @@ prefix argument."
 (add-hook 'after-make-frame-functions 'enable-or-disable-menu-bar-mode)
 (add-hook 'after-init-hook 'enable-or-disable-menu-bar-mode)
 
-
 ;; Configure default face
-;; Given a font-size (like "10") and a list of fonts,
-;; set the frame default font to the first font in the list that exists in the
-;; system.
-;; If any of these are not available, do not change anything.
-;;
-;; It's slightly convoluted because I need a different font size depending on
-;; the system but I would like to chose a font depending on what's available.
-;; For example, if the system has DejaVu sans, use it; otherwise something else.
-(defun add-default-font-list (font-size font-name-list)
-  (cl-flet
-      ((add-default-font
-		(font-name)
-		(when (and (member font-name (font-family-list))
-				   (not (assoc 'font initial-frame-alist)))
-
-		  (let ((font-with-size (concat font-name "-" font-size)))
-			(add-to-list 'initial-frame-alist `(font . ,font-with-size))
-			(add-to-list 'default-frame-alist `(font . ,font-with-size))))))
-
-    (mapc #'add-default-font font-name-list)))
-
-(add-default-font-list (cond ((system-mac-p) "11")
-							 (t "9"))
-					   '("DejaVu Sans Mono"
-						 "Menlo"
-						 "Consolas"))
+(let ((font-with-size "DejaVu Sans Mono-10"))
+  (add-to-list 'initial-frame-alist `(font . ,font-with-size))
+  (add-to-list 'default-frame-alist `(font . ,font-with-size)))
 
 ;; Horizontal scrolling
 ;; Note that it is the reverse of emacs default keys, which are rebound here to
