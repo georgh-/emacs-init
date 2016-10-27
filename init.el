@@ -266,9 +266,9 @@ prefix argument."
 (add-hook 'after-init-hook 'enable-or-disable-menu-bar-mode)
 
 ;; Configure default face
-(let ((font-with-size "DejaVu Sans Mono-10"))
-  (add-to-list 'initial-frame-alist `(font . ,font-with-size))
-  (add-to-list 'default-frame-alist `(font . ,font-with-size)))
+(let ((font "DejaVu Sans Mono-10"))
+  (add-to-list 'initial-frame-alist `(font . ,font))
+  (add-to-list 'default-frame-alist `(font . ,font)))
 
 ;; Horizontal scrolling
 ;; Note that it is the reverse of emacs default keys, which are rebound here to
