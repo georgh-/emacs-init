@@ -270,25 +270,6 @@ prefix argument."
   (add-to-list 'initial-frame-alist `(font . ,font))
   (add-to-list 'default-frame-alist `(font . ,font)))
 
-;; Horizontal scrolling
-;; Note that it is the reverse of emacs default keys, which are rebound here to
-;; avoid mistakes.
-(defvar horizontal-scroll-columns 4)
-
-(defun scroll-left-columns ()
-  (interactive)
-  (scroll-left horizontal-scroll-columns))
-
-(defun scroll-right-columns ()
-  (interactive)
-  (scroll-right horizontal-scroll-columns))
-
-(global-set-key (kbd "C-M-,") #'scroll-left-columns)
-(global-set-key (kbd "C-M-.") #'scroll-right-columns)
-(global-set-key (kbd "C-x >") #'scroll-left)
-(global-set-key (kbd "C-x <") #'scroll-right)
-
-
 (defun eval-last-sexp-and-replace ()
   "Replace the preceding sexp with its value."
   (interactive)
