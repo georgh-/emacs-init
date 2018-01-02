@@ -316,6 +316,12 @@ prefix argument."
   (interactive)
   (indent-region (point-min) (point-max)))
 
+;; To be able to clear properties (text colors and fonts) in some cases when
+;; they are not properly cleared (after copy-paste, or changing between
+;; some modes)
+(defun clear-all-text-properties ()
+  (let ((inhibit-read-only t))
+    (set-text-properties (point-min) (point-max) nil)))
 
 ;; From http://blog.bookworm.at/2007/03/pretty-print-xml-with-emacs.html
 (defun pretty-print-xml-region (begin end)
