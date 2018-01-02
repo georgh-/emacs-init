@@ -9,14 +9,14 @@
 (setq backup-directory-alist `((".*" . ,emacs-tmp-dir)))
 (setq auto-save-file-name-transforms `((".*" ,emacs-tmp-dir t)))
 (setq auto-save-list-file-prefix (concat emacs-tmp-dir
-										 "/auto-save-list/saves-"))
+                                         "/auto-save-list/saves-"))
 
 ;; Show file name in title bar and modification status
 ;;
 ;; https://www.emacswiki.org/emacs/FrameTitle
 (setq frame-title-format
       '((:eval (if (and (buffer-modified-p)
-						(buffer-file-name)) 
+						(buffer-file-name))
 				   "* "))
 		(:eval (if (buffer-file-name)
                    (abbreviate-file-name (buffer-file-name))
