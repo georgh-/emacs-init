@@ -121,6 +121,11 @@ Emacs' kill ring is unmodified after running this function."
 
   (use-package scss-mode :ensure)
 
+  (use-package counsel
+    :ensure
+    :config (counsel-mode 1)
+    :diminish)
+
   (use-package smartscan
 	:ensure
 	:config (global-smartscan-mode 1))
@@ -356,6 +361,7 @@ Output: 123765 or 125816 or 126953"
  '(browse-kill-ring-separator "───")
  '(browse-kill-ring-separator-face (quote message-header-xheader))
  '(column-number-mode t)
+ '(counsel-root-command "su")
  '(cua-enable-cua-keys nil)
  '(delete-selection-mode t)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
@@ -371,11 +377,6 @@ Output: 123765 or 125816 or 126953"
  '(guide-key/recursive-key-sequence-flag t)
  '(help-window-select t)
  '(hscroll-step 1)
- '(ido-auto-merge-work-directories-length -1)
- '(ido-enable-flex-matching t)
- '(ido-everywhere t)
- '(ido-mode (quote both) nil (ido))
- '(ido-use-filename-at-point (quote guess))
  '(indicate-empty-lines t)
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
