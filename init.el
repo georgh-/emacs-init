@@ -388,6 +388,9 @@ Output: 123765 or 125816 or 126953"
     (("gnu" . "http://elpa.gnu.org/packages/")
      ("marmalade" . "http://marmalade-repo.org/packages/")
      ("melpa" . "http://melpa.org/packages/"))))
+ '(package-selected-packages
+   (quote
+    (diminish counsel use-package smartscan scss-mode powershell php-mode paredit page-break-lines multiple-cursors magit lineno js2-mode guide-key goto-chg expand-region discover browse-kill-ring apropospriate-theme adaptive-wrap)))
  '(savehist-mode t)
  '(scroll-bar-mode nil)
  '(scroll-conservatively 2)
