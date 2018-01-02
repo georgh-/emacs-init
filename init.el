@@ -452,4 +452,3 @@ Output: 123765 or 125816 or 126953"
  '(show-paren-mismatch ((t (:foreground "red" :weight bold)))))
 (put 'narrow-to-region 'disabled nil)
 (put 'set-goal-column 'disabled nil)
-(put 'scroll-left 'disabled nil)
