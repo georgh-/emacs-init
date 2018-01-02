@@ -131,6 +131,17 @@ Emacs' kill ring is unmodified after running this function."
 
   (require 'use-package)
 
+  (use-package web-mode
+	:ensure
+	:mode (("\\.html?\\'" . web-mode)
+		   ("\\.phtml\\'" . web-mode)
+		   ("\\.tpl\\.php\\'" . web-mode)
+		   ("\\.[agj]sp\\'" . web-mode)
+		   ("\\.as[cp]x\\'" . web-mode)
+		   ("\\.erb\\'" . web-mode)
+		   ("\\.mustache\\'" . web-mode)
+		   ("\\.djhtml\\'" . web-mode)))
+
   (use-package scss-mode :ensure)
 
   (use-package counsel
