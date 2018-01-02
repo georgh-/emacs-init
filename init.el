@@ -41,29 +41,6 @@
     (prepend-directory-to-path (concat home "Software/Git/bin/"))
 	(prepend-directory-to-path (concat home "Software/msys64/usr/bin/"))))
 
-;; Open as root using Tramp. Idea based on
-;; http://emacs-fu.blogspot.com.br/2013/03/editing-with-root-privileges-once-more.html
-(defun find-file-as-root ()
-  "Like `ido-find-file', but automatically edit the file with
-root-privileges (using tramp/su), if the file is not writable by
-user."
-  (interactive)
-  (let ((file (ido-read-file-name "Edit as root: ")))
-    (unless (file-writable-p file)
-      (setq file (concat "/su:root@localhost:" file)))
-    (find-file file)))
-
-(defun dired-as-root ()
-  "Like `ido-dired', but automatically edit the directory with
-root-privileges (using tramp/su)."
-  (interactive)
-  (let ((directory (ido-read-directory-name "Dired as root: ")))
-    (setq directory (concat "/su:root@localhost:" directory))
-    (dired directory)))
-
-(global-set-key (kbd "C-x F") #'find-file-as-root)
-(global-set-key (kbd "C-x D") #'dired-as-root)
-
 (defun copy-buffer-as-kill ()
   "Save the buffer as if killed, but don't kill it.
 Uses `copy-region-as-kill'."
