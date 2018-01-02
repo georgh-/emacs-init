@@ -377,6 +377,7 @@ Output: 123765 or 125816 or 126953"
  '(guide-key/recursive-key-sequence-flag t)
  '(help-window-select t)
  '(hscroll-step 1)
+ '(indent-tabs-mode nil)
  '(indicate-empty-lines t)
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
