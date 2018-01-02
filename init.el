@@ -441,6 +441,9 @@ Output: 123765 or 125816 or 126953"
  '(view-read-only t)
  '(visual-line-fringe-indicators (quote (left-curly-arrow right-curly-arrow)))
  '(wdired-use-dired-vertical-movement (quote sometimes))
+ '(whitespace-style
+   (quote
+    (face tabs spaces newline indentation space-mark tab-mark newline-mark)))
  '(xterm-mouse-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
