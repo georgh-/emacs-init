@@ -398,7 +398,7 @@ Output: 123765 or 125816 or 126953"
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(fill-column 79)
  '(global-discover-mode t)
- '(global-visual-line-mode t)
+ '(global-visual-line-mode nil)
  '(grep-highlight-matches t)
  '(guide-key-mode t)
  '(guide-key/guide-key-sequence
@@ -437,6 +437,7 @@ Output: 123765 or 125816 or 126953"
  '(tool-bar-mode nil)
  '(tooltip-mode nil)
  '(uniquify-buffer-name-style (quote post-forward) nil (uniquify))
+ '(truncate-lines t)
  '(view-read-only t)
  '(visual-line-fringe-indicators (quote (left-curly-arrow right-curly-arrow)))
  '(wdired-use-dired-vertical-movement (quote sometimes))
