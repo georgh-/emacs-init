@@ -324,22 +324,25 @@ prefix argument."
     (set-text-properties (point-min) (point-max) nil)))
 
 ;; From http://blog.bookworm.at/2007/03/pretty-print-xml-with-emacs.html
-(defun pretty-print-xml-region (begin end)
+(defun pretty-print-xml-region (begin end separate-attrs)
   "Pretty format XML markup in region. Only works in XML/HTML
 modes. The function inserts linebreaks to separate tags that have
 nothing but whitespace between them. It then indents the markup
 by using nxml's indentation rules."
-  (interactive "r")
+  (interactive "rP")
   (save-excursion
     (goto-char begin)
-    (while (search-forward-regexp "\>[ \\t]*\<" nil t)
-      (backward-char) (insert "\n") (setq end (1+ end)))
+	(if separate-attrs
+		(while (search-forward-regexp "\"[ \\t]+" nil t)
+		  (backward-char) (insert "\n") (setq end (1+ end))))
+	(while (search-forward-regexp "\>[ \\t]*\<" nil t)
+	  (backward-char) (insert "\n") (setq end (1+ end)))
     (indent-region begin end))
   (message "Indented XML."))
 
-(defun pretty-print-xml-buffer ()
-  (interactive)
-  (pretty-print-xml-region (point-min) (point-max)))
+(defun pretty-print-xml-buffer (separate-attrs)
+  (interactive "P")
+  (pretty-print-xml-region (point-min) (point-max) separate-attrs))
 
 (defun prepare-clipboard-list-ids-for-hpqc ()
   "Given a list of ids (all numbers), join them in one line with
