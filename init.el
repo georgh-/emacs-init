@@ -376,9 +376,6 @@ Output: 123765 or 125816 or 126953"
 
 (global-set-key (kbd "C-c q") #'prepare-clipboard-list-ids-for-hpqc)
 
-(unless (system-windows-p)
-  (load-theme 'adwaita t))
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -395,6 +392,7 @@ Output: 123765 or 125816 or 126953"
  '(column-number-mode t)
  '(counsel-root-command "su")
  '(cua-enable-cua-keys nil)
+ '(custom-enabled-themes (quote (adwaita)))
  '(delete-selection-mode t)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(fill-column 79)
