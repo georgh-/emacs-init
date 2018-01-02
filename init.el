@@ -11,6 +11,18 @@
 (setq auto-save-list-file-prefix (concat emacs-tmp-dir
 										 "/auto-save-list/saves-"))
 
+;; Show file name in title bar and modification status
+;;
+;; https://www.emacswiki.org/emacs/FrameTitle
+(setq frame-title-format
+      '((:eval (if (and (buffer-modified-p)
+						(buffer-file-name)) 
+				   "* "))
+		(:eval (if (buffer-file-name)
+                   (abbreviate-file-name (buffer-file-name))
+                 "%b"))
+		" - Emacs"))
+
 (defun system-windows-p () (string-equal system-type "windows-nt"))
 (defun system-mac-p () (string-equal system-type "darwin"))
 (defun system-unix-p () (not (or (system-mac-p) (system-windows-p))))
