@@ -390,6 +390,7 @@ Output: 123765 or 125816 or 126953"
  '(browse-kill-ring-separator "───")
  '(browse-kill-ring-separator-face (quote message-header-xheader))
  '(column-number-mode t)
+ '(create-lockfiles nil)
  '(counsel-root-command "su")
  '(cua-enable-cua-keys nil)
  '(custom-enabled-themes (quote (adwaita)))
