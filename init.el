@@ -119,6 +119,8 @@ Emacs' kill ring is unmodified after running this function."
 
   (require 'use-package)
 
+  (use-package scss-mode :ensure)
+
   (use-package smartscan
 	:ensure
 	:config (global-smartscan-mode 1))
