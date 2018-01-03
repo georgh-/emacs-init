@@ -221,6 +221,12 @@ Emacs' kill ring is unmodified after running this function."
     :ensure t
     :config (eval-after-load "view" '(diminish 'view-mode))))
 
+;; Enable visual-line mode only for programming modes
+;; It will stay disabled for any other mode (occur, packages, etc)
+(defun enable-visual-line-mode ()
+  (visual-line-mode t))
+(add-hook 'prog-mode-hook #'enable-visual-line-mode)
+
 ;; http://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
 (defun rename-file-and-buffer ()
   "Rename the current buffer and file it is visiting."
