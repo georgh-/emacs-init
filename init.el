@@ -120,9 +120,16 @@ Emacs' kill ring is unmodified after running this function."
            "\\.djhtml\\'"))
 
   (use-package beginend
-    :config (beginend-global-mode 1)
-    :diminish beginend-global-mode)
     :ensure t
+    :diminish beginend-global-mode
+    :config
+    (beginend-global-mode t)
+
+    ;; beginend creates minor modes dynamically for each mode it supports
+    ;; these modes have to be diminished one by one
+    (mapc (lambda (pair)
+            (diminish (cdr pair)))
+          beginend-modes))
 
   (use-package scss-mode :ensure t)
 
