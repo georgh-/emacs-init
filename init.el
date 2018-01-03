@@ -119,6 +119,10 @@ Emacs' kill ring is unmodified after running this function."
            "\\.mustache\\'"
            "\\.djhtml\\'"))
 
+  (use-package aggressive-indent
+    :ensure t
+    :defer)
+
   (use-package beginend
     :ensure t
     :diminish beginend-global-mode
