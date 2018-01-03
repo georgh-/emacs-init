@@ -16,12 +16,12 @@
 ;; https://www.emacswiki.org/emacs/FrameTitle
 (setq frame-title-format
       '((:eval (if (and (buffer-modified-p)
-						(buffer-file-name))
-				   "* "))
-		(:eval (if (buffer-file-name)
+                        (buffer-file-name))
+                   "* "))
+        (:eval (if (buffer-file-name)
                    (abbreviate-file-name (buffer-file-name))
                  "%b"))
-		" - Emacs"))
+        " - Emacs"))
 
 (defun system-windows-p () (string-equal system-type "windows-nt"))
 (defun system-mac-p () (string-equal system-type "darwin"))
@@ -35,11 +35,11 @@
 ;; Set path to UNIX utilities in Windows
 (when (system-windows-p)
   (let ((home (file-name-as-directory
-			   (concat (getenv "HOMEDRIVE")
-					   (getenv "HOMEPATH")))))
+               (concat (getenv "HOMEDRIVE")
+                       (getenv "HOMEPATH")))))
 
     (prepend-directory-to-path (concat home "Software/Git/bin/"))
-	(prepend-directory-to-path (concat home "Software/msys64/usr/bin/"))))
+    (prepend-directory-to-path (concat home "Software/msys64/usr/bin/"))))
 
 (defun copy-buffer-as-kill ()
   "Save the buffer as if killed, but don't kill it.
@@ -152,8 +152,8 @@ Emacs' kill ring is unmodified after running this function."
     :diminish)
 
   (use-package smartscan
-	:config (global-smartscan-mode 1))
     :ensure t
+    :config (global-smartscan-mode 1))
 
   (use-package discover
     :ensure t)
@@ -165,8 +165,8 @@ Emacs' kill ring is unmodified after running this function."
   (use-package multiple-cursors
     :ensure t
     :bind (("C->" . mc/mark-next-like-this)
-		   ("C-<" . mc/mark-previous-like-this)
-		   ("C-c C->" . mc/mark-all-like-this)))
+           ("C-<" . mc/mark-previous-like-this)
+           ("C-c C->" . mc/mark-all-like-this)))
 
   (use-package adaptive-wrap
     :ensure t
@@ -175,7 +175,7 @@ Emacs' kill ring is unmodified after running this function."
   (use-package goto-chg
     :ensure t
     :bind (("C-," . goto-last-change)
-		   ("C-." . goto-last-change-reverse)))
+           ("C-." . goto-last-change-reverse)))
 
   (use-package paredit
     :ensure t
@@ -206,7 +206,7 @@ Emacs' kill ring is unmodified after running this function."
     :ensure t
     :defer
     :diminish magit-auto-revert-mode
-	:bind ("<f10>" . magit-status))
+    :bind ("<f10>" . magit-status))
 
   (use-package browse-kill-ring
     :ensure t
@@ -289,7 +289,7 @@ prefix argument."
 ;; The optional parameter is needed on after-make-frame-hook
 (defun enable-or-disable-menu-bar-mode (&optional frame)
   (if (and (display-graphic-p)
-		   (system-mac-p))
+           (system-mac-p))
       (menu-bar-mode 1)
     (menu-bar-mode -1)))
 
@@ -333,11 +333,11 @@ by using nxml's indentation rules."
   (interactive "rP")
   (save-excursion
     (goto-char begin)
-	(if separate-attrs
-		(while (search-forward-regexp "\"[ \\t]+" nil t)
-		  (backward-char) (insert "\n") (setq end (1+ end))))
-	(while (search-forward-regexp "\>[ \\t]*\<" nil t)
-	  (backward-char) (insert "\n") (setq end (1+ end)))
+    (if separate-attrs
+        (while (search-forward-regexp "\"[ \\t]+" nil t)
+          (backward-char) (insert "\n") (setq end (1+ end))))
+    (while (search-forward-regexp "\>[ \\t]*\<" nil t)
+      (backward-char) (insert "\n") (setq end (1+ end)))
     (indent-region begin end))
   (message "Indented XML."))
 
