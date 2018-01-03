@@ -119,6 +119,11 @@ Emacs' kill ring is unmodified after running this function."
 		   ("\\.mustache\\'" . web-mode)
 		   ("\\.djhtml\\'" . web-mode)))
 
+  (use-package beginend
+    :ensure
+    :config (beginend-global-mode 1)
+    :diminish beginend-global-mode)
+
   (use-package scss-mode :ensure)
 
   (use-package ivy
