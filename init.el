@@ -121,6 +121,15 @@ Emacs' kill ring is unmodified after running this function."
 
   (use-package scss-mode :ensure)
 
+  (use-package ivy
+    :ensure
+    :config (ivy-mode 1)
+    :diminish)
+
+  (use-package swiper
+    :ensure
+    :bind ("C-s" . swiper))
+
   (use-package counsel
     :ensure
     :config (counsel-mode 1)
