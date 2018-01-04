@@ -137,10 +137,17 @@ Emacs' kill ring is unmodified after running this function."
 
   (use-package scss-mode :ensure t)
 
+  (use-package hydra :ensure t)
+
+  ;; Provides history order to counsel-M-x
+  (use-package smex :ensure t)
+
   (use-package ivy
     :ensure t
     :config (ivy-mode 1)
     :diminish)
+
+  (use-package ivy-hydra :ensure t)
 
   (use-package swiper
     :ensure
