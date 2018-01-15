@@ -358,6 +358,7 @@ prefix argument."
 ;; they are not properly cleared (after copy-paste, or changing between
 ;; some modes)
 (defun clear-all-text-properties ()
+  (interactive)
   (let ((inhibit-read-only t))
     (set-text-properties (point-min) (point-max) nil)))
 
