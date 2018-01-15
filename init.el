@@ -175,6 +175,10 @@ Emacs' kill ring is unmodified after running this function."
     :config (counsel-mode 1)
     :diminish)
 
+  ;; GNU Hyperbole, does too many things to write here
+  ;; Used to manage windows/frames, bound to C-c \q
+  (use-package hyperbole)
+
   (use-package projectile)
   (use-package counsel-projectile
     :config (counsel-projectile-mode 1))
