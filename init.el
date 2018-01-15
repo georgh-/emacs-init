@@ -175,6 +175,10 @@ Emacs' kill ring is unmodified after running this function."
     :config (counsel-mode 1)
     :diminish)
 
+  (use-package projectile)
+  (use-package counsel-projectile
+    :config (counsel-projectile-mode 1))
+
   ;; M-n and M-p go to next or previous symbol matching symbol under cursor
   (use-package smartscan
     :config (global-smartscan-mode 1))
