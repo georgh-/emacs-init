@@ -147,8 +147,6 @@ Emacs' kill ring is unmodified after running this function."
     :config (ivy-mode 1)
     :diminish)
 
-  (use-package swiper
-    :bind ("C-s" . swiper))
   ;; Used to show extra commands during ivy completion M-o
   (use-package ivy-hydra)
 
