@@ -464,7 +464,7 @@ Output: 123765 or 125816 or 126953"
      ("melpa" . "http://melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-    (beginend web-mode diminish counsel use-package smartscan scss-mode powershell php-mode paredit page-break-lines multiple-cursors magit lineno js2-mode guide-key goto-chg expand-region discover browse-kill-ring apropospriate-theme adaptive-wrap)))
+    (hyperbole counsel-projectile projectile dired-details+ irony-eldoc irony-mode flycheck-irony company-irony company company-mode smex ivy-hydra aggressive-indent beginend web-mode diminish counsel use-package smartscan scss-mode powershell php-mode paredit page-break-lines multiple-cursors magit lineno js2-mode guide-key goto-chg expand-region discover browse-kill-ring apropospriate-theme adaptive-wrap)))
  '(savehist-mode t)
  '(scroll-conservatively 2)
  '(scroll-margin 2)
