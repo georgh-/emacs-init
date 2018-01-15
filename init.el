@@ -118,42 +118,50 @@ Emacs' kill ring is unmodified after running this function."
            "\\.mustache\\'"
            "\\.djhtml\\'"))
 
+  ;; When enabled keeps the buffer always indented
   (use-package aggressive-indent
     :defer)
 
+  ;; Smarter placement of cursor at begining of buffer M-< M->
   (use-package beginend
     :diminish beginend-global-mode
     :config
     (beginend-global-mode t)
 
-    ;; beginend creates minor modes dynamically for each mode it supports
-    ;; these modes have to be diminished one by one
+    ;; Beginend creates minor modes dynamically for each mode it supports
+    ;; These modes have to be diminished one by one
     (mapc (lambda (pair)
             (diminish (cdr pair)))
           beginend-modes))
 
   (use-package scss-mode)
 
+  ;; Keybindings with one key, easy to define. Req. by counsel
   (use-package hydra)
 
   ;; Provides history order to counsel-M-x
   (use-package smex)
 
+  ;; Completion for minibuffer commands
   (use-package ivy
     :config (ivy-mode 1)
     :diminish)
 
   (use-package swiper
     :bind ("C-s" . swiper))
+  ;; Used to show extra commands during ivy completion M-o
   (use-package ivy-hydra)
 
+  ;; Extends ivy options M-o
   (use-package counsel
     :config (counsel-mode 1)
     :diminish)
 
+  ;; M-n and M-p go to next or previous symbol matching symbol under cursor
   (use-package smartscan
     :config (global-smartscan-mode 1))
 
+  ;; Shows help for some commands
   (use-package discover)
 
   (use-package expand-region
@@ -164,9 +172,11 @@ Emacs' kill ring is unmodified after running this function."
            ("C-<" . mc/mark-previous-like-this)
            ("C-c C->" . mc/mark-all-like-this)))
 
+  ;; Improves wrap mode by preserving left margin, comments, etc.
   (use-package adaptive-wrap
     :hook (visual-line-mode . adaptive-wrap-prefix-mode))
 
+  ;; Goes to last changed text in current buffer
   (use-package goto-chg
     :bind (("C-," . goto-last-change)
            ("C-." . goto-last-change-reverse)))
@@ -186,6 +196,8 @@ Emacs' kill ring is unmodified after running this function."
   (use-package powershell :defer)
   (use-package php-mode :defer)
 
+  ;; Shows key shortcuts and commands while typing a keyboard shortcut
+  ;; For example, type C-c and wait, and it will show a guide
   (use-package guide-key
     :diminish guide-key-mode
     :config (guide-key-mode 1))
@@ -201,10 +213,13 @@ Emacs' kill ring is unmodified after running this function."
   (use-package browse-kill-ring
     :config (browse-kill-ring-default-keybindings))
 
+  ;; Show a horizontal line instead of ^L character (new page character)
+  ;; May have bad interactions with adaptive-wrap
   (use-package page-break-lines
     :diminish page-break-lines-mode
     :config (global-page-break-lines-mode))
 
+  ;; Removes mode indicator from modeline, integrated in use-package
   (use-package diminish
     :config (eval-after-load "view" '(diminish 'view-mode))))
 
