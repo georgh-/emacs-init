@@ -330,8 +330,8 @@ prefix argument."
       (menu-bar-mode 1)
     (menu-bar-mode -1)))
 
-(add-hook 'after-make-frame-functions 'enable-or-disable-menu-bar-mode)
-(add-hook 'after-init-hook 'enable-or-disable-menu-bar-mode)
+(add-hook 'after-make-frame-functions #'enable-or-disable-menu-bar-mode)
+(add-hook 'after-init-hook #'enable-or-disable-menu-bar-mode)
 
 ;; Configure default face
 (let ((font "DejaVu Sans Mono-10"))
