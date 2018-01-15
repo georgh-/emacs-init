@@ -491,6 +491,7 @@ Output: 123765 or 125816 or 126953"
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(fringe ((t (:foreground "grey75"))))
+ '(mode-line ((t (:family "DejaVu Sans"))))
  '(show-paren-match ((t (:foreground "blue" :weight bold))))
  '(show-paren-mismatch ((t (:foreground "red" :weight bold)))))
 (put 'narrow-to-region 'disabled nil)
