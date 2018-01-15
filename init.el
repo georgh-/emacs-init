@@ -241,6 +241,9 @@ Emacs' kill ring is unmodified after running this function."
     :diminish page-break-lines-mode
     :config (global-page-break-lines-mode))
 
+  ;; Remove details from dired, toggle with (
+  (use-package dired-details+)
+
   ;; Removes mode indicator from modeline, integrated in use-package
   (use-package diminish
     :config (eval-after-load "view" '(diminish 'view-mode))))
