@@ -109,7 +109,6 @@ Emacs' kill ring is unmodified after running this function."
   (require 'use-package)
 
   (use-package web-mode
-    :ensure t
     :mode ("\\.html?\\'"
            "\\.phtml\\'"
            "\\.tpl\\.php\\'"
@@ -120,11 +119,9 @@ Emacs' kill ring is unmodified after running this function."
            "\\.djhtml\\'"))
 
   (use-package aggressive-indent
-    :ensure t
     :defer)
 
   (use-package beginend
-    :ensure t
     :diminish beginend-global-mode
     :config
     (beginend-global-mode t)
@@ -135,57 +132,46 @@ Emacs' kill ring is unmodified after running this function."
             (diminish (cdr pair)))
           beginend-modes))
 
-  (use-package scss-mode :ensure t)
+  (use-package scss-mode)
 
-  (use-package hydra :ensure t)
+  (use-package hydra)
 
   ;; Provides history order to counsel-M-x
-  (use-package smex :ensure t)
+  (use-package smex)
 
   (use-package ivy
-    :ensure t
     :config (ivy-mode 1)
     :diminish)
 
-  (use-package ivy-hydra :ensure t)
-
   (use-package swiper
-    :ensure
     :bind ("C-s" . swiper))
+  (use-package ivy-hydra)
 
   (use-package counsel
-    :ensure t
     :config (counsel-mode 1)
     :diminish)
 
   (use-package smartscan
-    :ensure t
     :config (global-smartscan-mode 1))
 
-  (use-package discover
-    :ensure t)
+  (use-package discover)
 
   (use-package expand-region
-    :ensure t
     :bind ("C-=" . er/expand-region))
 
   (use-package multiple-cursors
-    :ensure t
     :bind (("C->" . mc/mark-next-like-this)
            ("C-<" . mc/mark-previous-like-this)
            ("C-c C->" . mc/mark-all-like-this)))
 
   (use-package adaptive-wrap
-    :ensure t
     :hook (visual-line-mode . adaptive-wrap-prefix-mode))
 
   (use-package goto-chg
-    :ensure t
     :bind (("C-," . goto-last-change)
            ("C-." . goto-last-change-reverse)))
 
   (use-package paredit
-    :ensure t
     :diminish paredit-mode
     :config
     ;; Add paredit to lisp modes
@@ -197,35 +183,29 @@ Emacs' kill ring is unmodified after running this function."
            (ielm-mode . paredit-mode)
            (json-mode . paredit-mode)))
 
-  (use-package powershell :ensure t :defer)
-  (use-package php-mode :ensure t :defer)
+  (use-package powershell :defer)
+  (use-package php-mode :defer)
 
   (use-package guide-key
-    :ensure t
     :diminish guide-key-mode
     :config (guide-key-mode 1))
 
   (use-package js2-mode
-    :ensure t
     :mode ("\\.js\\'" . js2-mode))
 
   (use-package magit
-    :ensure t
     :defer
     :diminish magit-auto-revert-mode
     :bind ("<f10>" . magit-status))
 
   (use-package browse-kill-ring
-    :ensure t
     :config (browse-kill-ring-default-keybindings))
 
   (use-package page-break-lines
-    :ensure t
     :diminish page-break-lines-mode
     :config (global-page-break-lines-mode))
 
   (use-package diminish
-    :ensure t
     :config (eval-after-load "view" '(diminish 'view-mode))))
 
 ;; Enable visual-line mode only for programming modes
@@ -451,6 +431,7 @@ Output: 123765 or 125816 or 126953"
  '(tooltip-mode nil)
  '(truncate-lines t)
  '(uniquify-buffer-name-style (quote reverse) nil (uniquify))
+ '(use-package-always-ensure t)
  '(view-read-only t)
  '(visual-line-fringe-indicators (quote (left-curly-arrow right-curly-arrow)))
  '(wdired-use-dired-vertical-movement (quote sometimes))
