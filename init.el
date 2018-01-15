@@ -122,6 +122,8 @@ Emacs' kill ring is unmodified after running this function."
   (use-package company
     :diminish
     :config (global-company-mode 1))
+  ;; Syntax analyzer, spellchecker for non-coding modes
+  (use-package flycheck)
   ;; When enabled keeps the buffer always indented
   (use-package aggressive-indent
     :defer)
