@@ -40,6 +40,10 @@
     (prepend-directory-to-path (concat home "Software/Git/bin/"))
     (prepend-directory-to-path (concat home "Software/msys64/usr/bin/"))))
 
+;; Set npm path in Linux
+(if (system-unix-p)
+    (prepend-directory-to-path "~/software/node/bin"))
+
 (defun copy-buffer-as-kill ()
   "Save the buffer as if killed, but don't kill it.
 Uses `copy-region-as-kill'."
