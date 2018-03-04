@@ -77,9 +77,6 @@ Emacs' kill ring is unmodified after running this function."
 ;; command that I never use.
 (global-set-key (kbd "M-o") #'other-window)
 
-;; Use meta and arrows to move between windows. ← → ↑ ↓
-;;(windmove-default-keybindings 'meta)
-
 (defun kill-save-line (nlines)
   "Kills a line without deleting it. Includes newline character."
   (interactive "p")
@@ -126,6 +123,11 @@ Emacs' kill ring is unmodified after running this function."
     :diminish
     :config (global-company-mode 1))
 
+  ;; Syntax analyzer (coding modes), spellchecker (non-coding modes)
+  (use-package flycheck
+    :hook ((text-mode . flycheck-mode)
+           (prog-mode . flycheck-mode)))
+
   ;; Code analyzer using clang as backend
   (use-package irony
     :diminish
@@ -134,16 +136,12 @@ Emacs' kill ring is unmodified after running this function."
            (objc-mode . irony-mode))
     :config (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
 
-  (use-package company-irony)
-  (use-package irony-eldoc)
-
-  ;; Syntax analyzer, spellchecker for non-coding modes
-  (use-package flycheck)
-  (use-package flycheck-irony)
+  (use-package company-irony :defer t)
+  (use-package irony-eldoc :defer t)
+  (use-package flycheck-irony :defer t)
 
   ;; When enabled keeps the buffer always indented
-  (use-package aggressive-indent
-    :defer)
+  (use-package aggressive-indent :defer t)
 
   ;; Smarter placement of cursor at begining of buffer M-< M->
   (use-package beginend
@@ -157,7 +155,7 @@ Emacs' kill ring is unmodified after running this function."
             (diminish (cdr pair)))
           beginend-modes))
 
-  (use-package scss-mode)
+  (use-package scss-mode :defer t)
 
   ;; Keybindings with one key, easy to define. Req. by counsel
   (use-package hydra)
@@ -177,14 +175,6 @@ Emacs' kill ring is unmodified after running this function."
   (use-package counsel
     :config (counsel-mode 1)
     :diminish)
-
-  ;; GNU Hyperbole, does too many things to write here
-  ;; Used to manage windows/frames, bound to C-c \q
-  (use-package hyperbole)
-
-  (use-package projectile)
-  (use-package counsel-projectile
-    :config (counsel-projectile-mode 1))
 
   ;; M-n and M-p go to next or previous symbol matching symbol under cursor
   (use-package smartscan
@@ -212,7 +202,6 @@ Emacs' kill ring is unmodified after running this function."
 
   (use-package paredit
     :diminish paredit-mode
-    :config
     ;; Add paredit to lisp modes
     :hook ((clojure-mode . paredit-mode)
            (cider-repl-mode . paredit-mode)
@@ -222,8 +211,8 @@ Emacs' kill ring is unmodified after running this function."
            (ielm-mode . paredit-mode)
            (json-mode . paredit-mode)))
 
-  (use-package powershell :defer)
-  (use-package php-mode :defer)
+  (use-package powershell :defer t)
+  (use-package php-mode :defer t)
 
   ;; Shows key shortcuts and commands while typing a keyboard shortcut
   ;; For example, type C-c and wait, and it will show a guide
@@ -231,11 +220,58 @@ Emacs' kill ring is unmodified after running this function."
     :diminish guide-key-mode
     :config (guide-key-mode 1))
 
+  (use-package hide-lines
+    :defer t
+    :bind ("C-c h" . hide-lines))
+
+  ;; Enable origami folding mode. JS2-mode uses a better folding by default
+  (use-package origami
+    :config
+    (defun enable-origami-mode-x ()
+      (unless (derived-mode-p 'js2-mode)
+        (origami-mode 1)))
+    :hook (prog-mode . enable-origami-mode-x))
+
   (use-package js2-mode
-    :mode ("\\.js\\'" . js2-mode))
+    :defer t)
+
+  ;; rjsx-mode extends js2-mode with JSX react extension
+  (use-package rjsx-mode
+    :defer t
+    :mode ("\\.js\\'" . rjsx-mode))
+
+  (use-package js2-refactor
+    :defer t
+    :hook
+    (js2-mode . js2-refactor-mode)
+    :bind (:map js2-mode-map
+           ("C-k" . js2r-kill))
+    :config
+    (js2r-add-keybindings-with-prefix "C-c C-r")
+    (add-hook 'js2-mode-hook
+              (lambda ()
+                (add-hook 'xref-backend-functions
+                          #'xref-js2-xref-backend nil t))))
+  
+  (use-package xref-js2
+    :defer t
+    ;; js-mode (which js2 is based on) binds "M-." which conflicts
+    ;;with xref, so unbind it.
+    :bind (:map js-mode-map ("M-." . nil)))
+
+  (use-package company-tern
+    :defer t
+    :hook ((js2-mode . tern-mode)
+           (js2-mode . company-mode))
+    
+    ;; Disable completion keybindings, as we use xref-js2 instead
+    :bind (:map tern-mode-keymap
+                ("M-." . nil)
+                ("M-," . nil))
+    
+    :config (add-to-list 'company-backends 'company-tern))
 
   (use-package magit
-    :defer
     :diminish magit-auto-revert-mode
     :bind ("<f10>" . magit-status))
 
@@ -249,7 +285,7 @@ Emacs' kill ring is unmodified after running this function."
     :config (global-page-break-lines-mode))
 
   ;; Remove details from dired, toggle with (
-  (use-package dired-details+)
+  (use-package dired-details)
 
   ;; Removes mode indicator from modeline, integrated in use-package
   (use-package diminish
@@ -337,9 +373,16 @@ prefix argument."
 (add-hook 'after-init-hook #'enable-or-disable-menu-bar-mode)
 
 ;; Configure default face
-(let ((font "DejaVu Sans Mono-10"))
+(let ((font "DejaVu Sans Mono-8.5"))
   (add-to-list 'initial-frame-alist `(font . ,font))
   (add-to-list 'default-frame-alist `(font . ,font)))
+
+;; Use variable spaced font in configuration and info
+(defun enable-variable-pitch-mode ()
+    (variable-pitch-mode 1))
+(add-hook 'info-mode-hook #'enable-variable-pitch-mode)
+(add-hook 'custom-mode-hook #'enable-variable-pitch-mode)
+(add-hook 'help-mode-hook #'enable-variable-pitch-mode)
 
 (defun eval-last-sexp-and-replace ()
   "Replace the preceding sexp with its value."
@@ -400,13 +443,13 @@ Output: 123765 or 125816 or 126953"
     (pop kill-ring)
 
     ;; Replace whitespace by " or "
-    (beginning-of-buffer)
+    (goto-char (point-min))
     (while (re-search-forward "[ \\t
 ]+" nil t)
       (replace-match " or " nil nil))
 
     ;; Replace any " or " left at the end of the line
-    (beginning-of-buffer)
+    (goto-char (point-min))
     (while (re-search-forward " or $" nil t)
       (replace-match "" nil nil))
 
@@ -440,8 +483,10 @@ Output: 123765 or 125816 or 126953"
  '(delete-selection-mode t)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(fill-column 79)
+ '(flycheck-disabled-checkers (quote (emacs-lisp-checkdoc)))
  '(global-discover-mode t)
  '(global-visual-line-mode nil)
+ '(gnus-default-nntp-server "news.gmane.org")
  '(grep-highlight-matches t)
  '(guide-key-mode t)
  '(guide-key/guide-key-sequence
@@ -456,6 +501,10 @@ Output: 123765 or 125816 or 126953"
  '(indicate-empty-lines t)
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
+ '(ivy-count-format "(%d/%d) ")
+ '(js-indent-level 2)
+ '(js-switch-indent-offset 2)
+ '(js2r-always-insert-parens-around-arrow-function-params t)
  '(mouse-wheel-scroll-amount (quote (1 ((shift) . 1) ((control)))))
  '(mouse-yank-at-point t)
  '(nxml-slash-auto-complete-flag t)
@@ -467,7 +516,7 @@ Output: 123765 or 125816 or 126953"
      ("melpa" . "http://melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-    (hyperbole counsel-projectile projectile dired-details+ irony-eldoc irony-mode flycheck-irony company-irony company company-mode smex ivy-hydra aggressive-indent beginend web-mode diminish counsel use-package smartscan scss-mode powershell php-mode paredit page-break-lines multiple-cursors magit lineno js2-mode guide-key goto-chg expand-region discover browse-kill-ring apropospriate-theme adaptive-wrap)))
+    (origami hide-lines markdown-mode markdown-preview-eww esup company-tern company-term diminish dired-details+ page-break-lines browse-kill-ring magit xref-js2 rjsx-mode guide-key php-mode powershell paredit goto-chg adaptive-wrap multiple-cursors expand-region discover smartscan counsel ivy-hydra ivy smex hydra scss-mode beginend aggressive-indent flycheck-irony irony-eldoc company-irony irony flycheck company web-mode use-package)))
  '(ring-bell-function (quote ignore))
  '(savehist-mode t)
  '(scroll-conservatively 2)
@@ -479,7 +528,6 @@ Output: 123765 or 125816 or 126953"
  '(temp-buffer-resize-mode t)
  '(tool-bar-mode nil)
  '(tooltip-mode nil)
- '(truncate-lines t)
  '(uniquify-buffer-name-style (quote reverse) nil (uniquify))
  '(use-package-always-ensure t)
  '(view-read-only t)
