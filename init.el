@@ -502,7 +502,7 @@ Output: 123765 or 125816 or 126953"
  '(counsel-root-command "su")
  '(create-lockfiles nil)
  '(cua-enable-cua-keys nil)
- '(custom-enabled-themes (quote (adwaita)))
+ '(custom-enabled-themes (quote (deeper-blue)))
  '(delete-selection-mode t)
  '(dired-dnd-protocol-alist nil)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
