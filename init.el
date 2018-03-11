@@ -492,6 +492,7 @@ Output: 123765 or 125816 or 126953"
  '(cua-enable-cua-keys nil)
  '(custom-enabled-themes (quote (adwaita)))
  '(delete-selection-mode t)
+ '(dired-dnd-protocol-alist nil)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(fill-column 79)
  '(flycheck-disabled-checkers (quote (emacs-lisp-checkdoc)))
