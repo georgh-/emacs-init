@@ -115,6 +115,8 @@ Emacs' kill ring is unmodified after running this function."
 
   (require 'use-package)
 
+  (use-package nhexl-mode :defer t)
+
   (use-package web-mode
     :mode ("\\.html?\\'"
            "\\.phtml\\'"
