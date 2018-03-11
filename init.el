@@ -175,6 +175,9 @@ Emacs' kill ring is unmodified after running this function."
             (diminish (cdr pair)))
           beginend-modes))
 
+  (unless (system-windows-p)
+    (use-package pdf-tools :defer t))
+
   (use-package scss-mode :defer t)
 
   ;; Keybindings with one key, easy to define. Req. by counsel
