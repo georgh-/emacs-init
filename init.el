@@ -538,9 +538,6 @@ Output: 123765 or 125816 or 126953"
     (("gnu" . "http://elpa.gnu.org/packages/")
      ("marmalade" . "http://marmalade-repo.org/packages/")
      ("melpa" . "http://melpa.org/packages/"))))
- '(package-selected-packages
-   (quote
-    (origami hide-lines markdown-mode markdown-preview-eww esup company-tern company-term diminish dired-details+ page-break-lines browse-kill-ring magit xref-js2 rjsx-mode guide-key php-mode powershell paredit goto-chg adaptive-wrap multiple-cursors expand-region discover smartscan counsel ivy-hydra ivy smex hydra scss-mode beginend aggressive-indent flycheck-irony irony-eldoc company-irony irony flycheck company web-mode use-package)))
  '(ring-bell-function (quote ignore))
  '(savehist-mode t)
  '(scroll-conservatively 2)
