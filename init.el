@@ -519,7 +519,6 @@ Output: 123765 or 125816 or 126953"
  '(guide-key/popup-window-position (quote bottom))
  '(guide-key/recursive-key-sequence-flag t)
  '(help-window-select t)
- '(horizontal-scroll-bar-mode t)
  '(hscroll-step 1)
  '(indent-tabs-mode nil)
  '(indicate-empty-lines t)
