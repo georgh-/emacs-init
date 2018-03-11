@@ -528,6 +528,7 @@ Output: 123765 or 125816 or 126953"
  '(js-indent-level 2)
  '(js-switch-indent-offset 2)
  '(js2r-always-insert-parens-around-arrow-function-params t)
+ '(line-number-display-limit-width 1000000)
  '(mouse-wheel-scroll-amount (quote (1 ((shift) . 1) ((control)))))
  '(mouse-yank-at-point t)
  '(nxml-slash-auto-complete-flag t)
