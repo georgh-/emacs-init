@@ -284,8 +284,9 @@ Emacs' kill ring is unmodified after running this function."
 
   (use-package company-tern
     :defer t
-    :hook ((js2-mode . tern-mode)
-           (js2-mode . company-mode))
+    :diminish tern-mode
+    :hook '((js2-mode . tern-mode)
+            (js2-mode . company-mode))
     
     ;; Disable completion keybindings, as we use xref-js2 instead
     :bind (:map tern-mode-keymap
