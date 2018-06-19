@@ -6,6 +6,7 @@
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
 (package-initialize)
+(add-to-list 'load-path "~/.emacs.d/site-lisp/")
 
 (defalias 'yes-or-no-p #'y-or-n-p)
 
@@ -499,7 +500,9 @@ Output: 123765 or 125816 or 126953"
  '(browse-kill-ring-resize-window nil)
  '(browse-kill-ring-separator "───")
  '(browse-kill-ring-separator-face (quote message-header-xheader))
+ '(column-number-indicator-zero-based nil)
  '(column-number-mode t)
+ '(counsel-find-file-at-point t)
  '(counsel-root-command "su")
  '(create-lockfiles nil)
  '(cua-enable-cua-keys nil)
@@ -526,6 +529,7 @@ Output: 123765 or 125816 or 126953"
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
  '(ivy-count-format "(%d/%d) ")
+ '(ivy-use-selectable-prompt t)
  '(js-indent-level 2)
  '(js-switch-indent-offset 2)
  '(js2r-always-insert-parens-around-arrow-function-params t)
@@ -558,6 +562,7 @@ Output: 123765 or 125816 or 126953"
  '(whitespace-style
    (quote
     (face tabs spaces newline indentation space-mark tab-mark newline-mark)))
+ '(winner-mode t)
  '(xterm-mouse-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
