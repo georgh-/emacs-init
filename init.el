@@ -143,7 +143,7 @@ Emacs' kill ring is unmodified after running this function."
 
   ;; Complete Anything - Code completion framework
   (use-package company
-    :diminish
+    :delight
     :config (global-company-mode 1))
 
   ;; Syntax analyzer (coding modes), spellchecker (non-coding modes)
@@ -153,7 +153,7 @@ Emacs' kill ring is unmodified after running this function."
 
   ;; Code analyzer using clang as backend
   (use-package irony
-    :diminish
+    :delight
     :hook ((c++-mode . irony-mode)
            (c-mode . irony-mode)
            (objc-mode . irony-mode))
@@ -179,16 +179,15 @@ Emacs' kill ring is unmodified after running this function."
 
   ;; Smarter placement of cursor at begining of buffer M-< M->
   (use-package beginend
-    :diminish beginend-global-mode
     :config
-    (beginend-global-mode t)
 
-    ;; Beginend creates minor modes dynamically for each mode it supports
-    ;; These modes have to be diminished one by one
-    (mapc (lambda (pair)
-            (diminish (cdr pair)))
+    ;; Add beginend for all supported modes
+    (beginend-setup-all)
+
+    ;; Delight all modes individually
+    (mapc (lambda (pair) (delight (cdr pair) nil 'beginend))
           beginend-modes))
-
+  
   (unless (system-windows-p)
     (use-package pdf-tools :defer t))
 
@@ -203,7 +202,7 @@ Emacs' kill ring is unmodified after running this function."
   ;; Completion for minibuffer commands
   (use-package ivy
     :config (ivy-mode 1)
-    :diminish)
+    :delight)
 
   ;; Used to show extra commands during ivy completion M-o
   (use-package ivy-hydra)
@@ -211,7 +210,7 @@ Emacs' kill ring is unmodified after running this function."
   ;; Extends ivy options M-o
   (use-package counsel
     :config (counsel-mode 1)
-    :diminish)
+    :delight)
 
   ;; M-n and M-p go to next or previous symbol matching symbol under cursor
   (use-package smartscan
@@ -230,6 +229,7 @@ Emacs' kill ring is unmodified after running this function."
 
   ;; Improves wrap mode by preserving left margin, comments, etc.
   (use-package adaptive-wrap
+    :delight visual-line-mode
     :hook (visual-line-mode . adaptive-wrap-prefix-mode))
 
   ;; Goes to last changed text in current buffer
@@ -238,7 +238,7 @@ Emacs' kill ring is unmodified after running this function."
            ("C-." . goto-last-change-reverse)))
 
   (use-package paredit
-    :diminish paredit-mode
+    :delight paredit-mode
     ;; Add paredit to lisp modes
     :hook ((clojure-mode . paredit-mode)
            (cider-repl-mode . paredit-mode)
@@ -253,9 +253,9 @@ Emacs' kill ring is unmodified after running this function."
 
   ;; Shows key shortcuts and commands while typing a keyboard shortcut
   ;; For example, type C-c and wait, and it will show a guide
-  (use-package guide-key
-    :diminish guide-key-mode
-    :config (guide-key-mode 1))
+  (use-package which-key
+    :delight which-key-mode
+    :config (which-key-mode 1))
 
   (use-package hide-lines
     :defer t
@@ -279,10 +279,11 @@ Emacs' kill ring is unmodified after running this function."
 
   (use-package js2-refactor
     :defer t
+    :delight
     :hook
     (js2-mode . js2-refactor-mode)
     :bind (:map js2-mode-map
-           ("C-k" . js2r-kill))
+                ("C-k" . js2r-kill))
     :config
     (js2r-add-keybindings-with-prefix "C-c C-r")
     (add-hook 'js2-mode-hook
@@ -298,7 +299,6 @@ Emacs' kill ring is unmodified after running this function."
 
   (use-package company-tern
     :defer t
-    :diminish tern-mode
     :hook '((js2-mode . tern-mode)
             (js2-mode . company-mode))
     
@@ -310,7 +310,7 @@ Emacs' kill ring is unmodified after running this function."
     :config (add-to-list 'company-backends 'company-tern))
 
   (use-package magit
-    :diminish magit-auto-revert-mode
+    :delight magit-auto-revert-mode
     :bind ("<f10>" . magit-status))
 
   (use-package browse-kill-ring
@@ -319,15 +319,19 @@ Emacs' kill ring is unmodified after running this function."
   ;; Show a horizontal line instead of ^L character (new page character)
   ;; May have bad interactions with adaptive-wrap
   (use-package page-break-lines
-    :diminish page-break-lines-mode
+    :delight page-break-lines-mode
     :config (global-page-break-lines-mode))
 
   ;; Remove details from dired, toggle with (
   (use-package dired-details)
 
+  ;; configure these dependencies
+  (use-package tern :defer t :diminish)
+  (use-package yasnippet :defer t :delight (yas-minor-mode))
+
   ;; Removes mode indicator from modeline, integrated in use-package
-  (use-package diminish
-    :config (eval-after-load "view" '(diminish 'view-mode))))
+  (use-package delight
+    :config (delight '((eldoc-mode nil "Eldoc")))))
 
 ;; Enable visual-line mode only for programming modes
 ;; It will stay disabled for any other mode (occur, packages, etc)
@@ -529,12 +533,6 @@ Output: 123765 or 125816 or 126953"
  '(global-visual-line-mode nil)
  '(gnus-default-nntp-server "news.gmane.org")
  '(grep-highlight-matches t)
- '(guide-key-mode t)
- '(guide-key/guide-key-sequence
-   (quote
-    ("C-c" "C-x 4" "C-x 5" "C-x 6" "C-x 8" "C-x C-k" "C-x ESC" "C-x RET" "C-x a" "C-x n" "C-x r" "C-x v" "C-x w" "ESC" "M-g" "M-o" "M-s" "%" "*" "/" "s" "C-h")))
- '(guide-key/popup-window-position (quote bottom))
- '(guide-key/recursive-key-sequence-flag t)
  '(help-window-select t)
  '(indent-tabs-mode nil)
  '(indicate-empty-lines t)
@@ -543,6 +541,7 @@ Output: 123765 or 125816 or 126953"
  '(ivy-count-format "(%d/%d) ")
  '(ivy-on-del-error-function (quote ignore))
  '(ivy-use-selectable-prompt t)
+ '(ivy-use-virtual-buffers t)
  '(js-indent-level 2)
  '(js-switch-indent-offset 2)
  '(js2r-always-insert-parens-around-arrow-function-params t)
@@ -554,11 +553,17 @@ Output: 123765 or 125816 or 126953"
  '(org-use-speed-commands t)
  '(package-archives
    (quote
-    (("gnu" . "http://elpa.gnu.org/packages/")
-     ("marmalade" . "http://marmalade-repo.org/packages/")
-     ("melpa" . "http://melpa.org/packages/"))))
+    (("org" . "https://orgmode.org/elpa/")
+     ("melpa" . "http://melpa.org/packages/")
+     ("gnu" . "http://elpa.gnu.org/packages/")
+     ("marmalade" . "http://marmalade-repo.org/packages/"))))
+ '(package-selected-packages
+   (quote
+    (neotree doom-mode doom-themes doom-modeline which-key web-mode-edit-element counsel-projectile projectile delight smartparens org-jira org markdown-preview-eww rg diminish dired-details page-break-lines browse-kill-ring magit company-tern xref-js2 js2-refactor rjsx-mode js2-mode origami hide-lines php-mode powershell paredit goto-chg adaptive-wrap multiple-cursors expand-region discover smartscan counsel ivy-hydra ivy smex hydra scss-mode pdf-tools beginend aggressive-indent omnisharp-emacs omnisharp flycheck-irony irony-eldoc company-irony irony flycheck company web-mode nhexl-mode use-package)))
+ '(projectile-mode t nil (projectile))
  '(ring-bell-function (quote ignore))
  '(savehist-mode t)
+ '(scroll-bar-mode nil)
  '(scroll-conservatively 2)
  '(scroll-margin 2)
  '(scroll-preserve-screen-position 1)
@@ -573,6 +578,9 @@ Output: 123765 or 125816 or 126953"
  '(view-read-only t)
  '(visual-line-fringe-indicators (quote (left-curly-arrow right-curly-arrow)))
  '(wdired-use-dired-vertical-movement (quote sometimes))
+ '(which-key-lighter "")
+ '(which-key-mode t)
+ '(which-key-side-window-max-height 0.6)
  '(whitespace-style
    (quote
     (face tabs spaces newline indentation space-mark tab-mark newline-mark)))
@@ -583,8 +591,6 @@ Output: 123765 or 125816 or 126953"
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(fringe ((t (:foreground "grey75"))))
- '(mode-line ((t (:family "DejaVu Sans"))))
  '(show-paren-match ((t (:foreground "blue" :weight bold))))
  '(show-paren-mismatch ((t (:foreground "red" :weight bold)))))
 (put 'narrow-to-region 'disabled nil)
