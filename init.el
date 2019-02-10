@@ -471,6 +471,10 @@ by using nxml's indentation rules."
   (interactive "P")
   (pretty-print-xml-region (point-min) (point-max) separate-attrs))
 
+(defun delete-trailing-whitespace-on-save ()
+  (when (derived-mode-p '(prog-mode))
+    (delete-trailing-whitespace)))
+(add-hook 'before-save-hook #'delete-trailing-whitespace-on-save)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
