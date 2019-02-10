@@ -50,7 +50,9 @@
 
 ;; Set npm path in Linux
 (if (system-unix-p)
-    (prepend-directory-to-path "~/software/node/bin"))
+    (mapc (lambda (dir) (prepend-directory-to-path dir))
+          '("~/bin"
+            "~/software/node/bin")))
 
 (defun copy-buffer-as-kill ()
   "Save the buffer as if killed, but don't kill it.
