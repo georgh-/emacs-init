@@ -415,7 +415,7 @@ prefix argument."
 (add-hook 'after-init-hook #'enable-or-disable-menu-bar-mode)
 
 ;; Configure default face
-(let ((font "DejaVu Sans Mono-8.5"))
+(let ((font "DejaVu Sans Mono-10"))
   (add-to-list 'initial-frame-alist `(font . ,font))
   (add-to-list 'default-frame-alist `(font . ,font)))
 
