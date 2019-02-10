@@ -135,6 +135,12 @@ Emacs' kill ring is unmodified after running this function."
            "\\.mustache\\'"
            "\\.djhtml\\'"))
 
+  (use-package doom-modeline
+    :defer nil
+    :config
+    (setq doom-modeline-buffer-file-name-style 'relative-to-project)
+    (doom-modeline-mode t))
+
   ;; Complete Anything - Code completion framework
   (use-package company
     :diminish
