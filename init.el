@@ -163,17 +163,6 @@ Emacs' kill ring is unmodified after running this function."
   (use-package irony-eldoc :defer t)
   (use-package flycheck-irony :defer t)
 
-  (use-package omnisharp
-    :config (setq omnisharp-server-executable-path
-                  (file-name-as-directory
-                   (concat  (getenv "HOMEDRIVE")
-                            (getenv "HOMEPATH")
-                            "/Software/omnisharp")))
-    :hook ((csharp-mode . flycheck-mode)
-           (csharp-mode . company-omnisharp)))
-
-  (use-package omnisharp-emacs :defer t)
-  
   ;; When enabled keeps the buffer always indented
   (use-package aggressive-indent :defer t)
 
