@@ -120,6 +120,11 @@ Emacs' kill ring is unmodified after running this function."
 
   (use-package nhexl-mode :defer t)
 
+  (use-package neotree
+    :defer t
+    :bind (("<f9>" . neotree-show)
+           (:map neotree-mode-map ("<f9>" . neotree-hide))))
+
   (use-package web-mode
     :mode ("\\.html?\\'"
            "\\.phtml\\'"
@@ -538,6 +543,7 @@ Output: 123765 or 125816 or 126953"
  '(line-number-display-limit-width 1000000)
  '(mouse-wheel-scroll-amount (quote (1 ((shift) . 1) ((control)))))
  '(mouse-yank-at-point t)
+ '(neo-theme (quote icons))
  '(nxml-slash-auto-complete-flag t)
  '(org-use-speed-commands t)
  '(package-archives
