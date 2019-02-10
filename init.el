@@ -502,6 +502,7 @@ by using nxml's indentation rules."
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(fill-column 79)
  '(flycheck-disabled-checkers (quote (emacs-lisp-checkdoc)))
+ '(global-auto-revert-mode t)
  '(global-discover-mode t)
  '(global-visual-line-mode nil)
  '(gnus-default-nntp-server "news.gmane.org")
