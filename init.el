@@ -125,6 +125,8 @@ Emacs' kill ring is unmodified after running this function."
 
   (require 'use-package)
 
+  (use-package projectile :defer t)
+  
   (use-package nhexl-mode :defer t)
 
   (use-package neotree
