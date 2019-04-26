@@ -54,7 +54,7 @@
                        (getenv "HOMEPATH")))))
 
     (prepend-directory-to-path (concat home "Software/Git/bin/"))
-    (prepend-directory-to-path (concat home "Software/msys64/usr/bin/"))))
+    (prepend-directory-to-path (concat home "Software/msys2/usr/bin/"))))
 
 ;; Set npm path in Linux
 (if (system-unix-p)
