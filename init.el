@@ -10,6 +10,8 @@
 
 (defalias 'yes-or-no-p #'y-or-n-p)
 
+;; Required in Windows 7, otherwise it uses iso-8859-15
+(set-language-environment "utf-8")
 ;; Save all tempfiles in $TMPDIR/emacs$UID/
 (defconst emacs-tmp-dir
   (concat temporary-file-directory "emacs-" user-login-name))
