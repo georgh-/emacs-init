@@ -419,26 +419,6 @@ prefix argument."
 ;; Use ido buffer instead of default
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 
-;; Command key in Mac keyboard is used as control key in Emacs
-(when (system-mac-p)
-  (setq ns-command-modifier 'control)
-  (setq ns-pop-up-frames nil))
-
-;; Disable menu-bar-mode everywhere, but allow it on OSX graphic interface.
-;; Mac OS X always shows a menu bar. When Emacs menubar mode is disabled
-;; in OS X, it is still shown but empty. That's why it is better to show
-;; all the menu options rather than an empty menu.
-;;
-;; The optional parameter is needed on after-make-frame-hook
-(defun enable-or-disable-menu-bar-mode (&optional frame)
-  (if (and (display-graphic-p)
-           (system-mac-p))
-      (menu-bar-mode 1)
-    (menu-bar-mode -1)))
-
-(add-hook 'after-make-frame-functions #'enable-or-disable-menu-bar-mode)
-(add-hook 'after-init-hook #'enable-or-disable-menu-bar-mode)
-
 ;; Configure default face
 (let ((font "DejaVu Sans Mono-10"))
   (add-to-list 'initial-frame-alist `(font . ,font))
