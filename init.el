@@ -539,6 +539,7 @@ by using nxml's indentation rules."
  '(js-switch-indent-offset 2)
  '(js2r-always-insert-parens-around-arrow-function-params t)
  '(line-number-display-limit-width 1000000)
+ '(menu-bar-mode nil)
  '(mouse-wheel-scroll-amount (quote (1 ((shift) . 1) ((control)))))
  '(mouse-yank-at-point t)
  '(neo-theme (quote icons))
