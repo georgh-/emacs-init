@@ -517,6 +517,8 @@ by using nxml's indentation rules."
  '(delete-selection-mode t)
  '(dired-dnd-protocol-alist nil)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
+ '(elm-format-on-save t)
+ '(elm-package-json "elm.json")
  '(fill-column 79)
  '(flycheck-disabled-checkers (quote (emacs-lisp-checkdoc)))
  '(global-auto-revert-mode t)
