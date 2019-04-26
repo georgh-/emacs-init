@@ -502,6 +502,8 @@ by using nxml's indentation rules."
  '(browse-kill-ring-resize-window nil)
  '(browse-kill-ring-separator "───")
  '(browse-kill-ring-separator-face (quote message-header-xheader))
+ '(calendar-date-style (quote iso))
+ '(calendar-week-start-day 1)
  '(column-number-indicator-zero-based nil)
  '(column-number-mode t)
  '(counsel-find-file-at-point t)
