@@ -260,6 +260,8 @@ Emacs' kill ring is unmodified after running this function."
     :bind (("C-," . goto-last-change)
            ("C-." . goto-last-change-reverse)))
 
+  (use-package macrostep :defer t)
+
   (use-package paredit
     :delight paredit-mode
     ;; Add paredit to lisp modes
