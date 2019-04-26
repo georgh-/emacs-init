@@ -553,7 +553,7 @@ by using nxml's indentation rules."
      ("marmalade" . "http://marmalade-repo.org/packages/"))))
  '(package-selected-packages
    (quote
-    (neotree doom-mode doom-themes doom-modeline which-key web-mode-edit-element counsel-projectile projectile delight smartparens org-jira org markdown-preview-eww rg diminish dired-details page-break-lines browse-kill-ring magit company-tern xref-js2 js2-refactor rjsx-mode js2-mode origami hide-lines php-mode powershell paredit goto-chg adaptive-wrap multiple-cursors expand-region discover smartscan counsel ivy-hydra ivy smex hydra scss-mode pdf-tools beginend aggressive-indent omnisharp-emacs omnisharp flycheck-irony irony-eldoc company-irony irony flycheck company web-mode nhexl-mode use-package)))
+    (elm-mode macrostep neotree doom-mode doom-themes doom-modeline which-key web-mode-edit-element counsel-projectile projectile delight smartparens org-jira org markdown-preview-eww rg diminish dired-details page-break-lines browse-kill-ring magit company-tern xref-js2 js2-refactor rjsx-mode js2-mode origami hide-lines php-mode powershell paredit goto-chg adaptive-wrap multiple-cursors expand-region discover smartscan counsel ivy-hydra ivy smex hydra scss-mode pdf-tools beginend aggressive-indent omnisharp-emacs omnisharp flycheck-irony irony-eldoc company-irony irony flycheck company web-mode nhexl-mode use-package)))
  '(projectile-mode t nil (projectile))
  '(ring-bell-function (quote ignore))
  '(savehist-mode t)
