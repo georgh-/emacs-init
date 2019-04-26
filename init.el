@@ -12,6 +12,12 @@
 
 ;; Required in Windows 7, otherwise it uses iso-8859-15
 (set-language-environment "utf-8")
+
+;; Add a hook function fto multiple mode hooks
+(defun add-to-multiple-hooks (func hooks)
+  (mapc (lambda (hook) (add-hook hook func))
+        hooks))
+
 ;; Save all tempfiles in $TMPDIR/emacs$UID/
 (defconst emacs-tmp-dir
   (concat temporary-file-directory "emacs-" user-login-name))
@@ -412,10 +418,17 @@ prefix argument."
 
 ;; Use variable spaced font in configuration and info
 (defun enable-variable-pitch-mode ()
-    (variable-pitch-mode 1))
-(add-hook 'info-mode-hook #'enable-variable-pitch-mode)
-(add-hook 'custom-mode-hook #'enable-variable-pitch-mode)
-(add-hook 'help-mode-hook #'enable-variable-pitch-mode)
+  (variable-pitch-mode 1))
+
+;; Enable proportional fonts in the modes listed below
+(let ((variable-pitch-modes
+       '(info-mode-hook
+         custom-mode-hook
+         help-mode-hook
+         neotree-mode-hook)))
+  
+  (add-to-multiple-hooks #'enable-variable-pitch-mode
+                         variable-pitch-modes))
 
 (defun eval-last-sexp-and-replace ()
   "Replace the preceding sexp with its value."
