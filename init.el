@@ -57,10 +57,9 @@
     (prepend-directory-to-path (concat home "Software/msys2/usr/bin/"))))
 
 ;; Set npm path in Linux
-(if (system-unix-p)
-    (mapc (lambda (dir) (prepend-directory-to-path dir))
-          '("~/bin"
-            "~/software/node/bin")))
+(when (system-unix-p)
+  (prepend-directory-to-path "~/bin")
+  (prepend-directory-to-path "~/software/node/bin"))
 
 (defun copy-buffer-as-kill ()
   "Save the buffer as if killed, but don't kill it.
