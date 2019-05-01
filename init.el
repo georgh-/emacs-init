@@ -109,7 +109,6 @@ Emacs' kill ring is unmodified after running this function."
 ;; This setup assures packages are loaded after the init file is processed.  It
 ;; could be done before, but this way packages can also be configured using
 ;; customize.
-(add-hook 'after-init-hook #'my-packages-configuration)
 (defun my-packages-configuration ()
   (unless (boundp 'package--initialized)
     (message "There are no packages in the system. Initializing package...")
@@ -132,7 +131,7 @@ Emacs' kill ring is unmodified after running this function."
   (use-package neotree
     :defer t
     :bind (("<f9>" . neotree-show)
-           (:map neotree-mode-map ("<f9>" . neotree-hide))))
+           (:map neotree-mode-map ("<f9>" . #'neotree-hide))))
 
   (use-package web-mode
     :mode ("\\.html?\\'"
@@ -163,10 +162,10 @@ Emacs' kill ring is unmodified after running this function."
   ;; Code analyzer using clang as backend
   (use-package irony
     :delight
-    :hook ((c++-mode . irony-mode)
-           (c-mode . irony-mode)
-           (objc-mode . irony-mode))
-    :config (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+    :hook ((c++-mode . #'irony-mode)
+           (c-mode . #'irony-mode)
+           (objc-mode . #'irony-mode))
+    :config (add-hook 'irony-mode-hook #'irony-cdb-autosetup-compile-options))
 
   (use-package company-irony :defer t)
   (use-package irony-eldoc :defer t)
@@ -253,7 +252,7 @@ Emacs' kill ring is unmodified after running this function."
   ;; Improves wrap mode by preserving left margin, comments, etc.
   (use-package adaptive-wrap
     :delight visual-line-mode
-    :hook (visual-line-mode . adaptive-wrap-prefix-mode))
+    :hook (visual-line-mode . #'adaptive-wrap-prefix-mode))
 
   ;; Goes to last changed text in current buffer
   (use-package goto-chg
@@ -292,7 +291,7 @@ Emacs' kill ring is unmodified after running this function."
     (defun enable-origami-mode-x ()
       (unless (derived-mode-p 'js2-mode)
         (origami-mode 1)))
-    :hook (prog-mode . enable-origami-mode-x))
+    :hook (prog-mode . #'enable-origami-mode-x))
 
   (use-package js2-mode
     :defer t)
@@ -306,7 +305,7 @@ Emacs' kill ring is unmodified after running this function."
     :defer t
     :delight
     :hook
-    (js2-mode . js2-refactor-mode)
+    (js2-mode . #'js2-refactor-mode)
     :bind (:map js2-mode-map
                 ("C-k" . js2r-kill))
     :config
@@ -357,6 +356,7 @@ Emacs' kill ring is unmodified after running this function."
   ;; Removes mode indicator from modeline, integrated in use-package
   (use-package delight
     :config (delight '((eldoc-mode nil "Eldoc")))))
+(add-hook 'after-init-hook #'my-packages-configuration)
 
 ;; Enable visual-line mode only for programming modes
 ;; It will stay disabled for any other mode (occur, packages, etc)
