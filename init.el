@@ -207,8 +207,8 @@ Emacs' kill ring is unmodified after running this function."
   ^^                  ^^                  ^^
   "
       ("q" nil)
-      ("<" flycheck-previous-error)
-      (">" flycheck-next-error)
+      ("<" flycheck-previous-error :color pink)
+      (">" flycheck-next-error :color pink)
       ("?" flycheck-describe-checker)
       ("M" flycheck-manual)
       ("d" flycheck-disable-checker)
