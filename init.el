@@ -1,19 +1,21 @@
 ;;; This file is public domain
 
-
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(package-initialize)
 (add-to-list 'load-path "~/.emacs.d/site-lisp/")
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/")
 
 (defalias 'yes-or-no-p #'y-or-n-p)
+
+(when (fboundp 'native-compile-async)
+  (setq comp-deferred-compilation t
+        comp-deferred-compilation-black-list '("/mu4e.*\\.el$")))
+
+(when (eq window-system 'pgtk)
+  (pgtk-use-im-context t))
 
 ;; Required in Windows 7, otherwise it uses iso-8859-15
 (set-language-environment "utf-8")
 
-;; Add a hook function fto multiple mode hooks
+;; Add a hook function to multiple mode hooks
 (defun add-to-multiple-hooks (func hooks)
   (mapc (lambda (hook) (add-hook hook func))
         hooks))
@@ -55,11 +57,6 @@
 
     (prepend-directory-to-path (concat home "Software/Git/bin/"))
     (prepend-directory-to-path (concat home "Software/msys2/usr/bin/"))))
-
-;; Set npm path in Linux
-(when (system-unix-p)
-  (prepend-directory-to-path "~/bin")
-  (prepend-directory-to-path "~/software/node/bin"))
 
 (defun copy-buffer-as-kill ()
   "Save the buffer as if killed, but don't kill it.
@@ -104,34 +101,166 @@ Emacs' kill ring is unmodified after running this function."
 
 (global-set-key (kbd "M-k") #'kill-save-line)
 
-;; Packages' configuration.
-;;
-;; This setup assures packages are loaded after the init file is processed.  It
-;; could be done before, but this way packages can also be configured using
-;; customize.
-(defun my-packages-configuration ()
-  (unless (boundp 'package--initialized)
-    (message "There are no packages in the system. Initializing package...")
-    (package-initialize))
+;;;
+;;; Packages' configuration.
+;;;
 
-  (unless package-archive-contents
-    (message "Initializing and refreshing ELPA package archives...")
-    (package-refresh-contents))
+(defun my-after-init-function ()
+  ;; Configuration that must be run after init to ensure that the preferences
+  ;; set up by Customise are taken into account
 
+  (package-initialize)
   (unless (package-installed-p 'use-package)
+    (message "Initializing and refreshing ELPA package archives...")
+    (package-refresh-contents)
     (message "Installing `use-package'...")
     (package-install 'use-package))
 
-  (require 'use-package)
+  ;;; General
 
-  (use-package projectile :defer t)
+  (use-package modus-themes
+    :config (modus-themes-load-operandi))
+
+  (use-package doom-modeline
+    :defer nil
+    :config
+    (setq doom-modeline-buffer-file-name-style 'relative-to-project)
+    (doom-modeline-mode t))
   
-  (use-package nhexl-mode :defer t)
+  ;; Completion for minibuffer commands
+  (use-package ivy
+    :config (ivy-mode 1))
 
+  ;; Used to show extra commands during ivy completion M-o
+  (use-package ivy-hydra)
+
+  ;; Extends ivy options M-o
+  (use-package counsel
+    :config (counsel-mode 1))
+
+  ;; M-n and M-p go to next or previous symbol matching symbol under cursor
+  (use-package smartscan
+    :config (global-smartscan-mode 1))
+
+  ;; Shows help for some commands
+  (use-package discover)
+
+  ;; Provides history order to counsel-M-x
+  (use-package smex)
+
+  ;; Smarter placement of cursor at begining of buffer M-< M->
+  (use-package beginend
+    :config
+
+    ;; Add beginend for all supported modes
+    (beginend-setup-all))
+
+  (use-package magit
+    :bind ("<f10>" . #'magit-status))
+
+  (use-package browse-kill-ring
+    :config (browse-kill-ring-default-keybindings))
+
+  ;; Show a horizontal line instead of ^L character (new page character)
+  ;; May have bad interactions with adaptive-wrap
+  (use-package page-break-lines
+    :config (global-page-break-lines-mode))
+
+  (use-package hide-lines
+    :defer t
+    :bind ("C-c h" . hide-lines))
+
+  ;; Shows key shortcuts and commands while typing a keyboard shortcut
+  ;; For example, type C-c and wait, and it will show a guide
+  (use-package which-key
+    :config (which-key-mode 1))
+
+  (use-package expand-region
+    :bind ("C-=" . er/expand-region))
+
+  (use-package multiple-cursors
+    :bind (("C->" . mc/mark-next-like-this)
+           ("C-<" . mc/mark-previous-like-this)
+           ("C-c C->" . mc/mark-all-like-this)))
+
+  ;; Goes to last changed text in current buffer
+  (use-package goto-chg
+    :bind (("C-," . goto-last-change)
+           ("C-." . goto-last-change-reverse)))
+
+  (use-package macrostep :defer t)
+  
   (use-package neotree
     :defer t
     :bind (("<f9>" . neotree-show)
-           (:map neotree-mode-map ("<f9>" . #'neotree-hide))))
+           (:map neotree-mode-map ("<f9>" . neotree-hide))))
+  
+  (unless (system-windows-p)
+    (use-package pdf-tools :defer t))
+
+;;;Keyboard
+
+  (use-package key-chord
+    :defer nil
+    :config
+    (key-chord-define-global "xk" #'kill-current-buffer)
+    (key-chord-define-global "x0" #'delete-window)
+    (key-chord-define-global "x1" #'delete-other-windows)
+    (key-chord-define-global "x2" #'split-window-below)
+    (key-chord-define-global "x3" #'split-window-right)
+    (key-chord-define-global "xb" #'ivy-switch-buffer)
+    (key-chord-define-global "kp" #'previous-buffer)
+    (key-chord-define-global "km" #'next-buffer)
+    (key-chord-define-global "xf" #'counsel-find-file)
+    (key-chord-define-global "xs" #'save-buffer)
+    (key-chord-define-global "xw" #'write-file))
+
+  (use-package use-package-chords
+    :defer nil
+    :config (key-chord-mode 1))
+
+  (use-package drag-stuff
+    :defer nil
+    :bind (("M-<up>" . drag-stuff-up)
+           ("M-<down>" . drag-stuff-down))
+    :config (drag-stuff-global-mode))
+
+  ;; Complete Anything - Code completion framework
+  (use-package company
+    :config (global-company-mode 1))
+
+  ;; Syntax analyzer (coding modes), spellchecker (non-coding modes)
+  ;; (use-package flycheck
+  ;;   :hook ((text-mode . flycheck-mode)
+  ;;          (prog-mode . flycheck-mode)))
+
+;;;Language modes
+
+  (use-package yaml-mode :defer t)
+
+  ;; (use-package haskell-mode
+  ;;              :defer t
+  ;;              :init
+  ;;              (add-hook 'haskell-mode-hook #'turn-on-haskell-indent)
+  ;;              (add-hook 'haskell-mode-hook #'haskell-decl-scan-mode)
+  ;;              :bind
+  ;;              ("C-c C-c" . haskell-compile)
+  ;;              :custom
+  ;;              (haskell-indent-offset))
+
+
+  ;; (use-package hlint-refactor
+  ;;   :after flycheck
+  ;;   :hook (haskell-mode . hlint-refactor-mode))
+
+  ;; (use-package haskell-snippets)
+
+
+  (use-package nhexl-mode :defer t)
+
+  (use-package markdown-mode :defer t)
+
+  (use-package lsp-mode :defer t)
 
   (use-package web-mode
     :mode ("\\.html?\\'"
@@ -143,226 +272,23 @@ Emacs' kill ring is unmodified after running this function."
            "\\.mustache\\'"
            "\\.djhtml\\'"))
 
-  (use-package doom-modeline
-    :defer nil
-    :config
-    (setq doom-modeline-buffer-file-name-style 'relative-to-project)
-    (doom-modeline-mode t))
-
-  ;; Complete Anything - Code completion framework
-  (use-package company
-    :delight
-    :config (global-company-mode 1))
-
-  ;; Syntax analyzer (coding modes), spellchecker (non-coding modes)
-  (use-package flycheck
-    :hook ((text-mode . flycheck-mode)
-           (prog-mode . flycheck-mode)))
-
-  ;; Code analyzer using clang as backend
-  (use-package irony
-    :delight
-    :hook ((c++-mode . #'irony-mode)
-           (c-mode . #'irony-mode)
-           (objc-mode . #'irony-mode))
-    :config (add-hook 'irony-mode-hook #'irony-cdb-autosetup-compile-options))
-
-  (use-package company-irony :defer t)
-  (use-package irony-eldoc :defer t)
-  (use-package flycheck-irony :defer t)
-
-  ;; When enabled keeps the buffer always indented
-  (use-package aggressive-indent :defer t)
-
-  ;; Smarter placement of cursor at begining of buffer M-< M->
-  (use-package beginend
-    :config
-
-    ;; Add beginend for all supported modes
-    (beginend-setup-all)
-
-    ;; Delight all modes individually
-    (mapc (lambda (pair) (delight (cdr pair) nil 'beginend))
-          beginend-modes))
-  
-  (unless (system-windows-p)
-    (use-package pdf-tools :defer t))
-
-  (use-package scss-mode :defer t)
-
-  ;; Keybindings with one key, easy to define. Req. by counsel
-  (use-package hydra
-    :bind ("C-c f" . hydra-flycheck/body)
-    :config
-    
-    (defhydra hydra-flycheck (:color blue)
-      "
-  ^
-  ^Flycheck^          ^Errors^            ^Checker^
-  ^────────^──────────^──────^────────────^───────^─────
-  _q_ quit            _<_ previous        _?_ describe
-  _M_ manual          _>_ next            _d_ disable
-  _v_ verify setup    _f_ check           _m_ mode
-  ^^                  _l_ list            _s_ select
-  ^^                  ^^                  ^^
-  "
-      ("q" nil)
-      ("<" flycheck-previous-error :color pink)
-      (">" flycheck-next-error :color pink)
-      ("?" flycheck-describe-checker)
-      ("M" flycheck-manual)
-      ("d" flycheck-disable-checker)
-      ("f" flycheck-buffer)
-      ("l" flycheck-list-errors)
-      ("m" flycheck-mode)
-      ("s" flycheck-select-checker)
-      ("v" flycheck-verify-setup)))
-
-  ;; Provides history order to counsel-M-x
-  (use-package smex)
-
-  ;; Completion for minibuffer commands
-  (use-package ivy
-    :config (ivy-mode 1)
-    :delight)
-
-  ;; Used to show extra commands during ivy completion M-o
-  (use-package ivy-hydra)
-
-  ;; Extends ivy options M-o
-  (use-package counsel
-    :config (counsel-mode 1)
-    :delight)
-
-  ;; M-n and M-p go to next or previous symbol matching symbol under cursor
-  (use-package smartscan
-    :config (global-smartscan-mode 1))
-
-  ;; Shows help for some commands
-  (use-package discover)
-
-  (use-package expand-region
-    :bind ("C-=" . er/expand-region))
-
-  (use-package multiple-cursors
-    :bind (("C->" . mc/mark-next-like-this)
-           ("C-<" . mc/mark-previous-like-this)
-           ("C-c C->" . mc/mark-all-like-this)))
-
-  ;; Improves wrap mode by preserving left margin, comments, etc.
-  (use-package adaptive-wrap
-    :delight visual-line-mode
-    :hook (visual-line-mode . #'adaptive-wrap-prefix-mode))
-
-  ;; Goes to last changed text in current buffer
-  (use-package goto-chg
-    :bind (("C-," . goto-last-change)
-           ("C-." . goto-last-change-reverse)))
-
-  (use-package macrostep :defer t)
-
   (use-package paredit
-    :delight paredit-mode
     ;; Add paredit to lisp modes
-    :hook ((clojure-mode . paredit-mode)
-           (cider-repl-mode . paredit-mode)
+    :hook ((cider-repl-mode . paredit-mode)
            (lisp-mode . paredit-mode)
            (emacs-lisp-mode . paredit-mode)
            (lisp-interaction-mode . paredit-mode)
            (ielm-mode . paredit-mode)
-           (json-mode . paredit-mode)))
-
-  (use-package powershell :defer t)
-  (use-package php-mode :defer t)
-
-  ;; Shows key shortcuts and commands while typing a keyboard shortcut
-  ;; For example, type C-c and wait, and it will show a guide
-  (use-package which-key
-    :delight which-key-mode
-    :config (which-key-mode 1))
-
-  (use-package hide-lines
-    :defer t
-    :bind ("C-c h" . hide-lines))
-
-  ;; Enable origami folding mode. JS2-mode uses a better folding by default
-  (use-package origami
-    :config
-    (defun enable-origami-mode-x ()
-      (unless (derived-mode-p 'js2-mode)
-        (origami-mode 1)))
-    :hook (prog-mode . #'enable-origami-mode-x))
-
-  (use-package js2-mode
-    :defer t)
-
-  ;; rjsx-mode extends js2-mode with JSX react extension
-  (use-package rjsx-mode
-    :defer t
-    :mode ("\\.js\\'" . rjsx-mode))
-
-  (use-package js2-refactor
-    :defer t
-    :delight
-    :hook
-    (js2-mode . #'js2-refactor-mode)
-    :bind (:map js2-mode-map
-                ("C-k" . js2r-kill))
-    :config
-    (js2r-add-keybindings-with-prefix "C-c C-r")
-    (add-hook 'js2-mode-hook
-              (lambda ()
-                (add-hook 'xref-backend-functions
-                          #'xref-js2-xref-backend nil t))))
-  
-  (use-package xref-js2
-    :defer t
-    ;; js-mode (which js2 is based on) binds "M-." which conflicts
-    ;;with xref, so unbind it.
-    :bind (:map js-mode-map ("M-." . nil)))
-
-  (use-package company-tern
-    :defer t
-    :hook '((js2-mode . tern-mode)
-            (js2-mode . company-mode))
-    
-    ;; Disable completion keybindings, as we use xref-js2 instead
-    :bind (:map tern-mode-keymap
-                ("M-." . nil)
-                ("M-," . nil))
-    
-    :config (add-to-list 'company-backends 'company-tern))
-
-  (use-package magit
-    :delight magit-auto-revert-mode
-    :bind ("<f10>" . magit-status))
-
-  (use-package browse-kill-ring
-    :config (browse-kill-ring-default-keybindings))
-
-  ;; Show a horizontal line instead of ^L character (new page character)
-  ;; May have bad interactions with adaptive-wrap
-  (use-package page-break-lines
-    :delight page-break-lines-mode
-    :config (global-page-break-lines-mode))
-
-  ;; Remove details from dired, toggle with (
-  (use-package dired-details)
-
-  ;; configure these dependencies
-  (use-package tern :defer t :diminish)
-  (use-package yasnippet :defer t :delight (yas-minor-mode))
-
-  ;; Removes mode indicator from modeline, integrated in use-package
-  (use-package delight
-    :config (delight '((eldoc-mode nil "Eldoc")))))
-(add-hook 'after-init-hook #'my-packages-configuration)
+           (json-mode . paredit-mode))))
+(add-hook 'after-init-hook #'my-after-init-function)
 
 ;; Enable visual-line mode only for programming modes
 ;; It will stay disabled for any other mode (occur, packages, etc)
 (defun enable-visual-line-mode ()
   (visual-line-mode t))
 (add-hook 'prog-mode-hook #'enable-visual-line-mode)
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
+
 
 ;; http://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
 (defun rename-file-and-buffer ()
@@ -414,6 +340,8 @@ prefix argument."
 (global-set-key [remap paredit-kill] (bol-with-prefix paredit-kill))
 (global-set-key [remap org-kill-line] (bol-with-prefix org-kill-line))
 (global-set-key [remap kill-line] (bol-with-prefix kill-line))
+
+(add-hook 'org-mode-hook #'enable-visual-line-mode)
 
 
 ;; Use ido buffer instead of default
@@ -493,16 +421,16 @@ by using nxml's indentation rules."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(TeX-engine (quote luatex))
- '(bidi-paragraph-direction (quote left-to-right))
+ '(TeX-engine 'luatex)
+ '(bidi-paragraph-direction 'left-to-right)
  '(blink-cursor-mode nil)
  '(blink-matching-paren nil)
  '(browse-kill-ring-display-duplicates nil)
- '(browse-kill-ring-highlight-inserted-item (quote solid))
+ '(browse-kill-ring-highlight-inserted-item 'solid)
  '(browse-kill-ring-resize-window nil)
  '(browse-kill-ring-separator "───")
- '(browse-kill-ring-separator-face (quote message-header-xheader))
- '(calendar-date-style (quote iso))
+ '(browse-kill-ring-separator-face 'message-header-xheader)
+ '(calendar-date-style 'iso)
  '(calendar-week-start-day 1)
  '(column-number-indicator-zero-based nil)
  '(column-number-mode t)
@@ -510,17 +438,18 @@ by using nxml's indentation rules."
  '(counsel-root-command "su")
  '(create-lockfiles nil)
  '(cua-enable-cua-keys nil)
- '(custom-enabled-themes (quote (deeper-blue)))
  '(custom-safe-themes
-   (quote
-    ("1c082c9b84449e54af757bcae23617d11f563fc9f33a832a8a2813c4d7dfb652" "8aca557e9a17174d8f847fb02870cb2bb67f3b6e808e46c0e54a44e3e18e1020" "6b289bab28a7e511f9c54496be647dc60f5bd8f9917c9495978762b99d8c96a0" "93a0885d5f46d2aeac12bf6be1754faa7d5e28b27926b8aa812840fe7d0b7983" "75d3dde259ce79660bac8e9e237b55674b910b470f313cdf4b019230d01a982a" "ecba61c2239fbef776a72b65295b88e5534e458dfe3e6d7d9f9cb353448a569e" "151bde695af0b0e69c3846500f58d9a0ca8cb2d447da68d7fbf4154dcf818ebc" "d1b4990bd599f5e2186c3f75769a2c5334063e9e541e37514942c27975700370" "6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" "cd736a63aa586be066d5a1f0e51179239fe70e16a9f18991f6f5d99732cabb32" "b54826e5d9978d59f9e0a169bbd4739dd927eead3ef65f56786621b53c031a7c" "4697a2d4afca3f5ed4fdf5f715e36a6cac5c6154e105f3596b44a4874ae52c45" "6d589ac0e52375d311afaa745205abb6ccb3b21f6ba037104d71111e7e76a3fc" "fe666e5ac37c2dfcf80074e88b9252c71a22b6f5d2f566df9a7aa4f9bea55ef8" "100e7c5956d7bb3fd0eebff57fde6de8f3b9fafa056a2519f169f85199cc1c96" "f0dc4ddca147f3c7b1c7397141b888562a48d9888f1595d69572db73be99a024" "d2e9c7e31e574bf38f4b0fb927aaff20c1e5f92f72001102758005e53d77b8c9" "a3fa4abaf08cc169b61dea8f6df1bbe4123ec1d2afeb01c17e11fdc31fc66379" "7e78a1030293619094ea6ae80a7579a562068087080e01c2b8b503b27900165c" default)))
+   '("77cdb6c4d2bd17e707943d19d58759565dd14eb881f46b4031b382fc0c9ebb0a" "cfa3b266957e26ed5a8637f43d443b4a921bb546381d7df97e7338d278184fa9" default))
+ '(debug-on-error nil)
  '(delete-selection-mode t)
+ '(dired-auto-revert-buffer 'dired-directory-changed-p)
  '(dired-dnd-protocol-alist nil)
- '(ediff-window-setup-function (quote ediff-setup-windows-plain))
+ '(dired-listing-switches "-alh")
+ '(doc-view-resolution 300)
+ '(ediff-window-setup-function 'ediff-setup-windows-plain)
  '(elm-format-on-save t)
- '(elm-package-json "elm.json")
- '(fill-column 79)
- '(flycheck-disabled-checkers (quote (emacs-lisp-checkdoc)))
+ '(fill-column 78)
+ '(frame-resize-pixelwise t)
  '(global-auto-revert-mode t)
  '(global-discover-mode t)
  '(global-visual-line-mode nil)
@@ -532,52 +461,55 @@ by using nxml's indentation rules."
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
  '(ivy-count-format "(%d/%d) ")
- '(ivy-on-del-error-function (quote ignore))
+ '(ivy-mode t)
+ '(ivy-on-del-error-function 'ignore)
  '(ivy-use-selectable-prompt t)
  '(ivy-use-virtual-buffers t)
  '(js-indent-level 2)
  '(js-switch-indent-offset 2)
- '(js2r-always-insert-parens-around-arrow-function-params t)
  '(line-number-display-limit-width 1000000)
  '(menu-bar-mode nil)
- '(mouse-wheel-scroll-amount (quote (1 ((shift) . 1) ((control)))))
+ '(modus-themes-bold-constructs t)
+ '(modus-themes-headings '((t)))
+ '(modus-themes-mode-line '3d)
+ '(modus-themes-scale-headings t)
+ '(modus-themes-slanted-constructs t)
+ '(modus-themes-variable-pitch-headings t)
+ '(mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control))))
  '(mouse-yank-at-point t)
- '(neo-theme (quote icons))
+ '(neo-theme 'icons)
  '(nxml-slash-auto-complete-flag t)
+ '(org-support-shift-select t)
  '(org-use-speed-commands t)
  '(package-archives
-   (quote
-    (("org" . "https://orgmode.org/elpa/")
-     ("melpa" . "http://melpa.org/packages/")
-     ("gnu" . "http://elpa.gnu.org/packages/")
-     ("marmalade" . "http://marmalade-repo.org/packages/"))))
+   '(("org" . "http://elpa.emacs-china.org/org/")
+     ("melpa" . "http://elpa.emacs-china.org/melpa/")
+     ("gnu" . "http://elpa.emacs-china.org/gnu/")))
  '(package-selected-packages
-   (quote
-    (elm-mode macrostep neotree doom-mode doom-themes doom-modeline which-key web-mode-edit-element counsel-projectile projectile delight smartparens org-jira org markdown-preview-eww rg diminish dired-details page-break-lines browse-kill-ring magit company-tern xref-js2 js2-refactor rjsx-mode js2-mode origami hide-lines php-mode powershell paredit goto-chg adaptive-wrap multiple-cursors expand-region discover smartscan counsel ivy-hydra ivy smex hydra scss-mode pdf-tools beginend aggressive-indent omnisharp-emacs omnisharp flycheck-irony irony-eldoc company-irony irony flycheck company web-mode nhexl-mode use-package)))
- '(projectile-mode t nil (projectile))
- '(ring-bell-function (quote ignore))
+   '(modus-themes paredit web-mode lsp-mode markdown-mode nhexl-mode yaml-mode company drag-stuff use-package-chords key-chord pdf-tools neotree macrostep goto-chg multiple-cursors expand-region which-key dired-details hide-lines page-break-lines browse-kill-ring magit beginend smex discover smartscan counsel ivy-hydra ivy doom-modeline use-package))
+ '(ring-bell-function 'ignore)
  '(savehist-mode t)
- '(scroll-bar-mode nil)
  '(scroll-conservatively 2)
- '(scroll-margin 2)
  '(scroll-preserve-screen-position 1)
- '(show-paren-delay 0.01)
+ '(show-paren-delay 0.001)
  '(show-paren-mode t)
  '(tab-width 4)
  '(temp-buffer-resize-mode t)
  '(tool-bar-mode nil)
- '(tooltip-mode nil)
- '(uniquify-buffer-name-style (quote reverse) nil (uniquify))
+ '(uniquify-buffer-name-style 'reverse nil (uniquify))
  '(use-package-always-ensure t)
  '(view-read-only t)
- '(visual-line-fringe-indicators (quote (left-curly-arrow right-curly-arrow)))
- '(wdired-use-dired-vertical-movement (quote sometimes))
+ '(visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
+ '(wdired-use-dired-vertical-movement 'sometimes)
+ '(web-mode-code-indent-offset 2)
+ '(web-mode-css-indent-offset 2)
+ '(web-mode-markup-indent-offset 2)
+ '(web-mode-script-padding 2)
  '(which-key-lighter "")
  '(which-key-mode t)
  '(which-key-side-window-max-height 0.6)
  '(whitespace-style
-   (quote
-    (face tabs spaces newline indentation space-mark tab-mark newline-mark)))
+   '(face tabs spaces newline indentation space-mark tab-mark newline-mark))
  '(winner-mode t)
  '(xterm-mouse-mode t))
 (custom-set-faces
@@ -585,7 +517,12 @@ by using nxml's indentation rules."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(show-paren-match ((t (:foreground "blue" :weight bold))))
- '(show-paren-mismatch ((t (:foreground "red" :weight bold)))))
+ )
+
 (put 'narrow-to-region 'disabled nil)
 (put 'set-goal-column 'disabled nil)
+
+;; Local Variables:
+;; byte-compile-warnings: (not free-vars noruntime)
+;; End:
+
