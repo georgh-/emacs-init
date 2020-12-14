@@ -236,25 +236,10 @@ Emacs' kill ring is unmodified after running this function."
 
 ;;;Language modes
 
+  (use-package org-superstar
+    :hook (org-mode . org-superstar-mode))
+
   (use-package yaml-mode :defer t)
-
-  ;; (use-package haskell-mode
-  ;;              :defer t
-  ;;              :init
-  ;;              (add-hook 'haskell-mode-hook #'turn-on-haskell-indent)
-  ;;              (add-hook 'haskell-mode-hook #'haskell-decl-scan-mode)
-  ;;              :bind
-  ;;              ("C-c C-c" . haskell-compile)
-  ;;              :custom
-  ;;              (haskell-indent-offset))
-
-
-  ;; (use-package hlint-refactor
-  ;;   :after flycheck
-  ;;   :hook (haskell-mode . hlint-refactor-mode))
-
-  ;; (use-package haskell-snippets)
-
 
   (use-package nhexl-mode :defer t)
 
@@ -279,7 +264,9 @@ Emacs' kill ring is unmodified after running this function."
            (emacs-lisp-mode . paredit-mode)
            (lisp-interaction-mode . paredit-mode)
            (ielm-mode . paredit-mode)
-           (json-mode . paredit-mode))))
+           (json-mode . paredit-mode)))
+
+  (use-package powershell :defer t))
 (add-hook 'after-init-hook #'my-after-init-function)
 
 ;; Enable visual-line mode only for programming modes
@@ -310,7 +297,7 @@ Emacs' kill ring is unmodified after running this function."
 ;;  * M-x kill-some-buffers
 ;;  * C-x C-b (ido buffer in my configuration)
 (defun kill-current-buffer ()
-  "Kills current buffer, does not ask which buffer to kill."
+  "Kill current buffer, does not ask which buffer to kill."
   (interactive)
   (kill-buffer (buffer-name)))
 (global-set-key (kbd "C-x k") #'kill-current-buffer)
@@ -472,13 +459,17 @@ by using nxml's indentation rules."
  '(modus-themes-bold-constructs t)
  '(modus-themes-headings '((t)))
  '(modus-themes-mode-line '3d)
- '(modus-themes-scale-headings t)
  '(modus-themes-slanted-constructs t)
  '(modus-themes-variable-pitch-headings t)
  '(mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control))))
  '(mouse-yank-at-point t)
  '(neo-theme 'icons)
  '(nxml-slash-auto-complete-flag t)
+ '(org-fontify-emphasized-text nil)
+ '(org-fontify-whole-heading-line t)
+ '(org-startup-folded nil)
+ '(org-superstar-leading-bullet "  ")
+ '(org-superstar-special-todo-items t)
  '(org-support-shift-select t)
  '(org-use-speed-commands t)
  '(package-archives
@@ -486,7 +477,7 @@ by using nxml's indentation rules."
      ("melpa" . "http://elpa.emacs-china.org/melpa/")
      ("gnu" . "http://elpa.emacs-china.org/gnu/")))
  '(package-selected-packages
-   '(modus-themes paredit web-mode lsp-mode markdown-mode nhexl-mode yaml-mode company drag-stuff use-package-chords key-chord pdf-tools neotree macrostep goto-chg multiple-cursors expand-region which-key dired-details hide-lines page-break-lines browse-kill-ring magit beginend smex discover smartscan counsel ivy-hydra ivy doom-modeline use-package))
+   '(org-superstar org-superstar-mode modus-themes paredit web-mode lsp-mode markdown-mode nhexl-mode yaml-mode company drag-stuff use-package-chords key-chord pdf-tools neotree macrostep goto-chg multiple-cursors expand-region which-key dired-details hide-lines page-break-lines browse-kill-ring magit beginend smex discover smartscan counsel ivy-hydra ivy doom-modeline use-package))
  '(ring-bell-function 'ignore)
  '(savehist-mode t)
  '(scroll-conservatively 2)
@@ -512,12 +503,6 @@ by using nxml's indentation rules."
    '(face tabs spaces newline indentation space-mark tab-mark newline-mark))
  '(winner-mode t)
  '(xterm-mouse-mode t))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
 
 (put 'narrow-to-region 'disabled nil)
 (put 'set-goal-column 'disabled nil)
