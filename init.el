@@ -1,6 +1,8 @@
 ;;; This file is public domain
 
 (add-to-list 'load-path "~/.emacs.d/site-lisp/")
+
+;; LilyPond Emacs modes are installed here
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/")
 
 (defalias 'yes-or-no-p #'y-or-n-p)
