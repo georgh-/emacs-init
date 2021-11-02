@@ -1,4 +1,21 @@
-;;; This file is public domain
+;; This file is public domain
+
+;; The default is 800 kilobytes.  Measured in bytes.
+(setq gc-cons-threshold (* 100 1024 1024))
+
+(defun display-startup-time ()
+  (message "Emacs loaded in %s with %d garbage collections."
+           (format "%.2f seconds"
+                   (float-time
+                    (time-subtract after-init-time before-init-time)))
+           gcs-done))
+
+;; After starting, set it to 1MiB
+(defun restore-gc-threshold ()
+  (setq gc-cons-threshold (* 1 1024 1024)))
+
+(add-hook 'emacs-startup-hook #'display-startup-time)
+(add-hook 'emacs-startup-hook #'restore-gc-threshold)
 
 (add-to-list 'load-path "~/.emacs.d/site-lisp/")
 
@@ -6,10 +23,6 @@
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/")
 
 (defalias 'yes-or-no-p #'y-or-n-p)
-
-(when (fboundp 'native-compile-async)
-  (setq comp-deferred-compilation t
-        comp-deferred-compilation-black-list '("/mu4e.*\\.el$")))
 
 (when (eq window-system 'pgtk)
   (pgtk-use-im-context t))
@@ -94,7 +107,7 @@ Emacs' kill ring is unmodified after running this function."
 (global-set-key (kbd "M-o") #'other-window)
 
 (defun kill-save-line (nlines)
-  "Kills a line without deleting it. Includes newline character."
+  "Kill line without deleting it. Includes newline character."
   (interactive "p")
   (kill-ring-save (line-beginning-position)
                   (line-end-position nlines))
@@ -117,38 +130,94 @@ Emacs' kill ring is unmodified after running this function."
     (package-refresh-contents)
     (message "Installing `use-package'...")
     (package-install 'use-package))
+  (require 'use-package-ensure)
 
-  ;;; General
+  ;; General
 
-  (use-package modus-themes
-    :config (modus-themes-load-operandi))
+  (when (and (system-unix-p)
+             (display-graphic-p))
+    (use-package dbus)
+    (use-package modus-themes
+      :after (dbus)
+      :config
+      (defun set-modus-theme-from-gtk ()
+        "Set modus theme by checking whether GTK theme is dark."
+        (let ((gtk-theme (downcase
+                          (call-process-string "gsettings"
+                                               "get"
+                                               "org.gnome.desktop.interface"
+                                               "gtk-theme"))))
+          (if (or (string-match-p "dark"  gtk-theme)
+                  (string-match-p "black" gtk-theme))
+              (modus-themes-load-vivendi)
+            (modus-themes-load-operandi))))
+
+      (defun gtk-theme-changed (path _ _)
+        "DBus handler to detect when the GTK theme has changed."
+        (when (string-equal path "/org/gnome/desktop/interface/gtk-theme")
+          (set-modus-theme-from-gtk)))
+
+      (dbus-register-signal
+       :session
+       "ca.desrt.dconf"
+       "/ca/desrt/dconf/Writer/user"
+       "ca.desrt.dconf.Writer"
+       "Notify"
+       #'gtk-theme-changed)
+
+      (set-modus-theme-from-gtk)))
+
+  (when (or (system-windows-p)
+            (not (display-graphic-p)))
+    (use-package modus-themes
+      :config
+      (modus-themes-load-operandi)))
 
   (use-package doom-modeline
     :defer nil
     :config
     (setq doom-modeline-buffer-file-name-style 'relative-to-project)
     (doom-modeline-mode t))
-  
-  ;; Completion for minibuffer commands
-  (use-package ivy
-    :config (ivy-mode 1))
 
-  ;; Used to show extra commands during ivy completion M-o
-  (use-package ivy-hydra)
+  ;; Selection framework using native Emacs API
+  (use-package selectrum
+    :init
+    (selectrum-mode 1))
 
-  ;; Extends ivy options M-o
-  (use-package counsel
-    :config (counsel-mode 1))
+  ;; Filtering function
+  (use-package orderless
+    :custom
+    (completion-styles '(orderless)))
+    
+  ;; Add actions to minibuffer selections and other commands
+  (use-package embark
+    :bind
+    (("C-S-a" . embark-act)        ;; pick some comfortable binding
+     ("C-h B" . embark-bindings))) ;; alternative for `describe-bindings'
+
+  ;; Add descriptions to minibuffer selections
+  (use-package marginalia
+    :bind (:map minibuffer-local-map
+                ("M-A" . marginalia-cycle))
+    :init
+    (marginalia-mode))
+
 
   ;; M-n and M-p go to next or previous symbol matching symbol under cursor
-  (use-package smartscan
-    :config (global-smartscan-mode 1))
+  ;; (use-package smartscan
+  ;;   :config (global-smartscan-mode 1))
+
+  ;; Easily edit files as root
+  (use-package sudo-edit
+    :after embark
+    :bind
+    (:map embark-file-map
+          ("s" . sudo-edit-find-file))
+    (:map embark-become-file+buffer-map
+          ("s" . sudo-edit-find-file)))
 
   ;; Shows help for some commands
   (use-package discover)
-
-  ;; Provides history order to counsel-M-x
-  (use-package smex)
 
   ;; Smarter placement of cursor at begining of buffer M-< M->
   (use-package beginend
@@ -160,17 +229,10 @@ Emacs' kill ring is unmodified after running this function."
   (use-package magit
     :bind ("<f10>" . #'magit-status))
 
-  (use-package browse-kill-ring
-    :config (browse-kill-ring-default-keybindings))
-
   ;; Show a horizontal line instead of ^L character (new page character)
   ;; May have bad interactions with adaptive-wrap
   (use-package page-break-lines
     :config (global-page-break-lines-mode))
-
-  (use-package hide-lines
-    :defer t
-    :bind ("C-c h" . hide-lines))
 
   ;; Shows key shortcuts and commands while typing a keyboard shortcut
   ;; For example, type C-c and wait, and it will show a guide
@@ -193,50 +255,71 @@ Emacs' kill ring is unmodified after running this function."
   (use-package macrostep :defer t)
   
   (use-package neotree
-    :defer t
     :bind (("<f9>" . neotree-show)
            (:map neotree-mode-map ("<f9>" . neotree-hide))))
   
-  (unless (system-windows-p)
-    (use-package pdf-tools :defer t))
-
-;;;Keyboard
+  ;; Keyboard
 
   (use-package key-chord
-    :defer nil
-    :config
+    :init
     (key-chord-define-global "xk" #'kill-current-buffer)
     (key-chord-define-global "x0" #'delete-window)
     (key-chord-define-global "x1" #'delete-other-windows)
     (key-chord-define-global "x2" #'split-window-below)
     (key-chord-define-global "x3" #'split-window-right)
-    (key-chord-define-global "xb" #'ivy-switch-buffer)
+    (key-chord-define-global "xb" #'switch-to-buffer)
     (key-chord-define-global "kp" #'previous-buffer)
     (key-chord-define-global "km" #'next-buffer)
-    (key-chord-define-global "xf" #'counsel-find-file)
+    (key-chord-define-global "xf" #'find-file)
     (key-chord-define-global "xs" #'save-buffer)
     (key-chord-define-global "xw" #'write-file))
 
   (use-package use-package-chords
-    :defer nil
-    :config (key-chord-mode 1))
+    :init (key-chord-mode 1))
 
   (use-package drag-stuff
-    :defer nil
     :bind (("M-<up>" . drag-stuff-up)
            ("M-<down>" . drag-stuff-down))
-    :config (drag-stuff-global-mode))
+    :init (drag-stuff-global-mode))
 
   ;; Complete Anything - Code completion framework
   (use-package company
     :config (global-company-mode 1))
 
   ;; Syntax analyzer (coding modes), spellchecker (non-coding modes)
-  ;; (use-package flycheck
-  ;;   :hook ((text-mode . flycheck-mode)
-  ;;          (prog-mode . flycheck-mode)))
+  (use-package flycheck
+    :hook ((text-mode . flycheck-mode)
+           (prog-mode . flycheck-mode)))
 
-;;;Language modes
+  ;; Language modes
+
+  (use-package tree-sitter
+    :config (global-tree-sitter-mode t))
+  (use-package tree-sitter-langs)
+  (use-package tree-sitter-indent)
+
+  (use-package yaml-mode :defer t)
+
+  (use-package haskell-mode
+    :bind (:map haskell-mode-map
+                ("C-c C-l" . haskell-process-load-file)
+                ("C-`"     . haskell-interactive-bring)
+                ("C-c C-t" . haskell-process-do-type)
+                ("C-c C-i" . haskell-process-do-info)
+                ("C-c C-c" . haskell-process-cabal-build)
+                ("C-c C-k" . haskell-interactive-mode-clear)
+                :map haskell-cabal-mode-map
+                ("C-c c"   . haskell-process-cabal)
+                ("C-`"     . haskell-interactive-bring)
+                ("C-c C-k" . haskell-interactive-mode-clear)
+                ("C-c C-c" . haskell-process-cabal-build)
+                ("C-c c"   . haskell-process-cabal)))
+
+  ;; (use-package hlint-refactor
+  ;;   :after flycheck
+  ;;   :hook (haskell-mode . hlint-refactor-mode))
+
+  ;; (use-package haskell-snippets)
 
   (use-package org-superstar
     :hook (org-mode . org-superstar-mode))
@@ -248,6 +331,15 @@ Emacs' kill ring is unmodified after running this function."
   (use-package markdown-mode :defer t)
 
   (use-package lsp-mode :defer t)
+  (use-package lsp-ui :defer t)
+  (use-package lsp-haskell
+    :defer t
+
+    :init
+    (add-hook 'haskell-mode-hook #'lsp)
+    (add-hook 'haskell-literate-mode-hook #'lsp))
+
+;  (use-package toml-mode)
 
   (use-package web-mode
     :mode ("\\.html?\\'"
@@ -271,13 +363,23 @@ Emacs' kill ring is unmodified after running this function."
   (use-package powershell :defer t))
 (add-hook 'after-init-hook #'my-after-init-function)
 
+(defun call-process-string (program &rest args)
+  "Call process`PROGRAM' with `ARGS' and return the output as string."
+  (with-temp-buffer
+    (apply #'call-process program nil t nil args)
+    (buffer-string)))
+
+;; Use simple dired by default
+(defun dired-hook-configuration ()
+  (dired-hide-details-mode 1))
+(add-hook 'dired-mode-hook #'dired-hook-configuration)
+
 ;; Enable visual-line mode only for programming modes
 ;; It will stay disabled for any other mode (occur, packages, etc)
 (defun enable-visual-line-mode ()
   (visual-line-mode t))
 (add-hook 'prog-mode-hook #'enable-visual-line-mode)
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
-
 
 ;; http://emacsredux.com/blog/2013/05/04/rename-file-and-buffer/
 (defun rename-file-and-buffer ()
@@ -299,7 +401,7 @@ Emacs' kill ring is unmodified after running this function."
 ;;  * M-x kill-some-buffers
 ;;  * C-x C-b (ido buffer in my configuration)
 (defun kill-current-buffer ()
-  "Kill current buffer, does not ask which buffer to kill."
+  "Kills current buffer, does not ask which buffer to kill."
   (interactive)
   (kill-buffer (buffer-name)))
 (global-set-key (kbd "C-x k") #'kill-current-buffer)
@@ -333,13 +435,13 @@ prefix argument."
 (add-hook 'org-mode-hook #'enable-visual-line-mode)
 
 
-;; Use ido buffer instead of default
+;; Use ibuffer instead of default
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 
 ;; Configure default face
-(let ((font "DejaVu Sans Mono-10"))
-  (add-to-list 'initial-frame-alist `(font . ,font))
-  (add-to-list 'default-frame-alist `(font . ,font)))
+;; (let ((font "Dejavu Sans Mono-10"))
+;;   (add-to-list 'initial-frame-alist `(font . ,font))
+;;   (add-to-list 'default-frame-alist `(font . ,font)))
 
 ;; Use variable spaced font in configuration and info
 (defun enable-variable-pitch-mode ()
@@ -411,33 +513,26 @@ by using nxml's indentation rules."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(TeX-engine 'luatex)
+ '(auth-source-save-behavior nil)
  '(bidi-paragraph-direction 'left-to-right)
  '(blink-cursor-mode nil)
  '(blink-matching-paren nil)
- '(browse-kill-ring-display-duplicates nil)
- '(browse-kill-ring-highlight-inserted-item 'solid)
- '(browse-kill-ring-resize-window nil)
- '(browse-kill-ring-separator "───")
- '(browse-kill-ring-separator-face 'message-header-xheader)
  '(calendar-date-style 'iso)
  '(calendar-week-start-day 1)
  '(column-number-indicator-zero-based nil)
  '(column-number-mode t)
- '(counsel-find-file-at-point t)
- '(counsel-root-command "su")
  '(create-lockfiles nil)
  '(cua-enable-cua-keys nil)
- '(custom-safe-themes
-   '("77cdb6c4d2bd17e707943d19d58759565dd14eb881f46b4031b382fc0c9ebb0a" "cfa3b266957e26ed5a8637f43d443b4a921bb546381d7df97e7338d278184fa9" default))
  '(debug-on-error nil)
  '(delete-selection-mode t)
  '(dired-auto-revert-buffer 'dired-directory-changed-p)
  '(dired-dnd-protocol-alist nil)
+ '(dired-hide-details-hide-symlink-targets nil)
  '(dired-listing-switches "-alh")
  '(doc-view-resolution 300)
  '(ediff-window-setup-function 'ediff-setup-windows-plain)
- '(elm-format-on-save t)
  '(fill-column 78)
+ '(flycheck-disabled-checkers '(emacs-lisp-checkdoc))
  '(frame-resize-pixelwise t)
  '(global-auto-revert-mode t)
  '(global-discover-mode t)
@@ -446,25 +541,27 @@ by using nxml's indentation rules."
  '(grep-highlight-matches t)
  '(help-window-select t)
  '(indent-tabs-mode nil)
- '(indicate-empty-lines t)
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
- '(ivy-count-format "(%d/%d) ")
- '(ivy-mode t)
- '(ivy-on-del-error-function 'ignore)
- '(ivy-use-selectable-prompt t)
- '(ivy-use-virtual-buffers t)
  '(js-indent-level 2)
  '(js-switch-indent-offset 2)
  '(line-number-display-limit-width 1000000)
+ '(lsp-ui-doc-position 'bottom)
+ '(lsp-ui-doc-show-with-cursor nil)
+ '(lsp-ui-doc-use-webkit t)
+ '(lsp-ui-sideline-enable nil)
  '(menu-bar-mode nil)
  '(modus-themes-bold-constructs t)
  '(modus-themes-headings '((t)))
+ '(modus-themes-italic-constructs t)
  '(modus-themes-mode-line '3d)
+ '(modus-themes-scale-headings t)
  '(modus-themes-slanted-constructs t)
  '(modus-themes-variable-pitch-headings t)
  '(mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control))))
  '(mouse-yank-at-point t)
+ '(neo-autorefresh t)
+ '(neo-mode-line-type 'none)
  '(neo-theme 'icons)
  '(nxml-slash-auto-complete-flag t)
  '(org-fontify-emphasized-text nil)
@@ -475,17 +572,21 @@ by using nxml's indentation rules."
  '(org-support-shift-select t)
  '(org-use-speed-commands t)
  '(package-archives
-   '(("org" . "http://elpa.emacs-china.org/org/")
-     ("melpa" . "http://elpa.emacs-china.org/melpa/")
-     ("gnu" . "http://elpa.emacs-china.org/gnu/")))
+   '(("org" . "https://elpa.emacs-china.org/org/")
+     ("melpa" . "https://elpa.emacs-china.org/melpa/")
+     ("gnu" . "https://elpa.emacs-china.org/gnu/")))
  '(package-selected-packages
-   '(org-superstar org-superstar-mode modus-themes paredit web-mode lsp-mode markdown-mode nhexl-mode yaml-mode company drag-stuff use-package-chords key-chord pdf-tools neotree macrostep goto-chg multiple-cursors expand-region which-key dired-details hide-lines page-break-lines browse-kill-ring magit beginend smex discover smartscan counsel ivy-hydra ivy doom-modeline use-package))
+   '(org-superstar org-superstar-mode ssh-agency tree-sitter tree-sitter-indent tree-sitter-langs try sudo-edit dired orderless ripgrep embark marginalia selectrum haskell-mode flycheck toml-mode lsp-ui lsp-haskell modus-themes paredit web-mode lsp-mode markdown-mode nhexl-mode yaml-mode company drag-stuff use-package-chords key-chord neotree goto-chg multiple-cursors expand-region which-key page-break-lines magit beginend discover doom-modeline use-package))
  '(ring-bell-function 'ignore)
  '(savehist-mode t)
  '(scroll-conservatively 2)
  '(scroll-preserve-screen-position 1)
  '(show-paren-delay 0.001)
  '(show-paren-mode t)
+ '(show-paren-style 'expression)
+ '(sudo-edit-indicator-mode t)
+ '(sudo-edit-local-method "su")
+ '(sudo-edit-remote-method "sudo")
  '(tab-width 4)
  '(temp-buffer-resize-mode t)
  '(tool-bar-mode nil)
@@ -503,12 +604,19 @@ by using nxml's indentation rules."
  '(which-key-side-window-max-height 0.6)
  '(whitespace-style
    '(face tabs spaces newline indentation space-mark tab-mark newline-mark))
+ '(window-resize-pixelwise t)
  '(winner-mode t)
- '(xterm-mouse-mode t))
+ '(xterm-mouse-mode nil))
 
 (put 'narrow-to-region 'disabled nil)
 (put 'set-goal-column 'disabled nil)
 
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:height 130 :width normal :foundry "1ASC" :family "Liberation Mono")))))
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
