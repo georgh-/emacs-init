@@ -493,7 +493,6 @@ by using nxml's indentation rules."
  ;; If there is more than one, they won't work right.
  '(TeX-engine 'luatex)
  '(auth-source-save-behavior nil)
- '(bidi-paragraph-direction 'left-to-right)
  '(blink-cursor-mode nil)
  '(blink-matching-paren nil)
  '(calendar-date-style 'iso)
