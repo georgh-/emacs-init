@@ -21,14 +21,6 @@
   (mapc (lambda (hook) (add-hook hook func))
         hooks))
 
-;; Save all tempfiles in $TMPDIR/emacs$UID/
-(defconst emacs-tmp-dir
-  (concat temporary-file-directory "emacs-" user-login-name))
-(setq backup-directory-alist `((".*" . ,emacs-tmp-dir)))
-(setq auto-save-file-name-transforms `((".*" ,emacs-tmp-dir t)))
-(setq auto-save-list-file-prefix (concat emacs-tmp-dir
-                                         "/auto-save-list/saves-"))
-
 ;; Show file name in title bar and modification status
 ;;
 ;; https://www.emacswiki.org/emacs/FrameTitle
