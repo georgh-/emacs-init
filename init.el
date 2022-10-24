@@ -88,50 +88,58 @@ Emacs' kill ring is unmodified after running this function."
 
   ;; General
 
-  (when (and (system-unix-p)
-             (display-graphic-p))
-    (use-package dbus)
-    (use-package modus-themes
-      :after (dbus)
-      :config
-      (defun set-modus-theme-from-gtk ()
-        "Set modus theme by checking whether GTK theme is dark."
-        (let ((gtk-theme (downcase
-                          (call-process-string "gsettings"
-                                               "get"
-                                               "org.gnome.desktop.interface"
-                                               "gtk-theme"))))
-          (if (or (string-match-p "dark"  gtk-theme)
-                  (string-match-p "black" gtk-theme))
-              (modus-themes-load-vivendi)
-            (modus-themes-load-operandi))))
+  (use-package dbus
+    :init
+    (defun set-global-gtk-theme (theme)
+      (call-process "gsettings" nil nil nil
+                    "set"
+                    "org.gnome.desktop.interface"
+                    "gtk-theme"
+                    theme))
+    
+    (defun theme-switcher (value)
+      (pcase value
+        ;; No Preference
+        (0 (set-global-gtk-theme "Adwaita")
+           (load-theme 'modus-operandi t))
+        
+        ;; Prefers dark
+        (1 (set-global-gtk-theme "Adwaita-dark")
+           (load-theme 'modus-vivendi t))
+        
+        ;; Prefers light. Not currently used by Gnome
+        (2 (set-global-gtk-theme "Adwaita")
+           (load-theme 'modus-operandi t))
+        
+        (_ (message "Invalid theme value"))))
 
-      (defun gtk-theme-changed (path _ _)
-        "DBus handler to detect when the GTK theme has changed."
-        (when (string-equal path "/org/gnome/desktop/interface/gtk-theme")
-          (set-modus-theme-from-gtk)))
+    (defun handler (value)
+      (theme-switcher (car (car value))))
 
-      (dbus-register-signal
-       :session
-       "ca.desrt.dconf"
-       "/ca/desrt/dconf/Writer/user"
-       "ca.desrt.dconf.Writer"
-       "Notify"
-       #'gtk-theme-changed)
-
-      (set-modus-theme-from-gtk)))
-
-  (when (or (system-windows-p)
-            (not (display-graphic-p)))
-    (use-package modus-themes
-      :config
-      (modus-themes-load-operandi)))
-
-  (use-package doom-modeline
-    :defer nil
+    (defun signal-handler (namespace key value)
+      (if (and
+           (string-equal namespace "org.freedesktop.appearance")
+           (string-equal key "color-scheme"))
+          (theme-switcher (car value))))
+    
     :config
-    (setq doom-modeline-buffer-file-name-style 'relative-to-project)
-    (doom-modeline-mode t))
+    (dbus-call-method-asynchronously
+     :session
+     "org.freedesktop.portal.Desktop"
+     "/org/freedesktop/portal/desktop"
+     "org.freedesktop.portal.Settings"
+     "Read"
+     #'handler
+     "org.freedesktop.appearance"
+     "color-scheme")
+
+    (dbus-register-signal
+     :session
+     "org.freedesktop.portal.Desktop"
+     "/org/freedesktop/portal/desktop"
+     "org.freedesktop.portal.Settings"
+     "SettingChanged"
+     #'signal-handler))
 
   ;; Selection framework using native Emacs API
   (use-package selectrum
