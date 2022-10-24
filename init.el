@@ -551,7 +551,7 @@ by using nxml's indentation rules."
      ("nongnu" . "https://elpa.nongnu.org/nongnu/")
      ("melpa" . "https://melpa.org/packages/")))
  '(package-selected-packages
-   '(org-superstar org-superstar-mode ssh-agency tree-sitter tree-sitter-indent tree-sitter-langs try sudo-edit dired orderless ripgrep embark marginalia selectrum haskell-mode flycheck toml-mode lsp-ui lsp-haskell modus-themes paredit web-mode lsp-mode markdown-mode nhexl-mode yaml-mode company drag-stuff use-package-chords key-chord neotree goto-chg multiple-cursors expand-region which-key page-break-lines magit beginend discover doom-modeline use-package))
+   '(doom-modeline ef-themes cape eglot writeroom-mode corfu consult docker-mode all-the-icons-dired all-the-icons beginend discover drag-stuff embark expand-region goto-chg haskell-mode hide-lines key-chord macrostep magit marginalia markdown-mode modus-themes multiple-cursors nhexl-mode orderless org-superstar org-superstar-mode page-break-lines paredit powershell ssh-agency sudo-edit toml-mode tree-sitter tree-sitter-indent tree-sitter-langs use-package use-package-chords vertico vterm web-mode which-key yaml-mode))
  '(pixel-scroll-precision-mode t)
  '(ring-bell-function 'ignore)
  '(savehist-mode t)
@@ -570,6 +570,8 @@ by using nxml's indentation rules."
  '(use-package-always-ensure t)
  '(view-read-only t)
  '(visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
+ '(warning-suppress-log-types '((modus-themes) (use-package)))
+ '(warning-suppress-types '((comp) (modus-themes) (use-package)))
  '(web-mode-code-indent-offset 2)
  '(web-mode-css-indent-offset 2)
  '(web-mode-markup-indent-offset 2)
