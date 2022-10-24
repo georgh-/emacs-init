@@ -510,7 +510,6 @@ by using nxml's indentation rules."
  '(dired-listing-switches "-alh")
  '(doc-view-resolution 300)
  '(ediff-window-setup-function 'ediff-setup-windows-plain)
- '(fill-column 78)
  '(flycheck-disabled-checkers '(emacs-lisp-checkdoc))
  '(frame-resize-pixelwise t)
  '(global-auto-revert-mode t)
