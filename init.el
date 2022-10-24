@@ -380,11 +380,6 @@ Emacs' kill ring is unmodified after running this function."
   (use-package powershell :defer t))
 (add-hook 'after-init-hook #'my-after-init-function)
 
-;; Use simple dired by default
-(defun dired-hook-configuration ()
-  (dired-hide-details-mode 1))
-(add-hook 'dired-mode-hook #'dired-hook-configuration)
-
 ;; Enable visual-line mode only for programming modes
 ;; It will stay disabled for any other mode (occur, packages, etc)
 (defun enable-visual-line-mode ()
