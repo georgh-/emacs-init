@@ -499,6 +499,7 @@ by using nxml's indentation rules."
  '(calendar-week-start-day 1)
  '(column-number-indicator-zero-based nil)
  '(column-number-mode t)
+ '(context-menu-mode t)
  '(create-lockfiles nil)
  '(cua-enable-cua-keys nil)
  '(debug-on-error nil)
