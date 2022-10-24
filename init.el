@@ -545,10 +545,11 @@ by using nxml's indentation rules."
  '(org-superstar-special-todo-items t)
  '(org-support-shift-select t)
  '(org-use-speed-commands t)
+ '(package-archive-priorities '(("gnu" . 1) ("nongnu" . 1)))
  '(package-archives
-   '(("org" . "https://elpa.emacs-china.org/org/")
-     ("melpa" . "https://elpa.emacs-china.org/melpa/")
-     ("gnu" . "https://elpa.emacs-china.org/gnu/")))
+   '(("gnu" . "https://elpa.gnu.org/packages/")
+     ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+     ("melpa" . "https://melpa.org/packages/")))
  '(package-selected-packages
    '(org-superstar org-superstar-mode ssh-agency tree-sitter tree-sitter-indent tree-sitter-langs try sudo-edit dired orderless ripgrep embark marginalia selectrum haskell-mode flycheck toml-mode lsp-ui lsp-haskell modus-themes paredit web-mode lsp-mode markdown-mode nhexl-mode yaml-mode company drag-stuff use-package-chords key-chord neotree goto-chg multiple-cursors expand-region which-key page-break-lines magit beginend discover doom-modeline use-package))
  '(pixel-scroll-precision-mode t)
