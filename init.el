@@ -3,18 +3,10 @@
 ;; The default is 800 kilobytes.  Measured in bytes.
 (setq gc-cons-threshold (* 100 1024 1024))
 
-(defun display-startup-time ()
-  (message "Emacs loaded in %s with %d garbage collections."
-           (format "%.2f seconds"
-                   (float-time
-                    (time-subtract after-init-time before-init-time)))
-           gcs-done))
-
 ;; After starting, set it to 1MiB
 (defun restore-gc-threshold ()
   (setq gc-cons-threshold (* 1 1024 1024)))
 
-(add-hook 'emacs-startup-hook #'display-startup-time)
 (add-hook 'emacs-startup-hook #'restore-gc-threshold)
 
 (add-to-list 'load-path "~/.emacs.d/site-lisp/")
