@@ -510,6 +510,9 @@ by using nxml's indentation rules."
  '(dired-listing-switches "-alh")
  '(doc-view-resolution 300)
  '(ediff-window-setup-function 'ediff-setup-windows-plain)
+ '(ef-themes-mixed-fonts t)
+ '(ef-themes-to-toggle '(ef-light ef-dark))
+ '(ef-themes-variable-pitch-ui t)
  '(frame-resize-pixelwise t)
  '(global-auto-revert-mode t)
  '(global-discover-mode t)
@@ -525,10 +528,10 @@ by using nxml's indentation rules."
  '(modus-themes-bold-constructs t)
  '(modus-themes-headings '((t)))
  '(modus-themes-italic-constructs t)
- '(modus-themes-mode-line '3d)
- '(modus-themes-scale-headings t)
- '(modus-themes-slanted-constructs t)
- '(modus-themes-variable-pitch-headings t)
+ '(modus-themes-mode-line '(3d))
+ '(modus-themes-variable-pitch-ui t)
+ '(mouse-drag-and-drop-region 'control)
+ '(mouse-drag-and-drop-region-cross-program t)
  '(mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control))))
  '(mouse-yank-at-point t)
  '(neo-autorefresh t)
@@ -586,8 +589,7 @@ by using nxml's indentation rules."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:height 130 :width normal :foundry "1ASC" :family "Liberation Mono")))))
+ '(default ((t (:height 110 :family "Liberation Mono")))))
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-
