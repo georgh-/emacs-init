@@ -16,9 +16,6 @@
 
 (defalias 'yes-or-no-p #'y-or-n-p)
 
-(when (eq window-system 'pgtk)
-  (pgtk-use-im-context t))
-
 ;; Required in Windows 7, otherwise it uses iso-8859-15
 (set-language-environment "utf-8")
 
