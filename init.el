@@ -380,12 +380,6 @@ Emacs' kill ring is unmodified after running this function."
   (use-package powershell :defer t))
 (add-hook 'after-init-hook #'my-after-init-function)
 
-(defun call-process-string (program &rest args)
-  "Call process`PROGRAM' with `ARGS' and return the output as string."
-  (with-temp-buffer
-    (apply #'call-process program nil t nil args)
-    (buffer-string)))
-
 ;; Use simple dired by default
 (defun dired-hook-configuration ()
   (dired-hide-details-mode 1))
