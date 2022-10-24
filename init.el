@@ -16,9 +16,6 @@
 
 (defalias 'yes-or-no-p #'y-or-n-p)
 
-;; Required in Windows 7, otherwise it uses iso-8859-15
-(set-language-environment "utf-8")
-
 ;; Add a hook function to multiple mode hooks
 (defun add-to-multiple-hooks (func hooks)
   (mapc (lambda (hook) (add-hook hook func))
@@ -47,20 +44,6 @@
 (defun system-windows-p () (string-equal system-type "windows-nt"))
 (defun system-mac-p () (string-equal system-type "darwin"))
 (defun system-unix-p () (not (or (system-mac-p) (system-windows-p))))
-
-;; Add a path to the PATH environment variable and to exec-path emacs variable
-(defun prepend-directory-to-path (dir)
-  (setenv "PATH" (concat dir path-separator (getenv "PATH")))
-  (add-to-list 'exec-path dir))
-
-;; Set path to UNIX utilities in Windows
-(when (system-windows-p)
-  (let ((home (file-name-as-directory
-               (concat (getenv "HOMEDRIVE")
-                       (getenv "HOMEPATH")))))
-
-    (prepend-directory-to-path (concat home "Software/Git/bin/"))
-    (prepend-directory-to-path (concat home "Software/msys2/usr/bin/"))))
 
 (defun copy-buffer-as-kill ()
   "Save the buffer as if killed, but don't kill it.
