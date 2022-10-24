@@ -140,36 +140,73 @@ Emacs' kill ring is unmodified after running this function."
      "org.freedesktop.portal.Settings"
      "SettingChanged"
      #'signal-handler))
+  
+  (use-package doom-modeline
+    :init
+    (doom-modeline-mode))
 
   ;; Selection framework using native Emacs API
-  (use-package selectrum
+
+  (use-package vertico
     :init
-    (selectrum-mode 1))
+    (vertico-mode 1))
 
   ;; Filtering function
+
   (use-package orderless
     :custom
-    (completion-styles '(orderless)))
-    
+    (completion-styles '(orderless basic))
+    (completion-category-overrides '((file (styles
+                                            basic
+                                            partial-completion)))))
+  
   ;; Add actions to minibuffer selections and other commands
+
   (use-package embark
     :bind
     (("C-S-a" . embark-act)        ;; pick some comfortable binding
      ("C-h B" . embark-bindings))) ;; alternative for `describe-bindings'
 
   ;; Add descriptions to minibuffer selections
+
   (use-package marginalia
     :bind (:map minibuffer-local-map
                 ("M-A" . marginalia-cycle))
     :init
     (marginalia-mode))
 
+  ;; Consult extended commands
 
-  ;; M-n and M-p go to next or previous symbol matching symbol under cursor
-  ;; (use-package smartscan
-  ;;   :config (global-smartscan-mode 1))
+  (use-package consult)
+  
+  ;; UI for completion on buffer completion-in-region-function (aka
+  ;; intellisense)
 
+  (use-package corfu
+    :init
+    (global-corfu-mode))
+
+  ;; Complete at point extensions
+
+  (use-package cape
+    :init
+    ;; Add `completion-at-point-functions', used by `completion-at-point'.
+    ;; (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+    (add-to-list 'completion-at-point-functions #'cape-file)
+    ;;(add-to-list 'completion-at-point-functions #'cape-history)
+    ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
+    ;;(add-to-list 'completion-at-point-functions #'cape-tex)
+    ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
+    ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
+    ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
+    ;;(add-to-list 'completion-at-point-functions #'cape-ispell)
+    ;;(add-to-list 'completion-at-point-functions #'cape-dict)
+    ;;(add-to-list 'completion-at-point-functions #'cape-symbol)
+    ;;(add-to-list 'completion-at-point-functions #'cape-line)
+    )
+  
   ;; Easily edit files as root
+
   (use-package sudo-edit
     :after embark
     :bind
@@ -179,25 +216,33 @@ Emacs' kill ring is unmodified after running this function."
           ("s" . sudo-edit-find-file)))
 
   ;; Shows help for some commands
+
   (use-package discover)
 
   ;; Smarter placement of cursor at begining of buffer M-< M->
+
   (use-package beginend
     :config
 
     ;; Add beginend for all supported modes
     (beginend-setup-all))
 
-  (use-package magit
-    :bind ("<f10>" . #'magit-status))
+  (use-package magit :defer t)
+  ;; (use-package docker :defer t)
+
+  (use-package vterm :defer t)
 
   ;; Show a horizontal line instead of ^L character (new page character)
   ;; May have bad interactions with adaptive-wrap
+
   (use-package page-break-lines
     :config (global-page-break-lines-mode))
 
+  (use-package hide-lines :defer t)
+
   ;; Shows key shortcuts and commands while typing a keyboard shortcut
   ;; For example, type C-c and wait, and it will show a guide
+
   (use-package which-key
     :config (which-key-mode 1))
 
@@ -210,15 +255,21 @@ Emacs' kill ring is unmodified after running this function."
            ("C-c C->" . mc/mark-all-like-this)))
 
   ;; Goes to last changed text in current buffer
+
   (use-package goto-chg
     :bind (("C-," . goto-last-change)
            ("C-." . goto-last-change-reverse)))
 
   (use-package macrostep :defer t)
   
-  (use-package neotree
-    :bind (("<f9>" . neotree-show)
-           (:map neotree-mode-map ("<f9>" . neotree-hide))))
+  (use-package all-the-icons :defer t)
+  (use-package all-the-icons-dired
+    :after all-the-icons
+    :hook (dired-mode . all-the-icons-dired-mode))
+  
+  ;; (use-package neotree
+  ;;   :bind (("<f9>" . neotree-show)
+  ;;          (:map neotree-mode-map ("<f9>" . neotree-hide))))
   
   ;; Keyboard
 
@@ -230,8 +281,8 @@ Emacs' kill ring is unmodified after running this function."
     (key-chord-define-global "x2" #'split-window-below)
     (key-chord-define-global "x3" #'split-window-right)
     (key-chord-define-global "xb" #'switch-to-buffer)
-    (key-chord-define-global "kp" #'previous-buffer)
-    (key-chord-define-global "km" #'next-buffer)
+    (key-chord-define-global "p[" #'previous-buffer)
+    (key-chord-define-global ";'" #'next-buffer)
     (key-chord-define-global "xf" #'find-file)
     (key-chord-define-global "xs" #'save-buffer)
     (key-chord-define-global "xw" #'write-file))
@@ -240,42 +291,66 @@ Emacs' kill ring is unmodified after running this function."
     :init (key-chord-mode 1))
 
   (use-package drag-stuff
+    ;; Note: does not work with paredit-mode
     :bind (("M-<up>" . drag-stuff-up)
            ("M-<down>" . drag-stuff-down))
     :init (drag-stuff-global-mode))
 
-  ;; Complete Anything - Code completion framework
-  (use-package company
-    :config (global-company-mode 1))
+  (use-package paredit
+    ;; Add paredit to lisp modes
+    :hook ((lisp-mode
+            emacs-lisp-mode
+            lisp-interaction-mode
+            ielm-mode)
+           . paredit-mode))
 
+  ;; (use-package puni
+  ;;   ;; like paredit but for non-lisp modes
+  ;;   :defer t
+  ;;   :hook ((prog-mode
+  ;;           sgml-mode
+  ;;           nxml-mode
+  ;;           tex-mode)
+  ;;          . puni-mode)
+  ;;   :init (add-to-multiple-hooks
+  ;;          #'puni-disable-puni-mode
+  ;;          (lisp-mode
+  ;;           emacs-lisp-mode
+  ;;           lisp-interaction-mode
+  ;;           ielm-mode)))
+  
   ;; Syntax analyzer (coding modes), spellchecker (non-coding modes)
-  (use-package flycheck
-    :hook ((text-mode . flycheck-mode)
-           (prog-mode . flycheck-mode)))
-
-  ;; Language modes
+  (use-package flymake
+    :hook ((text-mode . flymake-mode)
+           (prog-mode . flymake-mode)))
 
   (use-package tree-sitter
     :config (global-tree-sitter-mode t))
   (use-package tree-sitter-langs)
   (use-package tree-sitter-indent)
 
+  ;; Language modes
+  
   (use-package yaml-mode :defer t)
 
   (use-package haskell-mode
-    :bind (:map haskell-mode-map
-                ("C-c C-l" . haskell-process-load-file)
-                ("C-`"     . haskell-interactive-bring)
-                ("C-c C-t" . haskell-process-do-type)
-                ("C-c C-i" . haskell-process-do-info)
-                ("C-c C-c" . haskell-process-cabal-build)
-                ("C-c C-k" . haskell-interactive-mode-clear)
-                :map haskell-cabal-mode-map
-                ("C-c c"   . haskell-process-cabal)
-                ("C-`"     . haskell-interactive-bring)
-                ("C-c C-k" . haskell-interactive-mode-clear)
-                ("C-c C-c" . haskell-process-cabal-build)
-                ("C-c c"   . haskell-process-cabal)))
+    :defer t
+    :bind (:map
+           haskell-mode-map
+           ("C-c C-l" . haskell-process-load-file)
+           ("C-`"     . haskell-interactive-bring)
+           ("C-c C-t" . haskell-process-do-type)
+           ("C-c C-i" . haskell-process-do-info)
+           ("C-c C-c" . haskell-process-cabal-build)
+           ("C-c C-k" . haskell-interactive-mode-clear)
+
+           :map
+           haskell-cabal-mode-map
+           ("C-c c"   . haskell-process-cabal)
+           ("C-`"     . haskell-interactive-bring)
+           ("C-c C-k" . haskell-interactive-mode-clear)
+           ("C-c C-c" . haskell-process-cabal-build)
+           ("C-c c"   . haskell-process-cabal)))
 
   ;; (use-package hlint-refactor
   ;;   :after flycheck
@@ -287,21 +362,10 @@ Emacs' kill ring is unmodified after running this function."
     :hook (org-mode . org-superstar-mode))
 
   (use-package yaml-mode :defer t)
-
   (use-package nhexl-mode :defer t)
-
   (use-package markdown-mode :defer t)
-
-  (use-package lsp-mode :defer t)
-  (use-package lsp-ui :defer t)
-  (use-package lsp-haskell
-    :defer t
-
-    :init
-    (add-hook 'haskell-mode-hook #'lsp)
-    (add-hook 'haskell-literate-mode-hook #'lsp))
-
-;  (use-package toml-mode)
+  (use-package toml-mode :defer t)
+  (use-package docker-mode :defer t)
 
   (use-package web-mode
     :mode ("\\.html?\\'"
@@ -312,15 +376,6 @@ Emacs' kill ring is unmodified after running this function."
            "\\.erb\\'"
            "\\.mustache\\'"
            "\\.djhtml\\'"))
-
-  (use-package paredit
-    ;; Add paredit to lisp modes
-    :hook ((cider-repl-mode . paredit-mode)
-           (lisp-mode . paredit-mode)
-           (emacs-lisp-mode . paredit-mode)
-           (lisp-interaction-mode . paredit-mode)
-           (ielm-mode . paredit-mode)
-           (json-mode . paredit-mode)))
 
   (use-package powershell :defer t))
 (add-hook 'after-init-hook #'my-after-init-function)
