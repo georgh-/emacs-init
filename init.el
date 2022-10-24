@@ -551,6 +551,7 @@ by using nxml's indentation rules."
      ("gnu" . "https://elpa.emacs-china.org/gnu/")))
  '(package-selected-packages
    '(org-superstar org-superstar-mode ssh-agency tree-sitter tree-sitter-indent tree-sitter-langs try sudo-edit dired orderless ripgrep embark marginalia selectrum haskell-mode flycheck toml-mode lsp-ui lsp-haskell modus-themes paredit web-mode lsp-mode markdown-mode nhexl-mode yaml-mode company drag-stuff use-package-chords key-chord neotree goto-chg multiple-cursors expand-region which-key page-break-lines magit beginend discover doom-modeline use-package))
+ '(pixel-scroll-precision-mode t)
  '(ring-bell-function 'ignore)
  '(savehist-mode t)
  '(scroll-conservatively 2)
