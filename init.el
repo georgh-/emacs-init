@@ -78,13 +78,13 @@ Emacs' kill ring is unmodified after running this function."
   ;; Configuration that must be run after init to ensure that the preferences
   ;; set up by Customise are taken into account
 
+  (setq use-package-always-ensure t)
   (package-initialize)
   (unless (package-installed-p 'use-package)
     (message "Initializing and refreshing ELPA package archives...")
     (package-refresh-contents)
     (message "Installing `use-package'...")
     (package-install 'use-package))
-  (require 'use-package-ensure)
 
   ;; General
 
