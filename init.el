@@ -143,7 +143,22 @@ Emacs' kill ring is unmodified after running this function."
   
   (use-package doom-modeline
     :init
-    (doom-modeline-mode))
+    (doom-modeline-mode)
+
+    ;; Emacs always keeps one window active across all frames, even when no
+    ;; frames have focus (before 2002-02-09, inactive mode-lines did not
+    ;; exist). Doom-modeline attempts to make all windows look inactive
+    ;; when Emacs looses the focus. To achieve that, it sets and unsets the
+    ;; "mode-line-inactive" faces for all the properties used in the
+    ;; mode-line. As a consequence, the mode-line icons may look as text if
+    ;; the inactive mode-line specifies a font family, which happens with
+    ;; modus-themes and ef-themes (because the font family does not contain
+    ;; icons).
+    ;;
+    ;; Ensure that Emacs default behavior is respected (one window is
+    ;; always active regardless whether Emacs has focus or not)
+    (advice-remove #'handle-switch-frame 'doom-modeline-focus-change)
+    (remove-function after-focus-change-function #'doom-modeline-focus-change))
 
   ;; Selection framework using native Emacs API
 
