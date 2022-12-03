@@ -98,20 +98,15 @@ Emacs' kill ring is unmodified after running this function."
                     theme))
     
     (defun theme-switcher (value)
-      (pcase value
-        ;; No Preference
-        (0 (set-global-gtk-theme "Adwaita")
-           (load-theme 'modus-operandi t))
-        
-        ;; Prefers dark
-        (1 (set-global-gtk-theme "Adwaita-dark")
-           (load-theme 'modus-vivendi t))
-        
-        ;; Prefers light. Not currently used by Gnome
-        (2 (set-global-gtk-theme "Adwaita")
-           (load-theme 'modus-operandi t))
-        
-        (_ (message "Invalid theme value"))))
+      ;; 0 = No Preference
+      ;; 1 = Prefers dark
+      ;; 2 = Prefers light. Not currently used by Gnome
+       (if (= value 1)
+           (progn
+             (set-global-gtk-theme "Adwaita-dark")
+             (load-theme 'modus-vivendi t))
+         (load-theme 'modus-operandi t)
+         (set-global-gtk-theme "Adwaita")))
 
     (defun handler (value)
       (theme-switcher (car (car value))))
