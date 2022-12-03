@@ -425,6 +425,7 @@ Emacs' kill ring is unmodified after running this function."
   "Kills current buffer, does not ask which buffer to kill."
   (interactive)
   (kill-buffer (buffer-name)))
+(global-set-key (kbd "C-x k") #'kill-current-buffer)
 
 (add-hook 'org-mode-hook #'enable-visual-line-mode)
 
