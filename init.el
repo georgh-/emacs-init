@@ -70,6 +70,16 @@ Emacs' kill ring is unmodified after running this function."
 ;; command that I never use.
 (global-set-key (kbd "M-o") #'other-window)
 
+(defun kill-save-line (nlines)
+  "Kill line without deleting it. Includes newline character."
+  (interactive "p")
+  (kill-ring-save (line-beginning-position)
+                  (line-end-position nlines))
+  (kill-append "\n" nil)
+  (message "Saved line to kill-ring"))
+
+(global-set-key (kbd "M-k") #'kill-save-line)
+
 ;;;
 ;;; Packages' configuration.
 ;;;
