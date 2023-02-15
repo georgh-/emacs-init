@@ -344,11 +344,6 @@ Emacs' kill ring is unmodified after running this function."
     :hook ((text-mode . flymake-mode)
            (prog-mode . flymake-mode)))
 
-  (use-package tree-sitter
-    :config (global-tree-sitter-mode t))
-  (use-package tree-sitter-langs)
-  (use-package tree-sitter-indent)
-
   ;; Language modes
   
   (use-package yaml-mode :defer t)
