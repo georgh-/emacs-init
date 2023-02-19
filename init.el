@@ -178,6 +178,11 @@ Emacs' kill ring is unmodified after running this function."
     (("C-S-a" . embark-act)        ;; pick some comfortable binding
      ("C-h B" . embark-bindings))) ;; alternative for `describe-bindings'
 
+  (use-package embark-consult
+    :ensure t ; only need to install it, embark loads it after consult if found
+    :hook
+    (embark-collect-mode . consult-preview-at-point-mode))
+
   ;; Add descriptions to minibuffer selections
   (use-package marginalia
     :bind (:map minibuffer-local-map
