@@ -84,20 +84,19 @@ Emacs' kill ring is unmodified after running this function."
 ;;; Packages' configuration.
 ;;;
 
+;; Options must be set before macro is expanded, which happens when
+;; the function body is compiled. Therefore, options set inside the
+;; function, or below the function will not take effect, because the
+;; macro has already been expanded before the options have been set
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
+
+
 (defun my-after-init-function ()
   ;; Configuration that must be run after init to ensure that the preferences
   ;; set up by Customise are taken into account
 
-  (setq use-package-always-ensure t)
-  (package-initialize)
-  (unless (package-installed-p 'use-package)
-    (message "Initializing and refreshing ELPA package archives...")
-    (package-refresh-contents)
-    (message "Installing `use-package'...")
-    (package-install 'use-package))
-
   ;; General
-
   (use-package dbus
     :init
     (defun set-global-gtk-theme (theme)
