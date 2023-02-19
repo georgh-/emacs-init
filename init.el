@@ -580,8 +580,7 @@ by using nxml's indentation rules."
  '(whitespace-style
    '(face tabs spaces newline indentation space-mark tab-mark newline-mark))
  '(window-resize-pixelwise t)
- '(winner-mode t)
- '(xterm-mouse-mode nil))
+ '(winner-mode t))
 
 (put 'narrow-to-region 'disabled nil)
 (put 'set-goal-column 'disabled nil)
