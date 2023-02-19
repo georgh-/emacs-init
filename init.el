@@ -1,14 +1,5 @@
 ;; This file is public domain
 
-;; The default is 800 kilobytes.  Measured in bytes.
-;; (setq gc-cons-threshold (* 100 1024 1024))
-
-;; After starting, set it to 1MiB
-;; (defun restore-gc-threshold ()
-;;   (setq gc-cons-threshold (* 1 1024 1024)))
-
-;; (add-hook 'emacs-startup-hook #'restore-gc-threshold)
-
 (add-to-list 'load-path "~/.emacs.d/site-lisp/")
 
 ;; LilyPond Emacs modes are installed here
