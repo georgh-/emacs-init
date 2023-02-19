@@ -1,5 +1,6 @@
 ;; This file is public domain
 
+;; Manually installed libraries
 (add-to-list 'load-path "~/.emacs.d/site-lisp/")
 
 ;; LilyPond Emacs modes are installed here
@@ -96,7 +97,7 @@ Emacs' kill ring is unmodified after running this function."
                     "org.gnome.desktop.interface"
                     "gtk-theme"
                     theme))
-    
+
     (defun theme-switcher (value)
       ;; 0 = No Preference
       ;; 1 = Prefers dark
@@ -116,7 +117,7 @@ Emacs' kill ring is unmodified after running this function."
            (string-equal namespace "org.freedesktop.appearance")
            (string-equal key "color-scheme"))
           (theme-switcher (car value))))
-    
+
     :config
     (dbus-call-method-asynchronously
      :session
@@ -135,7 +136,7 @@ Emacs' kill ring is unmodified after running this function."
      "org.freedesktop.portal.Settings"
      "SettingChanged"
      #'signal-handler))
-  
+
   (use-package doom-modeline
     :init
     (doom-modeline-mode)
@@ -169,7 +170,7 @@ Emacs' kill ring is unmodified after running this function."
     (completion-category-overrides '((file (styles
                                             basic
                                             partial-completion)))))
-  
+
   ;; Add actions to minibuffer selections and other commands
 
   (use-package embark
@@ -186,7 +187,7 @@ Emacs' kill ring is unmodified after running this function."
 
   ;; Consult extended commands
   (use-package consult)
-  
+
   ;; UI for completion on buffer completion-in-region-function (aka
   ;; intellisense)
   (use-package corfu
@@ -210,7 +211,7 @@ Emacs' kill ring is unmodified after running this function."
     ;;(add-to-list 'completion-at-point-functions #'cape-symbol)
     ;;(add-to-list 'completion-at-point-functions #'cape-line)
     )
-  
+
   ;; Easily edit files as root
   (use-package sudo-edit
     :after embark
@@ -261,16 +262,16 @@ Emacs' kill ring is unmodified after running this function."
            ("C-." . goto-last-change-reverse)))
 
   (use-package macrostep :defer t)
-  
+
   (use-package all-the-icons :defer t)
   (use-package all-the-icons-dired
     :after all-the-icons
     :hook (dired-mode . all-the-icons-dired-mode))
-  
+
   ;; (use-package neotree
   ;;   :bind (("<f9>" . neotree-show)
   ;;          (:map neotree-mode-map ("<f9>" . neotree-hide))))
-  
+
   ;; Keyboard
 
   (use-package key-chord
@@ -318,14 +319,14 @@ Emacs' kill ring is unmodified after running this function."
   ;;           emacs-lisp-mode
   ;;           lisp-interaction-mode
   ;;           ielm-mode)))
-  
+
   ;; Syntax analyzer (coding modes), spellchecker (non-coding modes)
   (use-package flymake
     :hook ((text-mode . flymake-mode)
            (prog-mode . flymake-mode)))
 
   ;; Language modes
-  
+
   (use-package yaml-mode :defer t)
 
   (use-package haskell-mode
@@ -428,7 +429,7 @@ Emacs' kill ring is unmodified after running this function."
          custom-mode-hook
          help-mode-hook
          neotree-mode-hook)))
-  
+
   (add-to-multiple-hooks #'enable-variable-pitch-mode
                          variable-pitch-modes))
 
