@@ -110,12 +110,12 @@ Emacs' kill ring is unmodified after running this function."
       ;; 0 = No Preference
       ;; 1 = Prefers dark
       ;; 2 = Prefers light. Not currently used by Gnome
-       (if (= value 1)
-           (progn
-             (set-global-gtk-theme "Adwaita-dark")
-             (load-theme 'modus-vivendi t))
-         (load-theme 'modus-operandi t)
-         (set-global-gtk-theme "Adwaita")))
+      (if (= value 1)
+          (progn
+            (set-global-gtk-theme "Adwaita-dark")
+            (load-theme 'modus-vivendi t))
+        (load-theme 'modus-operandi t)
+        (set-global-gtk-theme "Adwaita")))
 
     (defun handler (value)
       (theme-switcher (car (car value))))
@@ -187,7 +187,6 @@ Emacs' kill ring is unmodified after running this function."
      ("C-h B" . embark-bindings))) ;; alternative for `describe-bindings'
 
   ;; Add descriptions to minibuffer selections
-
   (use-package marginalia
     :bind (:map minibuffer-local-map
                 ("M-A" . marginalia-cycle))
@@ -195,18 +194,15 @@ Emacs' kill ring is unmodified after running this function."
     (marginalia-mode))
 
   ;; Consult extended commands
-
   (use-package consult)
   
   ;; UI for completion on buffer completion-in-region-function (aka
   ;; intellisense)
-
   (use-package corfu
     :init
     (global-corfu-mode))
 
   ;; Complete at point extensions
-
   (use-package cape
     :init
     ;; Add `completion-at-point-functions', used by `completion-at-point'.
@@ -225,7 +221,6 @@ Emacs' kill ring is unmodified after running this function."
     )
   
   ;; Easily edit files as root
-
   (use-package sudo-edit
     :after embark
     :bind
@@ -235,11 +230,9 @@ Emacs' kill ring is unmodified after running this function."
           ("s" . sudo-edit-find-file)))
 
   ;; Shows help for some commands
-
   (use-package discover)
 
   ;; Smarter placement of cursor at begining of buffer M-< M->
-
   (use-package beginend
     :config
 
@@ -253,7 +246,6 @@ Emacs' kill ring is unmodified after running this function."
 
   ;; Show a horizontal line instead of ^L character (new page character)
   ;; May have bad interactions with adaptive-wrap
-
   (use-package page-break-lines
     :config (global-page-break-lines-mode))
 
@@ -261,7 +253,6 @@ Emacs' kill ring is unmodified after running this function."
 
   ;; Shows key shortcuts and commands while typing a keyboard shortcut
   ;; For example, type C-c and wait, and it will show a guide
-
   (use-package which-key
     :config (which-key-mode 1))
 
@@ -274,7 +265,6 @@ Emacs' kill ring is unmodified after running this function."
            ("C-c C->" . mc/mark-all-like-this)))
 
   ;; Goes to last changed text in current buffer
-
   (use-package goto-chg
     :bind (("C-," . goto-last-change)
            ("C-." . goto-last-change-reverse)))
