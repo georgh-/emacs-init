@@ -237,7 +237,6 @@ Emacs' kill ring is unmodified after running this function."
     (beginend-setup-all))
 
   (use-package magit :defer t)
-  ;; (use-package docker :defer t)
 
   (use-package vterm :defer t)
 
@@ -366,7 +365,6 @@ Emacs' kill ring is unmodified after running this function."
   (use-package nhexl-mode :defer t)
   (use-package markdown-mode :defer t)
   (use-package toml-mode :defer t)
-  (use-package docker-mode :defer t)
 
   (use-package web-mode
     :mode ("\\.html?\\'"
@@ -549,7 +547,7 @@ by using nxml's indentation rules."
      ("nongnu" . "https://elpa.nongnu.org/nongnu/")
      ("melpa" . "https://melpa.org/packages/")))
  '(package-selected-packages
-   '(doom-modeline ef-themes cape writeroom-mode corfu consult docker-mode all-the-icons-dired all-the-icons beginend discover drag-stuff embark expand-region goto-chg haskell-mode hide-lines key-chord macrostep magit marginalia markdown-mode modus-themes multiple-cursors nhexl-mode orderless org-superstar org-superstar-mode page-break-lines paredit powershell sudo-edit toml-mode use-package use-package-chords vertico vterm web-mode which-key yaml-mode))
+   '(embark-consult doom-modeline ef-themes cape writeroom-mode corfu consult docker-mode all-the-icons-dired all-the-icons beginend discover drag-stuff embark expand-region goto-chg haskell-mode hide-lines key-chord macrostep magit marginalia markdown-mode modus-themes multiple-cursors nhexl-mode orderless org-superstar org-superstar-mode page-break-lines paredit powershell sudo-edit toml-mode use-package use-package-chords vertico vterm web-mode which-key yaml-mode))
  '(pixel-scroll-precision-mode t)
  '(ring-bell-function 'ignore)
  '(savehist-mode t)
