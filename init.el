@@ -321,6 +321,10 @@ Emacs' kill ring is unmodified after running this function."
 
   ;; Language modes
 
+  (use-package treesit-auto
+    :config
+    (global-treesit-auto-mode))
+  
   (use-package yaml-mode :defer t)
 
   (use-package haskell-mode
