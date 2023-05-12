@@ -537,7 +537,7 @@ by using nxml's indentation rules."
      ("nongnu" . "https://elpa.nongnu.org/nongnu/")
      ("melpa" . "https://melpa.org/packages/")))
  '(package-selected-packages
-   '(embark-consult doom-modeline ef-themes cape writeroom-mode corfu consult docker-mode all-the-icons-dired all-the-icons beginend discover drag-stuff embark expand-region goto-chg haskell-mode hide-lines key-chord macrostep magit marginalia markdown-mode modus-themes multiple-cursors nhexl-mode orderless org-superstar org-superstar-mode page-break-lines paredit powershell sudo-edit toml-mode use-package use-package-chords vertico vterm web-mode which-key yaml-mode))
+   '(restclient treesit-auto php-mode embark-consult doom-modeline ef-themes cape writeroom-mode corfu consult docker-mode all-the-icons-dired all-the-icons beginend discover drag-stuff embark expand-region goto-chg haskell-mode hide-lines key-chord macrostep magit marginalia markdown-mode modus-themes multiple-cursors nhexl-mode orderless org-superstar org-superstar-mode page-break-lines paredit powershell sudo-edit toml-mode use-package use-package-chords vertico vterm web-mode which-key yaml-mode))
  '(pixel-scroll-precision-mode t)
  '(ring-bell-function 'ignore)
  '(savehist-mode t)
