@@ -91,23 +91,13 @@ Emacs' kill ring is unmodified after running this function."
   ;; General
   (use-package dbus
     :init
-    (defun set-global-gtk-theme (theme)
-      (call-process "gsettings" nil nil nil
-                    "set"
-                    "org.gnome.desktop.interface"
-                    "gtk-theme"
-                    theme))
-
     (defun theme-switcher (value)
       ;; 0 = No Preference
       ;; 1 = Prefers dark
       ;; 2 = Prefers light. Not currently used by Gnome
       (if (= value 1)
-          (progn
-            (set-global-gtk-theme "Adwaita-dark")
-            (load-theme 'modus-vivendi t))
-        (load-theme 'modus-operandi t)
-        (set-global-gtk-theme "Adwaita")))
+          (load-theme 'modus-vivendi t)
+        (load-theme 'modus-operandi t)))
 
     (defun handler (value)
       (theme-switcher (car (car value))))
