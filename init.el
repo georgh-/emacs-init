@@ -328,6 +328,7 @@ Emacs' kill ring is unmodified after running this function."
 
   (use-package haskell-mode
     :defer t
+    :hook (haskell-mode . eglot-ensure)
     :bind (:map
            haskell-mode-map
            ("C-c C-l" . haskell-process-load-file)
