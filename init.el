@@ -299,20 +299,19 @@ Emacs' kill ring is unmodified after running this function."
             ielm-mode)
            . paredit-mode))
 
-  ;; (use-package puni
-  ;;   ;; like paredit but for non-lisp modes
-  ;;   :defer t
-  ;;   :hook ((prog-mode
-  ;;           sgml-mode
-  ;;           nxml-mode
-  ;;           tex-mode)
-  ;;          . puni-mode)
-  ;;   :init (add-to-multiple-hooks
-  ;;          #'puni-disable-puni-mode
-  ;;          (lisp-mode
-  ;;           emacs-lisp-mode
-  ;;           lisp-interaction-mode
-  ;;           ielm-mode)))
+  (use-package puni
+    ;; like paredit but for non-lisp modes
+    :defer t
+    :hook ((prog-mode
+            sgml-mode
+            nxml-mode
+            tex-mode)
+           . puni-mode)
+    :hook ((lisp-mode
+            emacs-lisp-mode
+            lisp-interaction-mode
+            ielm-mode)
+           . puni-disable-puni-mode))
 
   ;; Syntax analyzer (coding modes), spellchecker (non-coding modes)
   (use-package flymake
