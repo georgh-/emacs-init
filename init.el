@@ -315,8 +315,12 @@ Emacs' kill ring is unmodified after running this function."
 
   ;; Syntax analyzer (coding modes), spellchecker (non-coding modes)
   (use-package flymake
-    :hook ((text-mode . flymake-mode)
-           (prog-mode . flymake-mode)))
+    :hook prog-mode)
+
+  (use-package emacs
+    :hook ((tex-mode
+            text-mode)
+           . flyspell-mode))
 
   ;; Language modes
 
