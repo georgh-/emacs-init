@@ -518,6 +518,7 @@ by using nxml's indentation rules."
  '(js-switch-indent-offset 2)
  '(line-number-display-limit-width 1000000)
  '(menu-bar-mode nil)
+ '(modus-themes-mixed-fonts t)
  '(modus-themes-variable-pitch-ui t)
  ;; '(mouse-drag-and-drop-region 'control)
  ;; '(mouse-drag-and-drop-region-cross-program t)
