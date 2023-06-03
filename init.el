@@ -150,7 +150,8 @@ Emacs' kill ring is unmodified after running this function."
 
   (use-package vertico
     :init
-    (vertico-mode 1))
+    (vertico-mode 1)
+    (vertico-mouse-mode 1))
 
   ;; Filtering function
 
