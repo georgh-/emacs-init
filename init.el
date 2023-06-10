@@ -505,7 +505,7 @@ by using nxml's indentation rules."
  '(dired-auto-revert-buffer 'dired-directory-changed-p)
  '(dired-dnd-protocol-alist nil)
  '(dired-hide-details-hide-symlink-targets nil)
- '(dired-listing-switches "-alh")
+ '(dired-listing-switches "-alh --group-directories-first")
  '(doc-view-resolution 300)
  '(ediff-window-setup-function 'ediff-setup-windows-plain)
  '(ef-themes-mixed-fonts t)
