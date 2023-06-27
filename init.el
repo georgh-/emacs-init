@@ -388,9 +388,7 @@ Emacs' kill ring is unmodified after running this function."
 (add-hook 'after-init-hook #'my-after-init-function)
 
 ;; Use simple dired by default
-(defun dired-hook-configuration ()
-  (dired-hide-details-mode 1))
-(add-hook 'dired-mode-hook #'dired-hook-configuration)
+(add-hook 'dired-mode-hook #'dired-hide-details-mode)
 
 ;; Enable visual-line mode only for programming modes
 ;; It will stay disabled for any other mode (occur, packages, etc)
