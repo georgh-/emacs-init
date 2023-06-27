@@ -88,6 +88,8 @@ Emacs' kill ring is unmodified after running this function."
   ;; Configuration that must be run after init to ensure that the preferences
   ;; set up by Customise are taken into account
 
+  (use-package ef-themes)
+
   ;; General
   (use-package dbus
     :init
@@ -327,12 +329,15 @@ Emacs' kill ring is unmodified after running this function."
   (use-package treesit-auto
     :config
     (global-treesit-auto-mode))
-  
+
   (use-package yaml-mode :defer t)
+
+  (use-package eglot
+    :defer t
+    :hook (haskell-mode . eglot-ensure))
 
   (use-package haskell-mode
     :defer t
-    :hook (haskell-mode . eglot-ensure)
     :bind (:map
            haskell-mode-map
            ("C-c C-l" . haskell-process-load-file)
@@ -505,6 +510,8 @@ by using nxml's indentation rules."
  '(context-menu-mode t)
  '(create-lockfiles nil)
  '(cua-enable-cua-keys nil)
+ '(custom-safe-themes
+   '("2141b59c9b098b476a7e20f7a621985b5d89544ae22a8d4b79b574f1203b6496" "471b78fcfb7a535680b1a9773870d1525389fd2c5559d5707940d0ecc181eb69" "f126b518f12b4f6bd50808143f7bd26c1d47de25d90170d3d632a46c2a08a1af" "5ccda8419d11dec4afc7d5afc71de75e76f2d0ce6e845bf6831582c67ee79086" "d47e82e61cffed27dd2aef3b614f6dd727776f6bcb92e738e89056b325a5aeab" "032426ec19e515fd3a54b38016a1c5e4ec066be3230198cb3df82d05630a02ed" "aee4c6b492ad130f13868464e4d7f2b2846de9b7f0d2933499c907f47dc010f4" "02790c735d32ad3b28c630329fdfc503ea62077d088b0c52302ab61e5a3b037e" "41bbaed6a17405ee6929c7e1f8035cffd05d0ebf3f08ce388da0e92c63fb6cef" "f5f3921b9cec1b37758ba865127d773f8f5e4816e63712af7582b447acfa5326" "910b36cacb8486580842582661ab2f16d8e05e6ec081dcaa141e0ca98ee5e9c2" "c06aa0ddb649e4e45f36dd95de98263672864074373937e65a23c8338f52c6af" "8294b451ffe0575fcccd1a447f56efc94d9560787cd5ff105e620e5f5771427d" "c6b317b294f9e0ecf7290a6d76b4c96ffd52213cdcb3fdad5db29141c63866cf" "d13b6ae136b853bc69c036009b6290f546e6c9c7ad026f60b0ce2a4f9a943d5f" "e0aaf54e0194bd9f452ae36f0012b23d3f82d2092e2b800cc07e0e73f4ac131f" "bcfeecf5f2ee0bbc64450f7c5155145d8d2c590b1310a898c505f48b4b5f4c75" "e5a748cbefd483b74b183d7da4fca6228207a6bf9be9792dc85403a186724e1f" "20d3ce5f5cb95716edca608ef7bbc27d9f8d66c9a51200f7be3f08c107810f3e" "13f343f7d098365848ba4366801a9ae91c35faea85b017818fd4d07dfd18de61" "68b35e92f9daa37685218bd11aa5307140a0ec4c8fd17142a83457619e7b1240" "49887e6f0c666dfc10fad4c23c7a83a176cb296968648c02b85deec25bb11103" default))
  '(debug-on-error nil)
  '(delete-selection-mode t)
  '(dired-auto-revert-buffer 'dired-directory-changed-p)
@@ -514,7 +521,7 @@ by using nxml's indentation rules."
  '(doc-view-resolution 300)
  '(ediff-window-setup-function 'ediff-setup-windows-plain)
  '(ef-themes-mixed-fonts t)
- '(ef-themes-to-toggle '(ef-light ef-dark))
+ '(ef-themes-to-toggle '(ef-frost ef-dark))
  '(ef-themes-variable-pitch-ui t)
  '(frame-resize-pixelwise t)
  '(global-auto-revert-mode t)
