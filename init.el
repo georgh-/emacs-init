@@ -97,9 +97,14 @@ Emacs' kill ring is unmodified after running this function."
       ;; 0 = No Preference
       ;; 1 = Prefers dark
       ;; 2 = Prefers light. Not currently used by Gnome
-      (if (= value 1)
-          (load-theme 'modus-vivendi t)
-        (load-theme 'modus-operandi t)))
+      (let* ((dark-theme 'ef-dark)
+             (light-theme 'ef-frost)
+             (new-theme (if (= value 1) dark-theme light-theme))
+             (switch? (not (member new-theme custom-enabled-themes))))
+
+        (when switch?
+          (mapc #'disable-theme custom-enabled-themes)
+          (load-theme new-theme))))
 
     (defun handler (value)
       (theme-switcher (car (car value))))
