@@ -521,6 +521,7 @@ by using nxml's indentation rules."
  '(delete-selection-mode t)
  '(dired-auto-revert-buffer 'dired-directory-changed-p)
  '(dired-dnd-protocol-alist nil)
+ '(dired-dwim-target t)
  '(dired-hide-details-hide-symlink-targets nil)
  '(dired-listing-switches "-alh --group-directories-first")
  '(doc-view-resolution 300)
