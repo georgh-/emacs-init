@@ -544,7 +544,6 @@ by using nxml's indentation rules."
    '(puni restclient treesit-auto php-mode embark-consult doom-modeline ef-themes cape writeroom-mode corfu consult docker-mode all-the-icons-dired all-the-icons beginend discover drag-stuff embark expand-region goto-chg haskell-mode hide-lines key-chord macrostep magit marginalia markdown-mode modus-themes multiple-cursors nhexl-mode orderless org-superstar org-superstar-mode page-break-lines paredit powershell sudo-edit toml-mode use-package use-package-chords vertico vterm web-mode which-key yaml-mode))
  '(ring-bell-function 'ignore)
  '(savehist-mode t)
- '(search-whitespace-regexp ".*")
  '(show-paren-delay 0.001)
  '(show-paren-mode t)
  '(show-paren-style 'expression)
