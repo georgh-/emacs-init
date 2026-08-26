@@ -2,7 +2,11 @@
 
 ;; Use M-o to switch between windows instead of C-x o
 (keymap-global-set "M-o" #'other-window)
+
+;; Kill current buffer instead of asking which one C-x k
 (keymap-global-set "<remap> <kill-buffer>" #'kill-current-buffer)
+
+;; Use ibuffer instead of list-buffers C-x C-b
 (keymap-global-set "<remap> <list-buffers>" #'ibuffer-other-window)
 
 
@@ -97,7 +101,7 @@ changing between some modes."
                  "%b"))
         " - Emacs"))
 
-
+;; Modern Emacs experience as baseline
 (load-theme 'newcomers-presets)
 
 
@@ -113,10 +117,10 @@ changing between some modes."
   (inhibit-startup-screen t)
   (initial-scratch-message nil)
   (ring-bell-function 'ignore)
+  (menu-bar-mode nil)
   (tool-bar-mode nil)
   (uniquify-buffer-name-style 'reverse nil (uniquify))
   (use-short-answers t)
-  (window-resize-pixelwise t)
   (winner-mode t)
 
   ;; File management
@@ -135,6 +139,7 @@ changing between some modes."
   (tab-width 4)
   (temp-buffer-resize-mode t)
   (view-read-only t)
+  (treesit-enabled-modes t)
 
   ;; mode-specific
   (calendar-date-style 'iso)
@@ -251,13 +256,6 @@ changing between some modes."
 
   (theme-switcher (dark-theme-p))))
 
-;; Easily edit files as root
-(use-package sudo-edit
-  :custom
-  (sudo-edit-indicator-mode t)
-  (sudo-edit-local-method "su")
-  (sudo-edit-remote-method "sudo"))
-
 (use-package expreg
   :bind (("C-=" . expreg-expand)
          ("C--" . expreg-contract)
@@ -314,6 +312,22 @@ changing between some modes."
   (completion-pcm-leading-wildcard t)) ;; Emacs 31: partial-completion
                                        ;; behaves like substring
 
+(use-package embark
+  :bind ("C-S-a" . embark-act))
+
+;; Easily edit files as root
+(use-package sudo-edit
+  :after embark
+
+  :bind
+  (:map embark-file-map ("s" . sudo-edit-find-file))
+  (:map embark-become-file+buffer-map ("s" . sudo-edit-find-file))
+
+  :custom
+  (sudo-edit-indicator-mode t)
+  (sudo-edit-local-method "su")
+  (sudo-edit-remote-method "sudo"))
+
 ;; Smarter placement of cursor at begining of buffer M-< M->
 (use-package beginend
   :config
@@ -325,9 +339,9 @@ changing between some modes."
   :ensure nil
   :hook (dired-mode . dired-hide-details-mode)
   :custom
-  '(dired-dwim-target t)
-  '(dired-hide-details-hide-symlink-targets nil)
-  '(dired-listing-switches "-alhv --group-directories-first"))
+  (dired-dwim-target t)
+  (dired-hide-details-hide-symlink-targets nil)
+  (dired-listing-switches "-alhv --group-directories-first"))
 
 (use-package nerd-icons-dired
   :hook dired-mode)
@@ -340,23 +354,6 @@ changing between some modes."
 
 (use-package doom-modeline
   :config
-
-  ;; Emacs always keeps one window active across all frames, even when no
-  ;; frames have focus (before 2002-02-09, inactive mode-lines did not
-  ;; exist). Doom-modeline attempts to make all windows look inactive
-  ;; when Emacs looses the focus. To achieve that, it sets and unsets the
-  ;; "mode-line-inactive" faces for all the properties used in the
-  ;; mode-line. As a consequence, the mode-line icons may look as text if
-  ;; the inactive mode-line specifies a font family, which happens with
-  ;; modus-themes and ef-themes (because the font family does not contain
-  ;; icons).
-  ;;
-  ;; Ensure that Emacs default behavior is respected (one window is
-  ;; always active regardless whether Emacs has focus or not)
-  (advice-remove #'handle-switch-frame 'doom-modeline-focus-change)
-  (remove-function after-focus-change-function
-                   #'doom-modeline-focus-change)
-
   (doom-modeline-mode 1)
   
   :custom
@@ -395,7 +392,10 @@ changing between some modes."
      "a8c1252f9844caf313a2315ecf1e8ef4d92495c9f2067d875bb1c783b08719ad"
      "0dd83cb583518e6a20cd7881e4d2251c80c1141b50dc29fbe13198e62f3620f6"
      default))
-)
+ '(package-selected-packages
+   '(beginend doom-modeline drag-stuff ef-themes expreg multiple-cursors
+              nerd-icons-dired nerd-icons-ibuffer orderless
+              page-break-lines paredit sudo-edit try ultra-scroll)))
 
 (put 'narrow-to-region 'disabled nil)
 (put 'set-goal-column 'disabled nil)
