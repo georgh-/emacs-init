@@ -9,7 +9,6 @@
 ;; Use ibuffer instead of list-buffers C-x C-b
 (keymap-global-set "<remap> <list-buffers>" #'ibuffer-other-window)
 
-
 (defun copy-buffer-as-kill ()
   "Save the buffer as if killed, but don't kill it.
 Uses `copy-region-as-kill'."
@@ -104,6 +103,27 @@ changing between some modes."
 ;; Modern Emacs experience as baseline
 (load-theme 'newcomers-presets)
 
+;; Fonts
+(defun first-available-font (families)
+  "Return the first family in FAMILIES that is installed, or nil."
+  (seq-find (lambda (f) (find-font (font-spec :family f))) families))
+
+(defun set-fonts (&optional frame)
+  (when (display-graphic-p frame)
+    (let ((mono (first-available-font
+                 '("NotoMono NF" "Cascadia Code NF" "Monospace")))
+          (sans (first-available-font
+                 '("Noto Sans NF" "Segoe UI" "Sans Serif"))))
+      
+      (when mono
+        (set-face-attribute 'default frame :family mono :height 110)
+        (set-face-attribute 'fixed-pitch frame :family mono :height 1.0))
+      (when sans
+        (set-face-attribute 'variable-pitch frame :family sans :height 1.0)))))
+
+;; Apply to the current frame and to any frames created later (daemon/emacsclient)
+(set-fonts)
+(add-hook 'after-make-frame-functions #'set-fonts)
 
 (use-package emacs
   :ensure nil
